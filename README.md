@@ -32,7 +32,7 @@ Additionally, some plotting features also require:
 though these are not dependencies of the package.
 
 
-## Supported package
+## Supported packages
 
 The idea behind `arbutus` is that models are fit to comparative data using other packages and `arbutus` is used to assess the adequacy of the fitted model. There are no native functions for fitting models or performing model selection within this package. Currently, arbutus can handle objects of the following classes:
 
