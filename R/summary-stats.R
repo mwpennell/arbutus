@@ -193,7 +193,7 @@ ks.contrast <- function(unit.tree){
 #'
 #' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
 #'
-#' @export var.contrasts
+#' @export var.contrast
 #' 
 #' @examples
 #' data(finch)
