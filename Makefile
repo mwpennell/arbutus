@@ -15,5 +15,13 @@ document:
 install:
 	R CMD INSTALL --no-test-load .
 
+build:
+	R CMD build .
+
+check: build
+	R CMD check --no-manual `ls -1tr arbutus*gz | tail -n1`
+	@rm -f `ls -1tr arbutus*gz | tail -n1`
+	@rm -rf arbutus.Rcheck
+
 # No real targets!
 .PHONY: all test document install
