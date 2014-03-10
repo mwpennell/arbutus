@@ -3,4 +3,47 @@ arbutus
 
 [![Build Status](https://travis-ci.org/mwpennell/arbutus.png?branch=master)](https://travis-ci.org/mwpennell/arbutus)
 
-Assessing the adequacy of phylogenetic models of quantitative trait evolution
+This package was developed to assess the adequacy of continuous trait models. The package includes functions to parse the output of various model-fitting functions in R, rescale phylogenies according to fitted parameters, simulate datasets, calculate summary statistics and plot results. The methods is described in a forthcoming paper: "Model adequacy and the macroevolution of angiosperm functional traits"
+
+## Installation
+
+To install the package from github, first clone the repository
+
+* `git clone https://github.com/mwpennell/arbutus.git`
+
+Then build the package
+
+* `R CMD build arbutus`
+
+And then install the built package
+
+* `R CMD INSTALL arbutus_1.0.tar.gz`
+
+The package depends on the following libraries:
+
+* `ape`
+* `ggplot2`
+
+Additionally, some plotting features also require:
+
+* `grid`
+* `gridExtra`
+
+though these are not dependencies of the package.
+
+
+## Supported package
+
+The idea behind `arbutus` is that models are fit to comparative data using other packages and `arbutus` is used to assess the adequacy of the fitted model. There are no native functions for fitting models or performing model selection within this package. Currently, arbutus can handle objects of the following classes:
+
+* `gfit` objects from `fitContinuous` in `geiger (>= 2.0)`
+* `fit.mle` objects from `find.mle` in `diversitree (>= 0.9.7)`
+* `mcmcsamples` objects from `mcmc` in `diversitree (>= 0.9.7)`
+* `gls` objects from `gls` in `nlme`
+* `pgls` objects from `pgls` in `caper`
+* `phylolm` objects from `phylolm` in `phylolm`
+* `phylo` objects in `ape` format (does not rescale phylogeny)
+* `multiPhylo` objects in `ape` format (does not rescale phylogeny)
+
+We plan to add more package interfaces as this project progresses.
+
