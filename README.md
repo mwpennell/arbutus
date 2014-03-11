@@ -9,15 +9,15 @@ This package was developed to assess the adequacy of continuous trait models. Th
 
 To install the package from github, first clone the repository
 
-* `git clone https://github.com/mwpennell/arbutus.git`
+`git clone https://github.com/mwpennell/arbutus.git`
 
 Then build the package
 
-* `R CMD build arbutus`
+`R CMD build arbutus`
 
 And then install the built package
 
-* `R CMD INSTALL arbutus_1.0.tar.gz`
+`R CMD INSTALL arbutus_1.0.tar.gz`
 
 The package depends on the following libraries:
 
