@@ -7,17 +7,10 @@ This package was developed to assess the adequacy of continuous trait models. Th
 
 ## Installation
 
-To install the package from github, first clone the repository
+To install the package from github, the easiest way is to install using [devtools](https://github.com/hadley/devtools). Install `devtools`, then type
 
-`git clone https://github.com/mwpennell/arbutus.git`
-
-Then build the package
-
-`R CMD build arbutus`
-
-And then install the built package
-
-`R CMD INSTALL arbutus_1.0.tar.gz`
+`library(devtools)
+install_github("mwpennell/arbutus")`
 
 The package depends on the following libraries:
 
@@ -36,9 +29,9 @@ though these are not dependencies of the package.
 
 The idea behind `arbutus` is that models are fit to comparative data using other packages and `arbutus` is used to assess the adequacy of the fitted model. There are no native functions for fitting models or performing model selection within this package. Currently, arbutus can handle objects of the following classes:
 
-* `gfit` objects from `fitContinuous` in `geiger (>= 2.0)`
-* `fit.mle` objects from `find.mle` in `diversitree (>= 0.9.7)`
-* `mcmcsamples` objects from `mcmc` in `diversitree (>= 0.9.7)`
+* `gfit` objects from `fitContinuous` in [geiger](https://github.com/mwpennell/geiger-v2) (>= 2.0)
+* `fit.mle` objects from `find.mle` in [diversitree](https://github.com/richfitz/diversitree) (>= 0.9.7)
+* `mcmcsamples` objects from `mcmc` in [diversitree](https://githbu.com/richfitz/diversitree) (>= 0.9.7)`
 * `gls` objects from `gls` in `nlme`
 * `pgls` objects from `pgls` in `caper`
 * `phylolm` objects from `phylolm` in `phylolm`
