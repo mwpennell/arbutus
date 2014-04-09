@@ -3,7 +3,7 @@ arbutus
 
 [![Build Status](https://travis-ci.org/mwpennell/arbutus.png?branch=master)](https://travis-ci.org/mwpennell/arbutus)
 
-This package was developed to assess the adequacy of continuous trait models. The package includes functions to parse the output of various model-fitting functions in R, rescale phylogenies according to fitted parameters, simulate datasets, calculate summary statistics and plot results. The methods is described in a forthcoming paper: "Model adequacy and the macroevolution of angiosperm functional traits"
+This package was developed to assess the adequacy of continuous trait models. The package includes functions to parse the output of various model-fitting functions in R, rescale phylogenies according to fitted parameters, simulate datasets, calculate summary statistics and plot results. The methods is described in a forthcoming paper: "Model adequacy and the macroevolution of angiosperm functional traits" [(preprint here)](http://biorxiv.org/content/early/2014/04/07/004002).
 
 ## Installation
 
