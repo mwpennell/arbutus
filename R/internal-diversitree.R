@@ -23,7 +23,7 @@ model.pars.fit.mle <- function(fit, ...) {
 }
 
 #' @method model.info fit.mle
-#' @S3method model.info fit.mle
+#' @export
 model.info.fit.mle <- function(fit, ...) {
   m <- list(data=model.data(fit),
             pars=model.pars(fit),
@@ -60,7 +60,7 @@ model.pars.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
 }
 
 #' @method model.info mcmcsamples
-#' @S3method model.info mcmcsamples
+#' @export
 model.info.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
   m <- list(data=model.data(fit),
             pars=model.pars(fit, burnin, thin, sample),

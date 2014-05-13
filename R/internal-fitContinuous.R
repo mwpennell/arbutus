@@ -39,7 +39,7 @@ model.pars.gfit <- function(fit, ...) {
 }
 
 #' @method model.info gfit
-#' @S3method model.info gfit
+#' @export
 model.info.gfit <- function(fit, ...) {
   m <- list(data=model.data(fit),
             pars=model.pars(fit),

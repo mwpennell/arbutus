@@ -94,7 +94,7 @@ get.pgls.pars.unity <- function(fit){
 
 
 #' @method model.info pgls
-#' @S3method model.info pgls
+#' @export
 model.info.pgls <- function(fit, ...){
     m <- list(data=model.data(fit),
               pars=model.pars(fit),

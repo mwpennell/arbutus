@@ -40,7 +40,7 @@ model.pars.phylolm <- function(fit, ...){
 }
 
 #' @method model.info phylolm
-#' @S3method model.info phylolm
+#' @export
 model.info.phylolm <- function(fit, phy, ...){
     m <- list(data=model.data(fit, phy),
               pars=model.pars(fit),

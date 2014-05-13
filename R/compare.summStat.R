@@ -179,7 +179,7 @@ compare.summ.stats <- function(summ.stats.obs, summ.stats.sim){
 #'
 #'
 #' @method print phy.ss
-#' @S3method print phy.ss
+#' @export
 #'
 #' @examples
 #' data(finch)

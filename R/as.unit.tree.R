@@ -131,7 +131,7 @@ as.unit.tree <- function(x, ...)
     UseMethod("as.unit.tree")
 
 #' @method as.unit.tree default
-#' @S3method as.unit.tree default
+#' @export
 as.unit.tree.default <- function(x, ...) {
   ## use S3 generic modelinfo to pull out the tree, data, parameter
   ## estimates and model type.  This step will fail if an appropriate
@@ -152,7 +152,7 @@ as.unit.tree.default <- function(x, ...) {
 
 
 #' @method as.unit.tree phylo
-#' @S3method as.unit.tree phylo
+#' @export
 as.unit.tree.phylo <- function(x, data, ...) {
   ## check tree and data to make sure they match
   check.tree.data(x, data)
@@ -170,7 +170,7 @@ as.unit.tree.phylo <- function(x, data, ...) {
 }
 
 #' @method as.unit.tree multiPhylo
-#' @S3method as.unit.tree multiPhylo
+#' @export
 ## NOTE[RGF]: Not sure what the appropriate class here is; it might be
 ## multi.unit.tree, but let's see how these are actually used.  Using
 ## 'multiPhylo' is harmless for now, I think.
@@ -185,7 +185,7 @@ as.unit.tree.multiPhylo <- function(x, data, ...) {
 
 
 #' @method as.unit.tree mcmcsamples
-#' @S3method as.unit.tree mcmcsamples
+#' @export
 # NOTE[RGF]: The arguments were n.samples and burnin in the original
 # version.
 as.unit.tree.mcmcsamples <- function(x, burnin=NA, thin=NA, sample=NA,
@@ -199,7 +199,7 @@ as.unit.tree.mcmcsamples <- function(x, burnin=NA, thin=NA, sample=NA,
 }
 
 #' @method as.unit.tree mcmcsamples.pgls
-#' @S3method as.unit.tree mcmcsamples.pgls
+#' @export
 as.unit.tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
                                           ...) {
   obj <- model.info(x, burnin, thin, sample, ...)

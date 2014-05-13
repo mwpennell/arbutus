@@ -271,7 +271,7 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' This plotting function using the \code{\link[ggplot2]{ggplot2}} library.
 #'
 #' @method plot phy.ss
-#' @S3method plot phy.ss
+#' @export
 #'
 #' @seealso \code{\link{phy.model.check}}, \code{\link{compare.summ.stats}}
 #'

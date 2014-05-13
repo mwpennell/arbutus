@@ -141,7 +141,7 @@ model.phylo.white <- function(phy, pars){
 
 
 #' @method make.model.phylo fitC
-#' @S3method make.model.phylo fitC
+#' @export
 make.model.phylo.fitC <- function(x, ...) {
     ## get model
     model <- x$type
