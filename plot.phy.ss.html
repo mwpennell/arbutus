@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>plot.phy.ss. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Plot summary statistics for model adequacy</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>"plot"(x, colour&nbsp;=&nbsp;NULL, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a 'phy.ss' object inherited from <code><a href='phy.model.check.html'>phy.model.check</a></code>
+(or, alternatively <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code>)</dd>
+      <dt>colour</dt>
+      <dd>a vector of two colours to be used in the plot; the first is for the observed summary
+statistics and the second for the simulated summary statistics.</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot'>plot</a></code>. This is currently non-functional.</dd>
+    </dl>
+    
+    <div class="Plot summary statistics for model adequacy">
+      <h2>Plot summary statistics for model adequacy</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Plots the distribution of simulated summary statistics
+along with the observed summary statistics (either a point estimate or
+a distribution of values) for visual inspection of model adequacy</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function is designed to give researchers a quick visual inspection of
+model adequacy by plotting the simulated distribution of summary statistics along
+with the empirical estimate(s). If only a point estimated of the observed summary statistics
+is input (such as from estimating the parameters on a single tree using maximum likelihood),
+the function will plot the simulated summary statistics with a vertical line representing the
+observed summary statistic. If a distribution of observed summary statistics is used, the function
+will plot both distributions (simulated and observed) on the same plot. This function is not
+designed to be flexible. If researchers want to create their own plots in a different style, all
+the necessary information is available in the 'phy.ss' object output by both <code><a href='phy.model.check.html'>phy.model.check</a></code>
+and <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code> and can be indexed by <code>x$summ.stats.obs</code> and
+<code>x$summ.stats.sim</code>.</p>
+  
+      <p>This plotting function using the <code><a href='http://www.inside-r.org/packages/cran/ggplot2/docs/ggplot2'>ggplot2</a></code> library.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+
+p &lt;- phy.model.check(phy, data=dat, nsim=20)
+
+plot(p)
+</div>
+<p><img src='plot.phy.ss-2.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>plot.phy.ss</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='phy.model.check.html'>phy.model.check</a></code>, <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

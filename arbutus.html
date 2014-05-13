@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>arbutus. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Arbutus: Evaluate model adequacy for phylogenetic models of continuous character evolution</h1>
+
+<div class="row">
+  <div class="span8">
+        
+    <div class="Arbutus: Evaluate model adequacy for phylogenetic models of continuous character evolution">
+      <h2>Arbutus: Evaluate model adequacy for phylogenetic models of continuous character evolution</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Arbutus was developed to evaluate the adequacy (or absolute goodness-of-fit)
+of phylogenetic models of continuous character evolution. The basic principle
+underlying the approach is that if the generating model is a Brownian motion
+process, the contrasts (sensu Felsenstein, 1985) will be independent and
+identically distributed (I.I.D.). We can evaluate this condition by calculating
+a set of summary statistics the contrasts on our observed data, then simulating datasets under
+a Brownian motion process along the phylogeny and calculating the summary statistics
+on the contrasts of each simulated data set. We can then compare our observed summary statistics to the
+simulated distribution of summary statistics.</p>
+  
+      <p>The I.I.D. property of the contrasts will hold only for the case of Brownian motion.
+However, the approach can be extended to any arbitrarily complex model of continuous character
+evolution (as long as the model is based on a multivariate normal distribution) by first
+rescaling the phylogeny based on the fitted parameter estimates, creating what we refer to
+as a 'unit.tree'. Once the rescaling is done, the contrasts will be I.I.D. if the model
+that was fit is a adequate one.</p>
+  
+      <p>The basic functionality of arbutus can be employed using the function <code><a href='phy.model.check.html'>phy.model.check</a></code>.
+This function wraps several other functions which can be used separately:
+<ol>
+<li><code><a href='as.unit.tree.html'>as.unit.tree</a></code>: rescales phylogeny based on fitted parameter values
+ </li>
+<li><code><a href='summ.stats.html'>summ.stats</a></code>: calculates summary statistics on observed data
+ </li>
+<li><code><a href='sim.char.unit.html'>sim.char.unit</a></code>: simulates datasets under Brownian motion
+ </li>
+<li><code><a href='summ.stats.html'>summ.stats</a></code>: calculates summary statistics on simulated data
+ </li>
+<li><code><a href='compare.summ.stats.html'>compare.summ.stats</a></code>: compares observed to simulated statistics
+</li>
+</ol></p>
+  
+      <p>Arbutus is designed to interact with a number of other packages for fitting trait models. The
+architecture is flexible such that additional packages can be incorporated relatively easily.</p>
+  
+    </div>
+
+    <div class="References">
+      <h2>References</h2>
+      
+      <p>Matthew W. Pennell, Richard G. FitzJohn, William K. Cornwell and Luke J. Harmon
+(in prep.).  On the adequacy of phylogenetic trait models.</p>
+  
+      <p>Joseph Felsenstein (1985). Phylogenies and the comparative method. The American
+Naturalist 125:1-15.</p>
+  
+    </div>
+      </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>arbutus</li><li>arbutus-arbutus</li><li>arbutus-package</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

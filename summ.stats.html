@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>summ.stats. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Calculate summary statistics on a unit tree</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>summ.stats(unit.tree, stats&nbsp;=&nbsp;NULL)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>unit.tree</dt>
+      <dd>a <code>unit.tree</code> object or list of unit.trees</dd>
+      <dt>stats</dt>
+      <dd>a named list of summary statistics to calculate on the unit.tree.
+  If no <code>stats</code> argument supplied, default summary statistics are used.</dd>
+    </dl>
+    
+    <div class="Calculate summary statistics on a unit tree">
+      <h2>Calculate summary statistics on a unit tree</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>A data.frame with the calculated summary statistics across all unit.trees provided.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Calculates a set of summary statistics on the contrasts included with a 'unit.tree' object.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function can be applied to either a single 'unit.tree' of object or a list of 'unit.tree' objects.
+If <code>stats=NULL</code> default summary statistics are used. The default summary statistics are the following:
+ <ol>
+<li>m.pic: The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.</p>
+  
+      <p></li>
+<li>v.pic: The coefficient of variation of the absolute value of the contrasts.</p>
+  
+      <p></li>
+<li>s.var: The slope of a linear model fit between the contrasts and their expected variances.</p>
+  
+      <p></li>
+<li>s.anc: The slope of a linear model fit between the contrasts and their inferred ancestral state.</p>
+  
+      <p></li>
+<li>s.hgt: The slope of a linear model fit between the contrasts and the node height at which they were calculated.</p>
+  
+      <p></li>
+<li>d.ks: The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.
+ </li>
+</ol></p>
+  
+      <p>User defined summary statistics can be supplied as a named list of functions (see examples). The functions supplied
+must take a unit.tree as argument and perform an operation on at least one of the elements of the object
+(see <code><a href='as.unit.tree.html'>as.unit.tree</a></code> for details).</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- as.unit.tree(phy, data=dat)
+
+## use default statistics
+summ.stat &lt;- summ.stats(unit.tree, stats=NULL)
+summ.stat
+</div>
+<div class='output'>       m.pic     v.pic      s.var    s.anc     s.hgt      d.ks
+1 0.07642449 0.7362652 -0.2907671 -1.22337 -0.306688 0.1959667
+</div>
+<div class='input'>
+## user defined statistics
+mean.con &lt;- function(x) mean(x$pics[,&quot;contrasts&quot;])
+max.con &lt;- function(x) max(x$pics[,&quot;contrasts&quot;])
+
+summ.stat.user &lt;- summ.stats(unit.tree,
+                    stats=list(mean = mean.con, max = max.con))
+summ.stat.user
+</div>
+<div class='output'>         mean       max
+1 -0.08445149 0.3867173
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>summ.stats</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='def.summ.stats.html'>def.summ.stats</a></code>, <code><a href='sigsq.est.html'>sigsq.est</a></code>, <code><a href='var.contrast.html'>var.contrast</a></code>, <code><a href='cor.contrast.var.html'>cor.contrast.var</a></code>, <code><a href='cor.contrast.nh.html'>cor.contrast.nh</a></code>, <code><a href='cor.contrast.asr.html'>cor.contrast.asr</a></code>, <code><a href='ks.contrast.html'>ks.contrast</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

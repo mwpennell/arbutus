@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>cor.contrast.nh. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Relationship between contrasts and node height</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>cor.contrast.nh(unit.tree)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>unit.tree</dt>
+      <dd>a <code>unit.tree</code> object</dd>
+    </dl>
+    
+    <div class="Relationship between contrasts and node height">
+      <h2>Relationship between contrasts and node height</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>s.hgt</code> the estimated slope parameter</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Fits a linear model between the absolute value of the contrasts
+and the node height at which they were calculated</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This summary statistic is the estimate of the slope from fitting
+a linear model between the contrasts and the node height (i.e. tree depth)
+at which they were calculated. It is used
+to evaluate whether the model is adequately capturing variation relative to tree depth.
+If the model is adequate, we expect there not to be a relationship
+between the contrasts and their node height (i.e. slope ~ 0). Note that the node heights
+being used here are the absolute node ages from the original phylogeny and not the adjusted
+node ages obtained from computing contrasts (see <code><a href='http://www.inside-r.org/packages/cran/ape/docs/pic'>pic</a></code>).</p>
+  
+      <p>The slope of the contrasts and their variances is included as a default summary statistic
+in the function <code><a href='summ.stats.html'>summ.stats</a></code></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- as.unit.tree(phy, data=dat)
+
+## estimate slope
+cor.contrast.nh(unit.tree)
+</div>
+<div class='output'>[1] -0.306688
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>cor.contrast.nh</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='summ.stats.html'>summ.stats</a></code>, <code><a href='def.summ.stats.html'>def.summ.stats</a></code>, <code><a href='http://www.inside-r.org/packages/cran/stats/docs/lm'>lm</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

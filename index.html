@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>Index. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="Matthew Pennell, Richard FitzJohn, Will Cornwell, Luke Harmon">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <div class="row">
+  <div class="span8">
+    <h1>arbutus</h1>
+
+<p><a href="https://travis-ci.org/mwpennell/arbutus"><img src="https://travis-ci.org/mwpennell/arbutus.png?branch=master" alt="Build Status"/></a></p>
+
+<p>This package was developed to assess the adequacy of continuous trait models. The package includes functions to parse the output of various model-fitting functions in R, rescale phylogenies according to fitted parameters, simulate datasets, calculate summary statistics and plot results. The methods is described in a forthcoming paper: &ldquo;Model adequacy and the macroevolution of angiosperm functional traits&rdquo; <a href="http://biorxiv.org/content/early/2014/04/07/004002">(preprint here)</a>.</p>
+
+<h2>Installation</h2>
+
+<p>To install the package from github, the easiest way is to install using <a href="https://github.com/hadley/devtools">devtools</a>. Install <code>devtools</code>, then type</p>
+
+<pre><code>library(devtools)
+install_github(&quot;mwpennell/arbutus&quot;)
+</code></pre>
+
+<p>The package depends on the following libraries:</p>
+
+<ul>
+<li><code>ape</code></li>
+<li><code>ggplot2</code></li>
+</ul>
+
+<p>Additionally, some plotting features also require:</p>
+
+<ul>
+<li><code>grid</code></li>
+<li><code>gridExtra</code></li>
+</ul>
+
+<p>though these are not dependencies of the package.</p>
+
+<h2>Supported packages</h2>
+
+<p>The idea behind <code>arbutus</code> is that models are fit to comparative data using other packages and <code>arbutus</code> is used to assess the adequacy of the fitted model. There are no native functions for fitting models or performing model selection within this package. Currently, arbutus can handle objects of the following classes:</p>
+
+<ul>
+<li><code>gfit</code> objects from <code>fitContinuous</code> in <a href="https://github.com/mwpennell/geiger-v2">geiger</a> (&gt;= 2.0)</li>
+<li><code>fit.mle</code> objects from <code>find.mle</code> in <a href="https://github.com/richfitz/diversitree">diversitree</a> (&gt;= 0.9.7)</li>
+<li><code>mcmcsamples</code> objects from <code>mcmc</code> in <a href="https://githbu.com/richfitz/diversitree">diversitree</a> (&gt;= 0.9.7)</li>
+<li><code>gls</code> objects from <code>gls</code> in <code>nlme</code></li>
+<li><code>pgls</code> objects from <code>pgls</code> in <code>caper</code></li>
+<li><code>phylolm</code> objects from <code>phylolm</code> in <code>phylolm</code></li>
+<li><code>phylo</code> objects in <code>ape</code> format (does not rescale phylogeny)</li>
+<li><code>multiPhylo</code> objects in <code>ape</code> format (does not rescale phylogeny)</li>
+</ul>
+
+<p>We plan to add more package interfaces as this project progresses.</p>
+
+
+    <h2>Help topics</h2>
+
+    <h3></h3>
+    
+    
+    <ul class="index">
+        
+      <li>
+        <code><a href="arbutus.html">arbutus</a></code>(arbutus-arbutus, arbutus-package)<br />Arbutus: Evaluate model adequacy for phylogenetic models of continuous character evolution</li>
+            
+      <li>
+        <code><a href="as.unit.tree.html">as.unit.tree</a></code><br />Create unit.tree object</li>
+            
+      <li>
+        <code><a href="compare.summ.stats.html">compare.summ.stats</a></code><br />Compare observed and simulated summary statistics</li>
+            
+      <li>
+        <code><a href="contrast.asr.plot.html">contrast.asr.plot</a></code><br />Plot contrasts versus their inferred ancestral states</li>
+            
+      <li>
+        <code><a href="contrast.nh.plot.html">contrast.nh.plot</a></code><br />Plot contrasts versus their node height</li>
+            
+      <li>
+        <code><a href="contrast.var.plot.html">contrast.var.plot</a></code><br />Plot contrasts versus their variances</li>
+            
+      <li>
+        <code><a href="cor.contrast.asr.html">cor.contrast.asr</a></code><br />Relationship between contrasts and inferred ancestral state</li>
+            
+      <li>
+        <code><a href="cor.contrast.nh.html">cor.contrast.nh</a></code><br />Relationship between contrasts and node height</li>
+            
+      <li>
+        <code><a href="cor.contrast.var.html">cor.contrast.var</a></code><br />Relationship between contrasts and their variances</li>
+            
+      <li>
+        <code><a href="cv.contrast.html">cv.contrast</a></code><br />Coefficient of variation of contrasts</li>
+            
+      <li>
+        <code><a href="finch.html">finch</a></code><br />Galapagos finch dataset</li>
+            
+      <li>
+        <code><a href="is.unit.tree.html">is.unit.tree</a></code><br />Check if object is a unit.tree</li>
+            
+      <li>
+        <code><a href="ks.contrast.html">ks.contrast</a></code><br />Evaluate normality of contrasts</li>
+            
+      <li>
+        <code><a href="make.model.phylo.html">make.model.phylo</a></code><br />Rescale phylogeny based on fitted model parameters</li>
+            
+      <li>
+        <code><a href="model.info.html">model.info</a></code><br />Get model and data from model fitted object</li>
+            
+      <li>
+        <code><a href="mv.summ.stats.html">mv.summ.stats</a></code><br />Multivariate measure of model adequacy</li>
+            
+      <li>
+        <code><a href="phy.model.check.html">phy.model.check</a></code><br />Assess the adequacy of continuous trait models</li>
+            
+      <li>
+        <code><a href="plot.phy.ss.html">plot.phy.ss</a></code><br />Plot summary statistics for model adequacy</li>
+            
+      <li>
+        <code><a href="print.phy.ss.html">print.phy.ss</a></code><br />Print summary statistics</li>
+            
+      <li>
+        <code><a href="pval.summ.stats.html">pval.summ.stats</a></code><br />Extract p--values for summary statistics</li>
+            
+      <li>
+        <code><a href="sigsq.est.html">sigsq.est</a></code><br />REML estimate of BM parameter</li>
+            
+      <li>
+        <code><a href="sim.char.unit.html">sim.char.unit</a></code><br />Simulate character evolution on unit tree</li>
+            
+      <li>
+        <code><a href="summ.stats.html">summ.stats</a></code><br />Calculate summary statistics on a unit tree</li>
+            
+      <li>
+        <code><a href="var.contrast.html">var.contrast</a></code><br />Variance of contrasts</li>
+    
+    </ul>
+  </div>
+  
+  <div class="span3 offset1">
+        
+    <h2>Dependencies</h2>
+    <ul>
+      <li><strong>Depends</strong>: ape, ggplot2</li>
+      <li><strong>Imports</strong>: </li>
+      <li><strong>Suggests</strong>: grid, gridExtra, diversitree</li>
+      <li><strong>Extends</strong>: </li>
+    </ul>
+     
+    
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>phy.model.check. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Assess the adequacy of continuous trait models</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>phy.model.check(x, nsim&nbsp;=&nbsp;1000, stats&nbsp;=&nbsp;NULL, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a fitted model object or a <code>phylo</code>/<code>multiPhylo</code> (see Details).</dd>
+      <dt>nsim</dt>
+      <dd>the number of datasets to simulate. This is passed as an argument to the
+function <code><a href='sim.char.unit.html'>sim.char.unit</a></code>.</dd>
+      <dt>stats</dt>
+      <dd>a named list of summary statistics to calculate on observed and simulated
+datasets. See <code><a href='summ.stats.html'>summ.stats</a></code> for details.</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to <code><a href='as.unit.tree.html'>as.unit.tree</a></code></dd>
+    </dl>
+    
+    <div class="Assess the adequacy of continuous trait models">
+      <h2>Assess the adequacy of continuous trait models</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Use summary statistics to assess model adequacy for
+phylogenetic models of continuous character evolution. This function is
+a simply a wrapper which does all the steps involved in evaluating model
+adequacy using the approach outlined in Pennell et al. (in prep.)</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p><code>arbutus</code> was developed to evaluate the adequacy (or absolute goodness-of-fit)
+of phylogenetic models of continuous character evolution. The basic principle
+underlying the approach is that if the generating model is a Brownian motion
+process, the contrasts (sensu Felsenstein, 1985) will be independent and
+identically distributed (I.I.D.). We can evaluate this condition by calculating
+a set of summary statistics the contrasts on our observed data, then simulating datasets under
+a Brownian motion process along the phylogeny and calculating the summary statistics
+on the contrasts of each simulated data set. We can then compare our observed summary statistics to the
+simulated distribution of summary statistics.</p>
+  
+      <p>The I.I.D. property of the contrasts will hold only for the case of Brownian motion.
+However, the approach can be extended to any arbitrarily complex model of continuous character
+evolution (as long as the model is based on a multivariate normal distribution) by first
+rescaling the phylogeny based on the fitted parameter estimates, creating what we refer to
+as a 'unit.tree'. Once the rescaling is done, the contrasts will be I.I.D. if the model
+that was fit is a adequate one.</p>
+  
+      <p>P-values represent the two-tailed probability that the observed summary statistic
+(or distribution of summary statistics) came from the same distribution as the simulated
+summary statistics. Low p-values provide evidence that the model is inadequate.</p>
+  
+      <p>The function <code>phy.model.check</code> wraps several other functions:
+<ol>
+<li><code><a href='as.unit.tree.html'>as.unit.tree</a></code>: rescales phylogeny based on fitted parameter values
+ </li>
+<li><code><a href='summ.stats.html'>summ.stats</a></code>: calculates summary statistics on observed data
+ </li>
+<li><code><a href='sim.char.unit.html'>sim.char.unit</a></code>: simulates datasets under Brownian motion
+ </li>
+<li><code><a href='summ.stats.html'>summ.stats</a></code>: calculates summary statistics on simulated data
+ </li>
+<li><code><a href='compare.summ.stats.html'>compare.summ.stats</a></code>: compares observed to simulated statistics
+</li>
+</ol></p>
+  
+      <p><code>phy.model.check</code> interacts with objects produced by fitting evolutionary models using a variety of packages.
+Currently supported objects are as follows:</p>
+  
+      <p><ul>
+<li> a <code>gfit</code> object returned from fitting a model of continuous character evolution using
+  <code>fitContinuous</code> in the <code>geiger</code> package.</p>
+  
+      <p></li>
+<li> a <code>fit.mle</code> object returned from fitting a model of continuous character evolution
+  using <code>find.mle</code> in the <code>diversitree</code> package.</p>
+  
+      <p></li>
+<li> a <code>mcmcsamples</code> object returned from fitting a model of continuous character evolution
+  using MCMC methods in the <code>diversitree</code> package. <code>as.unit.tree</code> will apply the same
+  trait dataset to a set of unit trees based on sampled parameters. By default this will create a
+  unit tree for every sample in the mcmc chain. To modify this, additional arguments can be use.
+  <code>burnin</code> specifies how many samples to remove from the beginning of the chain.
+  <code>thin</code> specifies the thinning interval (e.g. if <code>thin=5</code>, the function will create a unit
+  tree from every fifth parameter set sampled.
+  <code>sample</code> specifies how many samples to draw from the MCMC run.</p>
+  
+      <p></li>
+<li> a <code>gls</code> object returned from fitting a phylogenetic generalized least squares model
+  of character correlation using <code>gls</code> in the <code>nlme</code> package.</p>
+  
+      <p></li>
+<li> a <code>pgls</code> object returned from fitting a phylogenetic generalized least squares model
+  of character correlation using <code>pgls</code> in the <code>caper</code> package.</p>
+  
+      <p></li>
+<li> a <code>phylolm</code> object returned from fitting a phylogenetic generalized linear model of
+  character correlation using <code>phylolm</code> in the <code>phylolm</code> package. As the phylogeny is not
+  returned with the <code>phylolm</code> object, a <code>phy</code> argument must also be specified.</p>
+  
+      <p></li>
+<li> a <code>phylo</code> object. If a <code>phylo</code> object is supplied, the tree is assumed to have been
+  rescaled previously. A second argument <code>data</code> must also be provided included the trait
+  data as a named vector with names equal to the tip.labels of the phylogeny.</p>
+  
+      <p></li>
+<li> a <code>multiPhylo object</code>. If a <code>multiPhylo</code> object is supplied, the tree is assumed to have been
+  rescaled previously. A second argument <code>data</code> must also be provided included the trait
+  data as a named vector with names equal to the tip.labels of the phylogenies. Note that this
+  function will append the same data set to every tree in the <code>multiPhylo</code> object.
+</li>
+</ul></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## finch data
+data(finch)
+phy &lt;- finch$phy
+data &lt;- finch$data[,&quot;wingL&quot;]
+
+## &lt;strong&gt;Not run&lt;/strong&gt;: 
+# require(geiger)
+# ## fit Brownian motion model
+# ## using geiger&#39;s fitContinuous function
+# fit.bm &lt;- fitContinuous(phy=phy, dat=data, model=&quot;BM&quot;,
+#                                  control=list(niter=10))
+# 
+# ## check adequacy of BM model
+# ## get p-values for default summary statistics
+# modelad.bm &lt;- phy.model.check(fit.bm, nsim=10)
+# modelad.bm
+# 
+# 
+# ## fit Ornstein-Uhlenbeck model
+# ## again, using geiger&#39;s fitContinuous function
+# fit.ou &lt;- suppressWarnings(fitContinuous(phy=phy, dat=data, model=&quot;OU&quot;,
+#                                                   control=list(niter=10)))
+# 
+# ## check adequacy of OU model
+# modelad.ou &lt;- phy.model.check(fit.ou, nsim=10)
+# require(diversitree)
+# ## fit Brownian motion model using ML
+# ## using diversitree&#39;s find.mle function
+# 
+# bmlik &lt;- make.bm(phy, data)
+# fit.bm.dt &lt;- find.mle(bmlik, 0.1)
+# 
+# ## this creates a &#39;fit.mle&#39; object which can be used
+# ## in &#39;as.unit.tree()&#39;
+# unit.tree.dt &lt;- as.unit.tree(fit.bm.dt)
+# 
+# ## fit Brownian motion model using MCMC
+# mcmc.bm.dt &lt;- mcmc(bmlik, x.init=1, nsteps=1000, w=1)
+# 
+# ## construct a unit tree object from mcmcsamples
+# ## removing 100 samples as burnin
+# ## and sampling 10 parameter sets
+# unit.tree.mcmc &lt;- as.unit.tree(mcmc.bm.dt,
+#                        burnin=100, samples=10)
+# 
+# 
+# require(nlme)
+# ## Use pgls to look for a correlation between two traits
+# 
+# t1 &lt;- data
+# t2 &lt;- td$data[,&quot;tarsusL&quot;]
+# dd &lt;- cbind.data.frame(t1, t2)
+# 
+# ## fit gls model with corPagel correlation structure
+# fit.gls &lt;- gls(t1~t2, data=dd, correlation=corPagel(phy=phy, value=1))
+# 
+# ## this creates a &#39;gls&#39; object which can be used
+# ## in &#39;as.unit.tree()&#39;
+# unit.tree.gls &lt;- as.unit.tree(fit.gls)
+# 
+# ## &lt;strong&gt;End(Not run)&lt;/strong&gt;
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>phy.model.check</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='as.unit.tree.html'>as.unit.tree</a></code>, <code><a href='summ.stats.html'>summ.stats</a></code>, <code><a href='sim.char.unit.html'>sim.char.unit</a></code>, <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

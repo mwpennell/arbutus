@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>print.phy.ss. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Print summary statistics</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>"print"(x, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a <code>phy.ss</code> object</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to print</dd>
+    </dl>
+    
+    <div class="Print summary statistics">
+      <h2>Print summary statistics</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>prints p.values to screen</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Generic function for printing 'phy.ss' objects
+from <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+
+## use phy.model.check to assess model adequacy
+## pretend as if tree has already been rescaled
+p &lt;- phy.model.check(phy, data=dat, nsim=10)
+
+## print output
+p
+</div>
+<div class='output'>Two-tailed p-values for summary statistics: 
+
+    m.pic     v.pic     s.var     s.anc     s.hgt      d.ks 
+0.0000000 0.5454545 0.5454545 0.0000000 0.3636364 0.7272727 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>print.phy.ss</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>pval.summ.stats. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Extract p--values for summary statistics</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>pval.summ.stats(x)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a <code>phy.ss</code> object from the function <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code></dd>
+    </dl>
+    
+    <div class="Extract p--values for summary statistics">
+      <h2>Extract p--values for summary statistics</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a named vector of two-tailed p-values</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Utility function for extracting p-values from the output
+of <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- as.unit.tree(phy, data=dat)
+
+## calculate default summary stats on observed data
+ss.obs &lt;- summ.stats(unit.tree, stats=NULL)
+
+## simulate data on unit.tree
+sims &lt;- sim.char.unit(unit.tree, nsim=10)
+
+## calculate default summary stats on simulated data
+ss.sim &lt;- summ.stats(sims, stats=NULL)
+
+## compare simulated to observed summary statistics
+res &lt;- compare.summ.stats(ss.obs, ss.sim)
+
+## extract p-values
+pval.summ.stats(res)
+</div>
+<div class='output'>    m.pic     v.pic     s.var     s.anc     s.hgt      d.ks 
+0.0000000 0.5454545 0.5454545 0.1818182 0.3636364 0.9090909 
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>pval.summ.stats</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='compare.summ.stats.html'>compare.summ.stats</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

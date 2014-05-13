@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>ks.contrast. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Evaluate normality of contrasts</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>ks.contrast(unit.tree)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>unit.tree</dt>
+      <dd>a <code>unit.tree</code> object</dd>
+    </dl>
+    
+    <div class="Evaluate normality of contrasts">
+      <h2>Evaluate normality of contrasts</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>d.ks</code> the D-statistic from a KS-test</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Performs Kolmogorov-Smirnov test comparing distribution
+of contrasts with that of a normal distribution with mean 0 and variance
+equal to the square root of the mean of squared contrasts</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This summary statistics is used to evaluate whether the assumption of multivariate normailty
+is appropriate. If the model which generated the data is the fitted model, we expect the
+square root ofthe mean of squared contrasts to be equal to 1. The empirical estimate is used
+rather than assume a variance of 1 to reduce the overlap between this summary statistic and the
+REML estimate of sigma2 (see <code><a href='sigsq.est.html'>sigsq.est</a></code>). The Kolmogorov-Smirnov (KS) test is a
+non-parameteric test which computes the maximum distance <code class = 'eq'>D</code> between two cumulative distribution functions.
+Running the test multiple times on the same data will produce slightly different values due to the fact
+that the null distribution is produced by randomly drawing from a normal distribution.</p>
+  
+      <p>The KS-D statistic is included as a default summary statistic
+in the function <code><a href='summ.stats.html'>summ.stats</a></code>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- as.unit.tree(phy, data=dat)
+
+## KS-D statistic
+ks.contrast(unit.tree)
+</div>
+<div class='output'>[1] 0.1929667
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>ks.contrast</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='summ.stats.html'>summ.stats</a></code>, <code><a href='def.summ.stats.html'>def.summ.stats</a></code>, <code><a href='http://www.inside-r.org/packages/cran/stats/docs/ks.test'>ks.test</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

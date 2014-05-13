@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>mv.summ.stats. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Multivariate measure of model adequacy</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>mv.summ.stats(x)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a <code>phy.ss</code> object inherited from <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code></dd>
+    </dl>
+    
+    <div class="Multivariate measure of model adequacy">
+      <h2>Multivariate measure of model adequacy</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>the Mahalanobis distance between the observed and simulated summary statistic.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Computes Mahalanobis distance between the observed summary statistics and
+the simulated summary statistics as a multivariate measure of model fit</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function computes the Mahalanobis distance between the observed and simulated
+summary statistics. The Mahalanobis distance (see <code><a href='http://www.inside-r.org/packages/cran/stats/docs/mahalanobis'>mahalanobis</a></code> is a unit-less and
+scale-invariant of the distance
+between a single data point (our observed summary statistics) and a common point (here the mean of the
+simulated summary statistics), taking into account the covariance between the summary statistics from
+the simulated data. It assumes that the distribution of summary statistics is multivariate normal.
+For the default summary statistics (see <code><a href='def.summ.stats.html'>def.summ.stats</a></code>, this condition should be met -- the
+exception being the <code><a href='ks.contrast.html'>ks.contrast</a></code> statistic, which as it is bounded at 0, will not be. As a result,
+if <code><a href='ks.contrast.html'>ks.contrast</a></code> is included in the set of summary statistic, this function will take the
+natural log of the values before computing the Mahalanobis distance. All other summary statistics will
+be assumed to be normally distributed and used as is.</p>
+  
+      <p>While the Mahalanobis distance may be a useful summary measure in some circumstances, we recommend checking
+the summary statistics individually for a number of reasons. First, our procedure for calculating the p-values
+for the summary statistics is general and does not depend on assumptions regarding the distribution of values.
+Second, the interpretation from the individual p-values is much more clear from the perspective of either
+posterior predictive or parametric bootstrapping theory. Third, and most importantly, the fact that some summary
+statistics capture the variation in the data better than others provides useful information as to how and why the
+model is inadequate.</p>
+  
+      <p>If only one set of observed
+summary statistics are available (e.g. from fitting a model using maximum likelihood to a single tree), a single distance
+will be returned. If multiple sets of summary statistics are available (e.g. from fitting a model using a Bayesian MCMC),
+the function will return a distribution of distances.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- as.unit.tree(phy, data=dat)
+
+## calculate default summary stats on observed data
+ss.obs &lt;- summ.stats(unit.tree, stats=NULL)
+
+## simulate data on unit.tree
+sims &lt;- sim.char.unit(unit.tree, nsim=10)
+
+## calculate default summary stats on simulated data
+ss.sim &lt;- summ.stats(sims, stats=NULL)
+
+## compare simulated to observed summary statistics
+res &lt;- compare.summ.stats(ss.obs, ss.sim)
+
+## calculate Mahalanobis distance
+mv.summ.stats(res)
+</div>
+<div class='output'>[1] 18.10065
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>mv.summ.stats</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='compare.summ.stats.html'>compare.summ.stats</a></code>, <code><a href='http://www.inside-r.org/packages/cran/stats/docs/mahalanobis'>mahalanobis</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

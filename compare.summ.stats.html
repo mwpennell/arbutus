@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>compare.summ.stats. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Compare observed and simulated summary statistics</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>compare.summ.stats(summ.stats.obs, summ.stats.sim)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>summ.stats.obs</dt>
+      <dd>a data.frame containing the observed summary statistics
+with the column names denoting the names of the statistics used.</dd>
+      <dt>summ.stats.sim</dt>
+      <dd>a data.frame containing the simulated summary statistics
+with the column names denoting the names of the statistics used.</dd>
+    </dl>
+    
+    <div class="Compare observed and simulated summary statistics">
+      <h2>Compare observed and simulated summary statistics</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an object of class <code>phy.ss</code> which is a list containing the following objects:
+<dl>
+<dt>p.values</dt><dd>Two--tailed p-values for all summary statistics</dd>
+<dt>summ.stats.obs</dt><dd>The input data frame of observed summary statistics</dd>
+<dt>summ.stats.sim</dt><dd>The input data frame of simulated summary statistics</dd>
+</dl></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Calculates two--tailed p-values from comparing
+observed to simulated summary statistics in order to evaluate
+model adequacy for phylogenetic models of continuous character evolution.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The column names must be the same for the observed and simulated
+summary statistics (though not necessarily in the same order). Both
+<code>summ.stats.obs</code> and <code>summ.stats.sim</code> are designed to be obtained
+from the function <code><a href='summ.stats.html'>summ.stats</a></code>.</p>
+  
+      <p>If there is only 1 row in <code>summ.stats.obs</code> (such as the case if ML estimate
+of model is used), then the function will compare the observed summary statistic(s) to
+the distribution of simulated simulated summary statistics.</p>
+  
+      <p>If there is more than 1 row in <code>summ.stats.obs</code> (such as the case if we have
+a posterior distribution of parameter estimates or the summary statistics are calculated
+across many trees), then the function requires that the number of rows in
+<code>summ.stats.obs</code> and <code>summ.stats.sim</code> be equal. This is because the function
+calculates the p-values by performing pairwise comparisons. the function will automatically
+check that this condition is met and produce an error if it is not.</p>
+  
+      <p>In both cases, the p-values that are returned are two--tailed p-values as
+the function considers the probability of the observed statistics being larger
+or smaller than the simulated statistics.</p>
+  
+      <p>The distribution of simulated summary statistics along with the observed summary
+statistic using a generic <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot'>plot</a></code> function (see <code><a href='plot.phy.ss.html'>plot.phy.ss</a></code>)
+for more details. For the purposes of plotting, the observed and simulated summary
+statistics used as arguments are returned with the p-values.</p>
+  
+      <p>The p-values can be extracted from the output of <code><a href='compare.summ.stats.html'>compare.summ.stats</a></code> using the
+function <code><a href='pval.summ.stats.html'>pval.summ.stats</a></code></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- as.unit.tree(phy, data=dat)
+
+## calculate default summary stats on observed data
+ss.obs &lt;- summ.stats(unit.tree, stats=NULL)
+
+## simulate data on unit.tree
+sims &lt;- sim.char.unit(unit.tree, nsim=10)
+
+## calculate default summary stats on simulated data
+ss.sim &lt;- summ.stats(sims, stats=NULL)
+
+## compare simulated to observed summary statistics
+res &lt;- compare.summ.stats(ss.obs, ss.sim)
+
+## extract p-values
+pval.summ.stats(res)
+</div>
+<div class='output'>    m.pic     v.pic     s.var     s.anc     s.hgt      d.ks 
+0.0000000 0.7272727 0.3636364 0.1818182 0.3636364 0.5454545 
+</div>
+<div class='input'>
+## plot results
+plot(res)
+</div>
+<strong class='message'>Loading required package: grid</strong>
+<strong class='message'>Loading required package: gridExtra</strong>
+<p><img src='compare.summ.stats-6.png' alt='' width='400' height='400' /></p></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>compare.summ.stats</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='summ.stats.html'>summ.stats</a></code>, <code><a href='plot.phy.ss.html'>plot.phy.ss</a></code>, <code><a href='pval.summ.stats.html'>pval.summ.stats</a></code>,
+<code><a href='phy.model.check.html'>phy.model.check</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

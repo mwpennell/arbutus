@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>def.summ.stats. arbutus 1.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.0</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Internal function for getting default summary statistics</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>def.summ.stats()</div></pre>
+        
+    <div class="Internal function for getting default summary statistics">
+      <h2>Internal function for getting default summary statistics</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a named list of functions</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Creates a list of the default summary statistics to be used
+to asses model adequacy</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The following summary statistics are produced by this function:
+ <ol>
+<li>m.pic: The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.</p>
+  
+      <p></li>
+<li>v.pic: The coefficient of variation of the absolute value of the contrasts.</p>
+  
+      <p></li>
+<li>s.var: The slope of a linear model fit between the contrasts and their expected variances.</p>
+  
+      <p></li>
+<li>s.anc: The slope of a linear model fit between the contrasts and their inferred ancestral state.</p>
+  
+      <p></li>
+<li>s.hgt: The slope of a linear model fit between the contrasts and the node height at which they were calculated.</p>
+  
+      <p></li>
+<li>d.ks: The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.
+ </li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## get default summary stats
+stats &lt;- def.summ.stats
+stats
+</div>
+<div class='output'>function()
+    list(&quot;m.pic&quot;=sigsq.est, &quot;v.pic&quot;=cv.contrast, &quot;s.var&quot;=cor.contrast.var, &quot;s.anc&quot;=cor.contrast.asr, &quot;s.hgt&quot;=cor.contrast.nh, &quot;d.ks&quot;=ks.contrast)
+&lt;environment: namespace:arbutus&gt;
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>def.summ.stats</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='summ.stats.html'>summ.stats</a></code>, <code><a href='sigsq.est.html'>sigsq.est</a></code>, <code><a href='cv.contrast.html'>cv.contrast</a></code>, <code><a href='cor.contrast.var.html'>cor.contrast.var</a></code>,
+<code><a href='cor.contrast.nh.html'>cor.contrast.nh</a></code>, <code><a href='cor.contrast.nh.html'>cor.contrast.nh</a></code>, <code><a href='ks.contrast.html'>ks.contrast</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
