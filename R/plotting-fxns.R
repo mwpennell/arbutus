@@ -285,7 +285,9 @@ contrast.nh.plot <- function(x, col=NULL, ...){
 #' (or, alternatively \code{\link{compare.summ.stats}})
 #'
 #' @param col a vector of two colours to be used in the plot; the first is for the observed summary
-#' statistics and the second for the simulated summary statistics. 
+#' statistics and the second for the simulated summary statistics.
+#'
+#' @param ... additional arguments to be passed to plot (not currently functional)
 #'
 #' @details This function is designed to give researchers a quick visual inspection of
 #' model adequacy by plotting the simulated distribution of summary statistics along
@@ -315,7 +317,7 @@ contrast.nh.plot <- function(x, col=NULL, ...){
 #'
 #' plot(p)
 #' 
-plot.phy.ss <- function(x, col=NULL){
+plot.phy.ss <- function(x, col=NULL, ...){
 
     .e <- environment()
 

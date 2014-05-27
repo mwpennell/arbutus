@@ -3,7 +3,7 @@
 \alias{plot.phy.ss}
 \title{Plot summary statistics for model adequacy}
 \usage{
-\method{plot}{phy.ss}(x, col = NULL)
+\method{plot}{phy.ss}(x, col = NULL, ...)
 }
 \arguments{
 \item{x}{a 'phy.ss' object inherited from \code{\link{phy.model.check}}
@@ -11,6 +11,8 @@
 
 \item{col}{a vector of two colours to be used in the plot; the first is for the observed summary
 statistics and the second for the simulated summary statistics.}
+
+\item{...}{additional arguments to be passed to plot (not currently functional)}
 }
 \description{
 Plots the distribution of simulated summary statistics
