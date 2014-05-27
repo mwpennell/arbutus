@@ -19,13 +19,6 @@ The package depends on the following libraries:
 * `ape`
 * `ggplot2`
 
-Additionally, some plotting features also require:
-
-* `grid`
-* `gridExtra`
-
-though these are not dependencies of the package.
-
 
 ## Supported packages
 

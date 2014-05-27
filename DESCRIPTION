@@ -14,7 +14,5 @@ Depends:
     ape,
     ggplot2,
 Suggests:
-    grid,
-    gridExtra,
     diversitree
 Roxygen: list(wrap = FALSE)

@@ -46,7 +46,7 @@
 #' contrast.var.plot(fit.bm)
 #' }
 #' 
-contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
+contrast.var.plot <- function(x, col=NULL, ...){
 
     ## build unit tree from model object
     ut <- as.unit.tree(x, ...)
@@ -55,17 +55,30 @@ contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
     dat <- as.data.frame(ut$pics)
     dat$contrasts <- abs(dat$contrasts)
 
+    ## if no colors supply, set defaults
+    if (is.null(col))
+        col <- def.colours.arbutus()
+
+    if (length(col) > 2)
+        warning("Only first two colours used")
+
     .e <- environment()
     p <- ggplot(dat, aes(variance, contrasts), environment=.e)
-    p <- p + stat_smooth(method="lm", fill=col[1], colour=col[2], size=1, alpha=0.1)
-    p <- p + geom_point()
+    p <- p + stat_smooth(method="lm", fill=col[1], colour=col[1], size=2, alpha=0.5)
+    p <- p + geom_point(colour=col[2], fill=col[2])
     p <- p + theme_bw()
+    p <- p + theme(plot.background = element_blank(),
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.border=element_blank(),
+                   axis.line = element_line(color = 'black'))
     p <- p + xlab("E[Var] of contrast")
     p <- p + ylab("Contrast")
     p <- p + ggtitle("Variation relative to branch lengths")
 
     print(p)
 }
+
 
 
 
@@ -128,7 +141,7 @@ contrast.var.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' contrast.asr.plot(fit.bm)
 #' }
 #' 
-contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
+contrast.asr.plot <- function(x, col=NULL, ...){
 
     ## build unit tree from model object
     ut <- as.unit.tree(x, ...)
@@ -142,11 +155,24 @@ contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
     ## create a dataframe
     dat <- cbind.data.frame(asr, pics)
 
+    ## if no colors supply, set defaults
+    if (is.null(col))
+        col <- def.colours.arbutus()
+
+    if (length(col) > 2)
+        warning("Only first two colours used")
+
+
     .e <- environment()
     p <- ggplot(dat, aes(asr, pics), environment=.e)
-    p <- p + stat_smooth(method="lm", fill=col[1], colour=col[2], size=1, alpha=0.1)
-    p <- p + geom_point()
+    p <- p + stat_smooth(method="lm", fill=col[1], colour=col[1], size=2, alpha=0.5)
+    p <- p + geom_point(fill=col[2], colour=col[2])
     p <- p + theme_bw()
+    p <- p + theme(plot.background = element_blank(),
+                   panel.grid.major = element_blank(),
+                   panel.grid.minor = element_blank(),
+                   panel.border=element_blank(),
+                   axis.line = element_line(color = 'black'))    
     p <- p + xlab("Ancestral state")
     p <- p + ylab("Contrast")
     p <- p + ggtitle("Variation relative to trait value")
@@ -211,7 +237,7 @@ contrast.asr.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' contrast.nh.plot(fit.bm)
 #' }
 #' 
-contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
+contrast.nh.plot <- function(x, col=NULL, ...){
 
     ## build unit tree from model object
     ut <- as.unit.tree(x, ...)
@@ -227,10 +253,17 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
     ## create a dataframe
     dat <- cbind.data.frame(nh, pics)
 
+    ## if no colors supply, set defaults
+    if (is.null(col))
+        col <- def.colours.arbutus()
+
+    if (length(col) > 2)
+        warning("Only first two colours used")
+
     .e <- environment()
     p <- ggplot(dat, aes(nh, pics), environment=.e)
-    p <- p + stat_smooth(method="lm", fill=col[1], colour=col[2], size=1, alpha=0.1)
-    p <- p + geom_point()
+    p <- p + stat_smooth(method="lm", fill=col[1], colour=col[1], size=2, alpha=0.5)
+    p <- p + geom_point(fill=col[2], color=col[2])
     p <- p + theme_bw()
     p <- p + xlab("Node height")
     p <- p + ylab("Contrast")
@@ -251,10 +284,8 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #' @param x a 'phy.ss' object inherited from \code{\link{phy.model.check}}
 #' (or, alternatively \code{\link{compare.summ.stats}})
 #'
-#' @param colour a vector of two colours to be used in the plot; the first is for the observed summary
-#' statistics and the second for the simulated summary statistics.
-#' 
-#' @param ... additional arguments to be passed to \code{\link{plot}}. This is currently non-functional. 
+#' @param col a vector of two colours to be used in the plot; the first is for the observed summary
+#' statistics and the second for the simulated summary statistics. 
 #'
 #' @details This function is designed to give researchers a quick visual inspection of
 #' model adequacy by plotting the simulated distribution of summary statistics along
@@ -284,119 +315,90 @@ contrast.nh.plot <- function(x, col=c("dodgerblue4", "darkblue"), ...){
 #'
 #' plot(p)
 #' 
-plot.phy.ss <- function(x, colour=NULL, ...){
+plot.phy.ss <- function(x, col=NULL){
 
-    ## check to see if colours were supplied
-    ## assigned defaults if not
-    if (is.null(colour))
-        colour <- c("darkblue", "dodgerblue4")
-    
-    ## require grid and gridExtra
-    require(grid)
-    require(gridExtra)
-    ## get observed summary stats
-    ss.obs <- x$summ.stats.obs
-    ss.sim <- x$summ.stats.sim
+    .e <- environment()
 
-    ## check if ss.obs is a single value or a distribution
-    if (nrow(ss.obs) == 1){ ## historgram plot
-        stats <- names(ss.obs)
+    ## if no colors supply, set defaults
+    if (is.null(col))
+        col <- def.colours.arbutus()
 
-        p <- lapply(stats, function(x) phy.ss.singleplot(ss.obs[x], ss.sim, colour=colour))
+    if (length(col) > 2)
+        warning("Only first two colours used")
 
-        do.call(grid.arrange, p)
-    } else {
-        stats <- names(ss.obs)
+    ## bind stats together
+    type <- rep("observed", (ncol(x$summ.stats.obs) * nrow(x$summ.stats.obs)))
+    obs <- arbutus.melt(x$summ.stats.obs)
+    obs <- cbind.data.frame(obs,type)
+    type <- rep("simulated", (ncol(x$summ.stats.sim) * nrow(x$summ.stats.sim)))
+    sim <- arbutus.melt(x$summ.stats.sim)
+    sim <- cbind.data.frame(sim, type)
+    stat <- rbind(obs, sim)
 
-        p <- lapply(stats, function(x) phy.ss.distplot(ss.obs, ss.sim, x, colour=colour))
-
-        ## dummy plot to get legend with correct colors and style
-        legend <- phy.ss.legend(phy.ss.dummyplot(colour))
-        lwidth <- sum(legend$width)
-
-        res <- do.call(arrangeGrob, p)
-        grid.newpage()
-        grid.arrange(res, legend, widths=unit.c(unit(1, "npc") - lwidth, lwidth), ncol=2)
+    ## identify whether the observed are from dist or not
+    if (nrow(x$summ.stats.obs) == 1){ ## histogram
+        
+        p <- ggplot(stat, aes(x=value), environment = .e)
+        p <- p + geom_histogram(data=subset(stat, type=="simulated"),
+                                fill=col[1])
+        p <- p + geom_vline(data=subset(stat, type=="observed"),
+                            aes(xintercept=value), color=col[2], size=1)
+        p <- p + facet_wrap(~variable, scales="free")
+        p <- p + theme_bw()
+        p <- p + theme(strip.background=element_rect(fill="white"),
+                       plot.background=element_blank(),
+                       panel.grid.major=element_blank(),
+                       panel.grid.minor=element_blank(),
+                       axis.ticks.y=element_blank(),
+                       axis.text.y=element_blank())
+        p <- p + xlab("Value of test statistic")
+        p <- p + ylab("Density")
+        
+    } else { ## distribution
+        p <- ggplot(stat, aes(x=value, fill=type), environment = .e)
+        p <- p + geom_histogram(alpha=0.6, position="identity",
+                                binwidth=diff(range(stat$value))/30)
+        p <- p + scale_fill_manual(values=col)
+        p <- p + facet_wrap(~variable, scales="free")
+        p <- p + theme_bw()
+        p <- p + theme(strip.background=element_rect(fill="white"),
+                       plot.background=element_blank(),
+                       panel.grid.major=element_blank(),
+                       panel.grid.minor=element_blank(),
+                       axis.ticks.y=element_blank(),
+                       axis.text.y=element_blank())
+        p <- p + xlab("Value of test statistic")
+        p <- p + ylab("Density")
     }
+
+    suppressMessages(print(p))
 }
 
 
-                        
-## for a single summary statistic                   
-phy.ss.singleplot <- function(ss, ss.sim, colour){
+## Set default colors for arbutus plotting
+def.colours.arbutus <- function()
+    c("#f5634a","#ed303c")
 
-    stat <- names(ss)
-    range <- range(ss.sim[,stat])
-    bins <- (range[2] - range[1]) * 40/length(ss.sim[,stat])
+## Little function for melting phy.ss objects for plotting
+arbutus.melt <- function(df){
+    ## get the values
+    val <- lapply(seq_len(ncol(df)), function(x) return(df[,x]))
+    value <- do.call(c, val)
 
-    .e <- environment()
-    p <- ggplot(ss.sim, aes(x=ss.sim[,stat]), environment =.e)
-    p <- p + geom_histogram(binwidth=bins, alpha=0.6, fill=colour[2], aes(y=..density..))
-    p <- p + xlab(stat)
-    p <- p + theme_bw()
-    p <- p + geom_vline(x=as.numeric(ss), colour=colour[1], size=1, alpha=0.6)
+    ## get the variable
+    v <- lapply(seq_len(ncol(df)), function(x) {rep(colnames(df)[x], nrow(df))})
+    variable <- do.call(c, v)
 
-    return(p)
+    ## bind them together
+    out <- cbind.data.frame(variable, value)
+
+    ## factor the variable
+    out$variable <- factor(out$variable, levels=colnames(df))
+
+    ## return data frame
+    out
 }
 
-
-
-
-## for a distribution of summary statistics
-phy.ss.distplot <- function(ss.obs, ss.sim, stat, colour){
-
-
-    ## bind the two distributions together
-    res <- c(ss.obs[,stat], ss.sim[,stat])
-    idx <- c(rep("Empirical", length(ss.obs[,stat])), rep("Simulated", length(ss.sim[,stat])))
-    dat <- cbind.data.frame(res, idx)
-    colnames(dat) <- c("summ.stats", "type")
-
-    range <- range(dat[,"summ.stats"])
-    range <- range[2] - range[1]
-    bins <- range * 40/length(dat[,"summ.stats"])
-
-    .e <- environment()
-    p <- ggplot(dat, aes(x=summ.stats, fill=type), environment = .e)
-    p <- p + geom_histogram(binwidth=bins, position="identity", alpha=0.6, aes(y=..density..))
-    p <- p + scale_fill_manual(values=colour)
-    p <- p + xlab(stat)
-    p <- p + theme_bw()
-    p <- p + theme(legend.position="none")
-
-    return(p)
-}
-
-
-
-
-## internal fxn used to get the legend
-## modified from code written by Hadley W.
-
-phy.ss.legend <- function(plot){
-    tmp <- ggplot_gtable(ggplot_build(plot))
-    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
-    legend <- tmp$grobs[[leg]]
-    return(legend)
-}
-
-## dummy fxn to quickly get legend
-phy.ss.dummyplot <- function(colour){
-    x <- rnorm(10)
-    y <- c(rep("Empirical", 5), rep("Simulated", 5))
-    dat <- cbind.data.frame(x,y)
-    colnames(dat) <- c("summ.stats", "type")
-
-    .e <- environment()
-    p <- ggplot(dat, aes(x=summ.stats, fill=type), environment = .e)
-    p <- p + geom_histogram(binwidth=0.1, alpha =0.6, position="identity", aes(y=..density..))
-    p <- p + scale_fill_manual(values=colour)
-    p <- p + xlab("dummy")
-    p <- p + theme_bw()
-    p <- p + theme(legend.title=element_blank())
-
-    return(p)
-}
     
 
 
