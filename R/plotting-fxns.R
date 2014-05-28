@@ -358,8 +358,7 @@ plot.phy.ss <- function(x, col=NULL, ...){
         
     } else { ## distribution
         p <- ggplot(stat, aes(x=value, fill=type), environment = .e)
-        p <- p + geom_histogram(alpha=0.6, position="identity",
-                                binwidth=diff(range(stat$value))/30)
+        p <- p + geom_histogram(alpha=0.6, position="identity")
         p <- p + scale_fill_manual(values=col)
         p <- p + facet_wrap(~variable, scales="free")
         p <- p + theme_bw()
