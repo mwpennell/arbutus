@@ -1,4 +1,5 @@
 Makefile
 .travis.yml
+extra
 inst/web
 inst/update-gh-pages.sh
