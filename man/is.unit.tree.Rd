@@ -22,11 +22,11 @@ data <- finch$data[,"wingL"]
 
 
 ## using just the given phylogeny
-unit.tree.phy <- as.unit.tree(phy, data=data)
+unit.tree.phy <- make_unit_tree(phy, data=data)
 
 is.unit.tree(unit.tree.phy)
 }
 \seealso{
-\code{\link{as.unit.tree}}
+\code{\link{make_unit_tree}}
 }
 

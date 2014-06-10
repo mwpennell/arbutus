@@ -2,15 +2,15 @@ source("helper-arbutus.R")
 
 context("phylolm (internals)")
 
-model.type <- arbutus:::model.type
-model.data <- arbutus:::model.data
-model.pars <- arbutus:::model.pars
-model.info <- arbutus:::model.info
+model_type <- arbutus:::model_type
+model_data <- arbutus:::model_data
+model_pars <- arbutus:::model_pars
+model_info <- arbutus:::model_info
 
-model.type.phylolm <- arbutus:::model.type.phylolm
-model.data.phylolm <- arbutus:::model.data.phylolm
-model.pars.phylolm <- arbutus:::model.pars.phylolm
-model.info.phylolm <- arbutus:::model.info.phylolm
+model_type.phylolm <- arbutus:::model_type.phylolm
+model_data.phylolm <- arbutus:::model_data.phylolm
+model_pars.phylolm <- arbutus:::model_pars.phylolm
+model_info.phylolm <- arbutus:::model_info.phylolm
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa=100)
@@ -30,13 +30,13 @@ fit.lm.eb <- phylolm(y~x, data=data, phy=phy, model="EB")
 ## fit.lm.tr <- phylolm(y~x, data=data, phy=phy, model="trend")
 
 test_that("Model types are correct", {
-    expect_that(model.type(fit.lm.bm), is_identical_to("BM"))
-    expect_that(model.type(fit.lm.or), is_identical_to("OU"))
-    expect_that(model.type(fit.lm.of), is_identical_to("OU"))
-    expect_that(model.type(fit.lm.la), is_identical_to("lambda"))
-    expect_that(model.type(fit.lm.ka), is_identical_to("kappa"))
-    expect_that(model.type(fit.lm.de), is_identical_to("delta"))
-    expect_that(model.type(fit.lm.eb), is_identical_to("EB"))
+    expect_that(model_type(fit.lm.bm), is_identical_to("BM"))
+    expect_that(model_type(fit.lm.or), is_identical_to("OU"))
+    expect_that(model_type(fit.lm.of), is_identical_to("OU"))
+    expect_that(model_type(fit.lm.la), is_identical_to("lambda"))
+    expect_that(model_type(fit.lm.ka), is_identical_to("kappa"))
+    expect_that(model_type(fit.lm.de), is_identical_to("delta"))
+    expect_that(model_type(fit.lm.eb), is_identical_to("EB"))
 })
 
 ## note: correct data here are the residuals
@@ -59,21 +59,21 @@ test_that("Models return their source data", {
     ## processing phylolm objects requires that phylogeny be provided
     ## not included in fitted object
     ## check to make sure this throws error
-    expect_that(model.data(fit.lm.bm), throws_error())
-    expect_that(model.data(fit.lm.or), throws_error())
-    expect_that(model.data(fit.lm.of), throws_error())
-    expect_that(model.data(fit.lm.la), throws_error())
-    expect_that(model.data(fit.lm.ka), throws_error())
-    expect_that(model.data(fit.lm.de), throws_error())
-    expect_that(model.data(fit.lm.eb), throws_error())
+    expect_that(model_data(fit.lm.bm), throws_error())
+    expect_that(model_data(fit.lm.or), throws_error())
+    expect_that(model_data(fit.lm.of), throws_error())
+    expect_that(model_data(fit.lm.la), throws_error())
+    expect_that(model_data(fit.lm.ka), throws_error())
+    expect_that(model_data(fit.lm.de), throws_error())
+    expect_that(model_data(fit.lm.eb), throws_error())
 
-    expect_that(model.data(fit.lm.bm, phy=phy), equals(cmp.bm))
-    expect_that(model.data(fit.lm.or, phy=phy), equals(cmp.or))
-    expect_that(model.data(fit.lm.of, phy=phy), equals(cmp.of))
-    expect_that(model.data(fit.lm.la, phy=phy), equals(cmp.la))
-    expect_that(model.data(fit.lm.ka, phy=phy), equals(cmp.ka))
-    expect_that(model.data(fit.lm.de, phy=phy), equals(cmp.de))
-    expect_that(model.data(fit.lm.eb, phy=phy), equals(cmp.eb))
+    expect_that(model_data(fit.lm.bm, phy=phy), equals(cmp.bm))
+    expect_that(model_data(fit.lm.or, phy=phy), equals(cmp.or))
+    expect_that(model_data(fit.lm.of, phy=phy), equals(cmp.of))
+    expect_that(model_data(fit.lm.la, phy=phy), equals(cmp.la))
+    expect_that(model_data(fit.lm.ka, phy=phy), equals(cmp.ka))
+    expect_that(model_data(fit.lm.de, phy=phy), equals(cmp.de))
+    expect_that(model_data(fit.lm.eb, phy=phy), equals(cmp.eb))
 })
 
 
@@ -89,13 +89,13 @@ test_that("Parameters correctly returned", {
     s2.de <- fit.lm.de$sigma2
     s2.eb <- fit.lm.eb$sigma2
 
-    expect_that(model.pars(fit.lm.bm)$sigsq, equals(s2.bm))
-    expect_that(model.pars(fit.lm.or)$sigsq, equals(s2.or))
-    expect_that(model.pars(fit.lm.of)$sigsq, equals(s2.of))
-    expect_that(model.pars(fit.lm.la)$sigsq, equals(s2.la))
-    expect_that(model.pars(fit.lm.ka)$sigsq, equals(s2.ka))
-    expect_that(model.pars(fit.lm.de)$sigsq, equals(s2.de))
-    expect_that(model.pars(fit.lm.eb)$sigsq, equals(s2.eb))
+    expect_that(model_pars(fit.lm.bm)$sigsq, equals(s2.bm))
+    expect_that(model_pars(fit.lm.or)$sigsq, equals(s2.or))
+    expect_that(model_pars(fit.lm.of)$sigsq, equals(s2.of))
+    expect_that(model_pars(fit.lm.la)$sigsq, equals(s2.la))
+    expect_that(model_pars(fit.lm.ka)$sigsq, equals(s2.ka))
+    expect_that(model_pars(fit.lm.de)$sigsq, equals(s2.de))
+    expect_that(model_pars(fit.lm.eb)$sigsq, equals(s2.eb))
 
     ralpha <- fit.lm.or$optpar
     falpha <- fit.lm.of$optpar
@@ -104,12 +104,12 @@ test_that("Parameters correctly returned", {
     delta  <- fit.lm.de$optpar
     a      <- fit.lm.eb$optpar
     
-    expect_that(model.pars(fit.lm.or)$alpha, equals(ralpha))
-    expect_that(model.pars(fit.lm.of)$alpha, equals(falpha))
-    expect_that(model.pars(fit.lm.la)$lambda, equals(lambda))
-    expect_that(model.pars(fit.lm.ka)$kappa, equals(kappa))
-    expect_that(model.pars(fit.lm.de)$delta, equals(delta))
-    expect_that(model.pars(fit.lm.eb)$a, equals(a))
+    expect_that(model_pars(fit.lm.or)$alpha, equals(ralpha))
+    expect_that(model_pars(fit.lm.of)$alpha, equals(falpha))
+    expect_that(model_pars(fit.lm.la)$lambda, equals(lambda))
+    expect_that(model_pars(fit.lm.ka)$kappa, equals(kappa))
+    expect_that(model_pars(fit.lm.de)$delta, equals(delta))
+    expect_that(model_pars(fit.lm.eb)$a, equals(a))
 
 })
 
@@ -122,23 +122,23 @@ test_that("Coefficient names are as expected", {
     pars.de <- c("sigsq", "delta", "z0", "SE")
     pars.eb <- c("sigsq", "a",  "z0", "SE")
 
-    expect_that(names(model.pars(fit.lm.bm)), is_identical_to(pars.bm))
-    expect_that(names(model.pars(fit.lm.or)), is_identical_to(pars.ou))
-    expect_that(names(model.pars(fit.lm.of)), is_identical_to(pars.ou))
-    expect_that(names(model.pars(fit.lm.la)), is_identical_to(pars.la))
-    expect_that(names(model.pars(fit.lm.ka)), is_identical_to(pars.ka))
-    expect_that(names(model.pars(fit.lm.de)), is_identical_to(pars.de))
-    expect_that(names(model.pars(fit.lm.eb)), is_identical_to(pars.eb))
+    expect_that(names(model_pars(fit.lm.bm)), is_identical_to(pars.bm))
+    expect_that(names(model_pars(fit.lm.or)), is_identical_to(pars.ou))
+    expect_that(names(model_pars(fit.lm.of)), is_identical_to(pars.ou))
+    expect_that(names(model_pars(fit.lm.la)), is_identical_to(pars.la))
+    expect_that(names(model_pars(fit.lm.ka)), is_identical_to(pars.ka))
+    expect_that(names(model_pars(fit.lm.de)), is_identical_to(pars.de))
+    expect_that(names(model_pars(fit.lm.eb)), is_identical_to(pars.eb))
 })
 
 test_that("Overall object looks legit",{
-    obj.bm <- model.info(fit.lm.bm, phy=phy)
-    obj.or <- model.info(fit.lm.or, phy=phy)
-    obj.of <- model.info(fit.lm.of, phy=phy)
-    obj.la <- model.info(fit.lm.la, phy=phy)
-    obj.ka <- model.info(fit.lm.ka, phy=phy)
-    obj.de <- model.info(fit.lm.de, phy=phy)
-    obj.eb <- model.info(fit.lm.eb, phy=phy)
+    obj.bm <- model_info(fit.lm.bm, phy=phy)
+    obj.or <- model_info(fit.lm.or, phy=phy)
+    obj.of <- model_info(fit.lm.of, phy=phy)
+    obj.la <- model_info(fit.lm.la, phy=phy)
+    obj.ka <- model_info(fit.lm.ka, phy=phy)
+    obj.de <- model_info(fit.lm.de, phy=phy)
+    obj.eb <- model_info(fit.lm.eb, phy=phy)
 
     obj.names <- c("data", "pars", "type")
     expect_that(names(obj.bm), is_identical_to(obj.names))

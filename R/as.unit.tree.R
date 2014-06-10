@@ -23,7 +23,7 @@
 #'   using \code{find.mle} in the \code{diversitree} package. 
 #' 
 #'  \item a \code{mcmcsamples} object returned from fitting a model of continuous character evolution
-#'   using MCMC methods in the \code{diversitree} package. \code{as.unit.tree} will apply the same
+#'   using MCMC methods in the \code{diversitree} package. \code{make_unit_tree} will apply the same
 #'   trait dataset to a set of unit trees based on sampled parameters. By default this will create a
 #'   unit tree for every sample in the mcmc chain. To modify this, additional arguments can be use.
 #'   \code{burnin} specifies how many samples to remove from the beginning of the chain.
@@ -64,9 +64,9 @@
 #' a "variance" for each contrast.}
 #' }
 #'
-#' @export as.unit.tree
+#' @export make_unit_tree
 #'
-#' @seealso \code{\link[ape]{pic}}, \code{\link{phy.model.check}}
+#' @seealso \code{\link[ape]{pic}}, \code{\link{arbutus}}
 #'
 #' @examples
 #' ## finch data
@@ -76,7 +76,7 @@
 #'
 #' ## using just the given phylogeny
 #' ## without rescaling
-#' unit.tree.phy <- as.unit.tree(phy, data=dat)
+#' unit.tree.phy <- make_unit_tree(phy, data=dat)
 #'
 #' \dontrun{
 #' require(geiger)
@@ -86,8 +86,8 @@
 #'                                  control=list(niter=10))
 #'
 #' ## this creates a 'gfit' object which can be used
-#' ## in 'as.unit.tree()'
-#' unit.tree.geiger <- as.unit.tree(fit.bm)
+#' ## in 'make_unit_tree()'
+#' unit.tree.geiger <- make_unit_tree(fit.bm)
 #' unit.tree.geiger
 #'
 #' require(diversitree)
@@ -98,8 +98,8 @@
 #' fit.bm.dt <- find.mle(bmlik, 0.1)
 #'
 #' ## this creates a 'fit.mle' object which can be used
-#' ## in 'as.unit.tree()'
-#' unit.tree.dt <- as.unit.tree(fit.bm.dt)
+#' ## in 'make_unit_tree()'
+#' unit.tree.dt <- make_unit_tree(fit.bm.dt)
 #'
 #' ## fit Brownian motion model using MCMC
 #' mcmc.bm.dt <- mcmc(bmlik, x.init=1, nsteps=1000, w=1)
@@ -107,7 +107,7 @@
 #' ## construct a unit tree object from mcmcsamples
 #' ## removing 100 samples as burnin
 #' ## and sampling 10 parameter sets
-#' unit.tree.mcmc <- as.unit.tree(mcmc.bm.dt,
+#' unit.tree.mcmc <- make_unit_tree(mcmc.bm.dt,
 #'                        burnin=100, samples=10)
 #' 
 #'
@@ -122,38 +122,38 @@
 #' fit.gls <- gls(t1~t2, data=dd, correlation=corPagel(phy=phy, value=1))
 #'
 #' ## this creates a 'gls' object which can be used
-#' ## in 'as.unit.tree()'
-#' unit.tree.gls <- as.unit.tree(fit.gls)
+#' ## in 'make_unit_tree()'
+#' unit.tree.gls <- make_unit_tree(fit.gls)
 #'
 #' }
 #' 
-as.unit.tree <- function(x, ...)
-    UseMethod("as.unit.tree")
+make_unit_tree <- function(x, ...)
+    UseMethod("make_unit_tree")
 
-#' @method as.unit.tree default
+#' @method make_unit_tree default
 #' @export
-as.unit.tree.default <- function(x, ...) {
+make_unit_tree.default <- function(x, ...) {
   ## use S3 generic modelinfo to pull out the tree, data, parameter
   ## estimates and model type.  This step will fail if an appropriate
   ## method cannot be found, or if some optional arguments are not
   ## given.
-  obj <- model.info(x, ...)
+  obj <- model_info(x, ...)
 
   ## rescale the phylogeny according to the model
-  phy <- make.model.phylo(obj)
+  phy <- make_model_phylo(obj)
 
   ## build unit.tree from phylo object
   ## here, data is the residuals
-  as.unit.tree(phy, obj$data$data)
+  make_unit_tree(phy, obj$data$data)
 }
 
 
 
 
 
-#' @method as.unit.tree phylo
+#' @method make_unit_tree phylo
 #' @export
-as.unit.tree.phylo <- function(x, data, ...) {
+make_unit_tree.phylo <- function(x, data, ...) {
   ## check tree and data to make sure they match
   check.tree.data(x, data)
 
@@ -169,13 +169,13 @@ as.unit.tree.phylo <- function(x, data, ...) {
   unit.tree
 }
 
-#' @method as.unit.tree multiPhylo
+#' @method make_unit_tree multiPhylo
 #' @export
 ## NOTE[RGF]: Not sure what the appropriate class here is; it might be
 ## multi.unit.tree, but let's see how these are actually used.  Using
 ## 'multiPhylo' is harmless for now, I think.
-as.unit.tree.multiPhylo <- function(x, data, ...) {
-  res <- lapply(x, as.unit.tree, data, ...)
+make_unit_tree.multiPhylo <- function(x, data, ...) {
+  res <- lapply(x, make_unit_tree, data, ...)
   class(res) <- "multiPhylo"
   res
 }
@@ -184,31 +184,31 @@ as.unit.tree.multiPhylo <- function(x, data, ...) {
 
 
 
-#' @method as.unit.tree mcmcsamples
+#' @method make_unit_tree mcmcsamples
 #' @export
 # NOTE[RGF]: The arguments were n.samples and burnin in the original
 # version.
-as.unit.tree.mcmcsamples <- function(x, burnin=NA, thin=NA, sample=NA,
+make_unit_tree.mcmcsamples <- function(x, burnin=NA, thin=NA, sample=NA,
                                      ...) {
-    obj <- model.info(x, burnin, thin, sample, ...)
+    obj <- model_info(x, burnin, thin, sample, ...)
 
-    phy <- make.model.phylo(obj)
+    phy <- make_model_phylo(obj)
 
     ## create unit trees from multiPhylo object
-    as.unit.tree(phy, obj$data$data)
+    make_unit_tree(phy, obj$data$data)
 }
 
-#' @method as.unit.tree mcmcsamples.pgls
+#' @method make_unit_tree mcmcsamples.pgls
 #' @export
-as.unit.tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
+make_unit_tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
                                           ...) {
-  obj <- model.info(x, burnin, thin, sample, ...)
-  phy <- make.model.phylo(obj)
+  obj <- model_info(x, burnin, thin, sample, ...)
+  phy <- make_model_phylo(obj)
 
   data <- obj$data$data
 
   res <- lapply(seq_along(phy), function(i)
-                as.unit.tree(phy[[i]], data[,i]))
+                make_unit_tree(phy[[i]], data[,i]))
   class(res) <- "multiPhylo"
   res
 }
@@ -226,7 +226,7 @@ as.unit.tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
 #'
 #' @return logical
 #'
-#' @seealso \code{\link{as.unit.tree}}
+#' @seealso \code{\link{make_unit_tree}}
 #'
 #' @export is.unit.tree
 #'
@@ -238,7 +238,7 @@ as.unit.tree.mcmcsamples.pgls <- function(x, burnin=NA, thin=NA, sample=NA,
 #'
 #'
 #' ## using just the given phylogeny
-#' unit.tree.phy <- as.unit.tree(phy, data=data)
+#' unit.tree.phy <- make_unit_tree(phy, data=data)
 #'
 #' is.unit.tree(unit.tree.phy)
 #' 

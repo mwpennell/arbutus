@@ -4,27 +4,27 @@ library(testthat)
 
 context("GLS (diversitree) (internals)")
 
-model.type <- arbutus:::model.type
-model.data <- arbutus:::model.data
-model.pars <- arbutus:::model.pars
-model.info <- arbutus:::model.info
+model_type <- arbutus:::model_type
+model_data <- arbutus:::model_data
+model_pars <- arbutus:::model_pars
+model_info <- arbutus:::model_info
 
-model.type.fit.mle <- arbutus:::model.type.fit.mle
-model.data.fit.mle <- arbutus:::model.data.fit.mle
-model.pars.fit.mle <- arbutus:::model.pars.fit.mle
-model.info.fit.mle <- arbutus:::model.info.fit.mle
+model_type.fit.mle <- arbutus:::model_type.fit.mle
+model_data.fit.mle <- arbutus:::model_data.fit.mle
+model_pars.fit.mle <- arbutus:::model_pars.fit.mle
+model_info.fit.mle <- arbutus:::model_info.fit.mle
 
-model.type.fit.mle.pgls <- arbutus:::model.type.fit.mle.pgls
-model.data.fit.mle.pgls <- arbutus:::model.data.fit.mle.pgls
-model.pars.fit.mle.pgls <- arbutus:::model.pars.fit.mle.pgls
+model_type.fit.mle.pgls <- arbutus:::model_type.fit.mle.pgls
+model_data.fit.mle.pgls <- arbutus:::model_data.fit.mle.pgls
+model_pars.fit.mle.pgls <- arbutus:::model_pars.fit.mle.pgls
 
-model.type.mcmcsamples <- arbutus:::model.type.mcmcsamples
-model.data.mcmcsamples <- arbutus:::model.data.mcmcsamples
-model.pars.mcmcsamples <- arbutus:::model.pars.mcmcsamples
+model_type.mcmcsamples <- arbutus:::model_type.mcmcsamples
+model_data.mcmcsamples <- arbutus:::model_data.mcmcsamples
+model_pars.mcmcsamples <- arbutus:::model_pars.mcmcsamples
 
-model.type.mcmcsamples.pgls <- arbutus:::model.type.mcmcsamples.pgls
-model.data.mcmcsamples.pgls <- arbutus:::model.data.mcmcsamples.pgls
-model.pars.mcmcsamples.pgls <- arbutus:::model.pars.mcmcsamples.pgls
+model_type.mcmcsamples.pgls <- arbutus:::model_type.mcmcsamples.pgls
+model_data.mcmcsamples.pgls <- arbutus:::model_data.mcmcsamples.pgls
+model_pars.mcmcsamples.pgls <- arbutus:::model_pars.mcmcsamples.pgls
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa=100)
@@ -55,22 +55,22 @@ test_that("The fits are sane", {
 })
 
 test_that("Model types are correct", {
-  expect_that(model.type(fit.pgls.bm.vcv), is_identical_to("BM"))
-  expect_that(model.type(fit.pgls.bm.con), is_identical_to("BM"))
-  expect_that(model.type(samples),         is_identical_to("BM"))
+  expect_that(model_type(fit.pgls.bm.vcv), is_identical_to("BM"))
+  expect_that(model_type(fit.pgls.bm.con), is_identical_to("BM"))
+  expect_that(model_type(samples),         is_identical_to("BM"))
 })
 
 test_that("Model parameters are correct", {
   cmp <- as.list(c(sigsq=coef(fit.pgls.bm.vcv)[["s2"]], SE=0, z0=NA))
-  expect_that(model.pars(fit.pgls.bm.vcv), equals(cmp))
-  expect_that(model.pars(fit.pgls.bm.con), equals(cmp))
+  expect_that(model_pars(fit.pgls.bm.vcv), equals(cmp))
+  expect_that(model_pars(fit.pgls.bm.con), equals(cmp))
 
   cmp <- data.frame(sigsq=coef(samples)[,"s2"], SE=0, z0=NA)
-  expect_that(model.pars(samples), equals(cmp))
+  expect_that(model_pars(samples), equals(cmp))
 
   nb <- 30
   cmp <- data.frame(sigsq=coef(samples, burnin=nb)[,"s2"], SE=0, z0=NA)
-  expect_that(model.pars(samples, burnin=nb), equals(cmp))
+  expect_that(model_pars(samples, burnin=nb), equals(cmp))
 
   sample <- 10
   thin <- 2
@@ -78,7 +78,7 @@ test_that("Model parameters are correct", {
   cmp <- data.frame(sigsq=coef(samples, burnin=nb,
                       thin=thin, sample=sample)[,"s2"], SE=0, z0=NA)
   set.seed(1)
-  expect_that(model.pars(samples, burnin=nb, thin=thin, sample=sample),
+  expect_that(model_pars(samples, burnin=nb, thin=thin, sample=sample),
               equals(cmp))
 })
 
@@ -89,18 +89,18 @@ test_that("Models return their source data", {
     x
   }
   cmp.bm <- list(phy=phy, data=drop.attributes(resid(fit.gls.bm.ml)))
-  expect_that(model.data(fit.pgls.bm.vcv), equals(cmp.bm, tolerance=1e-5))
-  expect_that(model.data(fit.pgls.bm.con), equals(cmp.bm, tolerance=1e-5))
+  expect_that(model_data(fit.pgls.bm.vcv), equals(cmp.bm, tolerance=1e-5))
+  expect_that(model_data(fit.pgls.bm.con), equals(cmp.bm, tolerance=1e-5))
 
   ## Update the fits to use the same values as gls() and we'll get
   ## better agreement.
   fit.pgls.bm.vcv$par <- p.ml
   fit.pgls.bm.con$par <- p.ml
-  expect_that(model.data(fit.pgls.bm.vcv), equals(cmp.bm, tolerance=1e-13))
-  expect_that(model.data(fit.pgls.bm.con), equals(cmp.bm, tolerance=1e-13))
+  expect_that(model_data(fit.pgls.bm.vcv), equals(cmp.bm, tolerance=1e-13))
+  expect_that(model_data(fit.pgls.bm.con), equals(cmp.bm, tolerance=1e-13))
 
   cmp <- list(phy=phy, data=resid(samples))
-  expect_that(model.data(samples), equals(cmp, tolerance=1e-13))
+  expect_that(model_data(samples), equals(cmp, tolerance=1e-13))
 
   ## Pass along parameters:
   burnin <- 10
@@ -110,13 +110,13 @@ test_that("Models return their source data", {
   cmp <- list(phy=phy,
               data=resid(samples, burnin=burnin, thin=thin, sample=sample))
   set.seed(1)
-  expect_that(model.data(samples, burnin=burnin, thin=thin, sample=sample),
+  expect_that(model_data(samples, burnin=burnin, thin=thin, sample=sample),
               equals(cmp, tolerance=1e-13))  
 })
 
 test_that("Overall processed object looks legit", {
-  obj.bm.vcv <- model.info(fit.pgls.bm.vcv)
-  obj.bm.con <- model.info(fit.pgls.bm.con)
+  obj.bm.vcv <- model_info(fit.pgls.bm.vcv)
+  obj.bm.con <- model_info(fit.pgls.bm.con)
 
   obj.names <- c("data", "pars", "type")
   expect_that(names(obj.bm.vcv), is_identical_to(obj.names))

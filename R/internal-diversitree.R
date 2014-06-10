@@ -3,37 +3,37 @@
 
 ## TODO: check issue #9.
 
-model.type.fit.mle <- function(fit, ...) {
+model_type.fit.mle <- function(fit, ...) {
   toupper(sub("^fit\\.mle\\.", "", class(fit)[[1]]))
 }
 
-model.data.fit.mle <- function(fit, ...) {
+model_data.fit.mle <- function(fit, ...) {
   require(diversitree)
   cache <- diversitree:::get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
-model.pars.fit.mle <- function(fit, ...) {
+model_pars.fit.mle <- function(fit, ...) {
   require(diversitree)
-  model <- model.type(fit)
+  model <- model_type(fit)
   pars <- as.list(coef(fit, full=TRUE))
   pars <- diversitree.to.arbutus.recast(pars, model)
   pars <- diversitree.to.arbutus.se(pars, get.likelihood(fit))
   pars
 }
 
-#' @method model.info fit.mle
+#' @method model_info fit.mle
 #' @export
-model.info.fit.mle <- function(fit, ...) {
-  m <- list(data=model.data(fit),
-            pars=model.pars(fit),
-            type=model.type(fit))
+model_info.fit.mle <- function(fit, ...) {
+  m <- list(data=model_data(fit),
+            pars=model_pars(fit),
+            type=model_type(fit))
   class(m) <- "fitC"
   m
 }
 
 ## Similar, but for mcmcsamples:
-model.type.mcmcsamples <- function(fit, ...) {
+model_type.mcmcsamples <- function(fit, ...) {
   require(diversitree)
   lik <- get.likelihood(fit)
   if (diversitree:::is.constrained(lik))
@@ -42,15 +42,15 @@ model.type.mcmcsamples <- function(fit, ...) {
     toupper(class(lik)[[1]])
 }
 
-model.data.mcmcsamples <- function(fit, ...) {
+model_data.mcmcsamples <- function(fit, ...) {
   require(diversitree)
   cache <- diversitree:::get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
-model.pars.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
+model_pars.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
   require(diversitree)
-  model <- model.type(fit)
+  model <- model_type(fit)
   lik <- get.likelihood(fit)
   pars <- as.data.frame(coef(fit, burnin=burnin, thin=thin,
                              sample=sample, full=TRUE, lik=lik))
@@ -59,12 +59,12 @@ model.pars.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
   pars
 }
 
-#' @method model.info mcmcsamples
+#' @method model_info mcmcsamples
 #' @export
-model.info.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
-  m <- list(data=model.data(fit),
-            pars=model.pars(fit, burnin, thin, sample),
-            type=model.type(fit))
+model_info.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
+  m <- list(data=model_data(fit),
+            pars=model_pars(fit, burnin, thin, sample),
+            type=model_type(fit))
   class(m) <- c("multiFitC", "fitC")
   m
 }

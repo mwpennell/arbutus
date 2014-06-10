@@ -11,20 +11,20 @@
 ## interface into the different packages if people will let us.
 
 
-model.type.gfit <- function(fit, ...) {
+model_type.gfit <- function(fit, ...) {
   ret <- attr(fit$lik, "model")
   if (is.null(ret) || !is.character(ret) || length(ret) != 1)
     stop("Failed to extract model type from geiger fit")
   ret
 }
 
-model.data.gfit <- function(fit, ...) {
+model_data.gfit <- function(fit, ...) {
   e <- environment(fit$lik)
   list(phy=get("phy", e), data=get("dat", e))
 }
 
-model.pars.gfit <- function(fit, ...) {
-  model <- model.type(fit)
+model_pars.gfit <- function(fit, ...) {
+  model <- model_type(fit)
   pars <- as.list(coef(fit))
   if (!("SE" %in% names(pars)))
     pars$SE <- unique(attr(fit$lik, "cache")$SE)
@@ -38,12 +38,12 @@ model.pars.gfit <- function(fit, ...) {
   pars[c(setdiff(names(pars), "SE"), "SE")]
 }
 
-#' @method model.info gfit
+#' @method model_info gfit
 #' @export
-model.info.gfit <- function(fit, ...) {
-  m <- list(data=model.data(fit),
-            pars=model.pars(fit),
-            type=model.type(fit))
+model_info.gfit <- function(fit, ...) {
+  m <- list(data=model_data(fit),
+            pars=model_pars(fit),
+            type=model_type(fit))
   class(m) <- "fitC"
   m
 }

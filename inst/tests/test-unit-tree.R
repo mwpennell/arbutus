@@ -11,14 +11,14 @@ pic.var <- function(...)
 ## is a bit surprising, because this does not really make a unit tree;
 ## that is done by the rescaling functions.
 ##
-## TODO: Think about whether `as.unit.tree.phylo` is correctly named.
+## TODO: Think about whether `make_unit_tree.phylo` is correctly named.
 data(geospiza)
 dat <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
 phy <- dat$phy
 states <- dat$dat[phy$tip.label,"wingL"]
 
 test_that("Unit tree construction works", {
-  phy.unit <- as.unit.tree(phy, states)
+  phy.unit <- make_unit_tree(phy, states)
 
   expect_that(phy.unit, is_a("unit.tree"))
   expect_that(names(phy.unit),
@@ -38,12 +38,12 @@ test_that("Unit tree construction works", {
 })
 
 ## Simple tests; we require sanitised tree and data coming in;
-## everything within as.unit.tree.phylo can rely on that.
+## everything within make_unit_tree.phylo can rely on that.
 test_that("Invalid inputs fail appropriately", {
-  expect_that(as.unit.tree(phy, dat$dat[,"wingL"]), throws_error())
-  expect_that(as.unit.tree(NULL, states), throws_error())
-  expect_that(as.unit.tree(phy, NULL), throws_error())
-  expect_that(as.unit.tree(phy, cbind(states)), throws_error())
+  expect_that(make_unit_tree(phy, dat$dat[,"wingL"]), throws_error())
+  expect_that(make_unit_tree(NULL, states), throws_error())
+  expect_that(make_unit_tree(phy, NULL), throws_error())
+  expect_that(make_unit_tree(phy, cbind(states)), throws_error())
 })
 
 ## Test all the different models that might be used with a unit tree.
@@ -56,7 +56,7 @@ test_that("Invalid inputs fail appropriately", {
 test_that("Unit tree construction from BM/fitContinuous works", {
   fit.bm <- fitContinuousQuiet(phy=phy, dat=states, model="BM",
                                control=list(niter=5))
-  phy.unit <- as.unit.tree(fit.bm)
+  phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
 
   ## Manual rescaling using Geiger function
@@ -70,7 +70,7 @@ test_that("Unit tree construction from BM/fitContinuous with SE works", {
   se <- 0.01
   fit.bm <- fitContinuousQuiet(phy=phy, dat=states, model="BM", SE=se,
                                control=list(niter=5))
-  phy.unit <- as.unit.tree(fit.bm)
+  phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
 
   ## Manual rescaling using Geiger function
@@ -83,7 +83,7 @@ test_that("Unit tree construction from BM/fitContinuous with SE works", {
 test_that("Unit tree construction from BM/diversitree/ML works", {
   lik.bm <- make.bm(phy, states)
   fit.bm <- find.mle(lik.bm, .1)
-  phy.unit <- as.unit.tree(fit.bm)
+  phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
   
   ## Manual rescaling using Geiger function
@@ -97,7 +97,7 @@ test_that("Unit tree construction from BM/diversitree/ML with SE works", {
   se <- 0.01
   lik.bm <- make.bm(phy, states, states.sd=se)
   fit.bm <- find.mle(lik.bm, .1)
-  phy.unit <- as.unit.tree(fit.bm)
+  phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
   
   ## Manual rescaling using Geiger function
@@ -113,7 +113,7 @@ test_that("Unit tree construction from BM/diversitree/MCMC works", {
   set.seed(1)
   samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
 
-  phy.unit <- as.unit.tree(samples.bm)
+  phy.unit <- make_unit_tree(samples.bm)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
   expect_that(length(phy.unit), equals(nrow(samples.bm)))
@@ -122,15 +122,15 @@ test_that("Unit tree construction from BM/diversitree/MCMC works", {
   idx <- 5
   fit.bm$par <- coef(samples.bm)[idx,]
   fit.bm$lnLik <- samples.bm$p[idx]
-  cmp <- as.unit.tree(fit.bm)
+  cmp <- make_unit_tree(fit.bm)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
 
   ## Check burn-in and samples work
   nb <- 10
   sample <- 20
-  expect_that(length(as.unit.tree(samples.bm, burnin=nb)),
+  expect_that(length(make_unit_tree(samples.bm, burnin=nb)),
               equals(nrow(coef(samples.bm, burnin=nb))))
-  expect_that(length(as.unit.tree(samples.bm, sample=sample)),
+  expect_that(length(make_unit_tree(samples.bm, sample=sample)),
               equals(nrow(coef(samples.bm, sample=sample))))
 })
 
@@ -141,7 +141,7 @@ test_that("Unit tree construction from BM/diversitree/MCMC with SE works", {
   set.seed(1)
   samples.bm <- mcmc(lik.bm, coef(fit.bm), 100, w=0.1, print.every=0)
 
-  phy.unit <- as.unit.tree(samples.bm)
+  phy.unit <- make_unit_tree(samples.bm)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
   expect_that(length(phy.unit), equals(nrow(samples.bm)))
@@ -150,15 +150,15 @@ test_that("Unit tree construction from BM/diversitree/MCMC with SE works", {
   idx <- 5
   fit.bm$par <- coef(samples.bm)[idx,]
   fit.bm$lnLik <- samples.bm$p[idx]
-  cmp <- as.unit.tree(fit.bm)
+  cmp <- make_unit_tree(fit.bm)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
 
   ## Check burn-in and samples work
   nb <- 10
   sample <- 20
-  expect_that(length(as.unit.tree(samples.bm, burnin=nb)),
+  expect_that(length(make_unit_tree(samples.bm, burnin=nb)),
               equals(nrow(coef(samples.bm, burnin=nb))))
-  expect_that(length(as.unit.tree(samples.bm, sample=sample)),
+  expect_that(length(make_unit_tree(samples.bm, sample=sample)),
               equals(nrow(coef(samples.bm, sample=sample))))
 })
 
@@ -183,7 +183,7 @@ test_that("Unit tree construction from BM/diversitree/MCMC with SE works", {
 test_that("OU tree rescaling worked (fitContinuous)", {
     fit.ou <- fitContinuousQuiet(phy=phy, dat=states, model="OU",
                                  control=list(niter=10))
-    phy.unit <- as.unit.tree(fit.ou)
+    phy.unit <- make_unit_tree(fit.ou)
 
     ## Manual rescaling using Geiger function
     cmp <- rescale(phy, "OU", alpha=coef(fit.ou)[[1]], sigsq=coef(fit.ou)[[2]])
@@ -196,7 +196,7 @@ test_that("OU tree rescaling worked (diversitree)", {
     lik.ou <- make.ou(phy, states)
     fit.ou <- find.mle(lik.ou, x.init=c(0.1,0.1))
 
-    phy.unit <- as.unit.tree(fit.ou)
+    phy.unit <- make_unit_tree(fit.ou)
 
     ## Manual rescaling using Geiger function
     cmp <- rescale(phy, "OU", alpha=coef(fit.ou)[[2]], sigsq=coef(fit.ou)[[1]])
@@ -215,7 +215,7 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
                      upper=c(Inf, 100),
                      print.every=0)
 
-  phy.unit <- as.unit.tree(samples.ou)
+  phy.unit <- make_unit_tree(samples.ou)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
 
@@ -223,14 +223,14 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
   idx <- 5
   fit.ou$par <- coef(samples.ou)[idx,]
   fit.ou$lnLik <- samples.ou$p[idx]
-  cmp <- as.unit.tree(fit.ou)
+  cmp <- make_unit_tree(fit.ou)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
 })
 
 test_that("EB tree rescaling worked (fitContinuous)", {
     fit.eb <- fitContinuousQuiet(phy=phy, dat=states, model="EB",
                                  control=list(niter=10))
-    phy.unit <- as.unit.tree(fit.eb)
+    phy.unit <- make_unit_tree(fit.eb)
 
     ## Manual rescaling using Geiger functions
     cmp <- rescale(phy, "EB", a=coef(fit.eb)[[1]], sigsq=coef(fit.eb)[[2]])
@@ -242,7 +242,7 @@ test_that("EB tree rescaling worked (fitContinuous)", {
 test_that("lambda tree rescaling worked (fitContinuous)", {
     fit.lamb <- fitContinuousQuiet(phy=phy, dat=states, model="lambda",
                                    control=list(niter=10))
-    phy.unit <- as.unit.tree(fit.lamb)
+    phy.unit <- make_unit_tree(fit.lamb)
 
     ## Manual rescaling using Geiger functions
     cmp <- rescale(phy, "lambda", lambda=coef(fit.lamb)[[1]], sigsq=coef(fit.lamb)[[2]])
@@ -255,7 +255,7 @@ test_that("kappa tree rescaling worked (fitContinuous)", {
     fit.k <- fitContinuousQuiet(phy=phy, dat = states, model="kappa",
                                 control = list(niter=10))
 
-    phy.unit <- as.unit.tree(fit.k)
+    phy.unit <- make_unit_tree(fit.k)
 
     ## Manual rescaling using Geiger functions
     cmp <- rescale(phy, "kappa", kappa=coef(fit.k)[[1]], sigsq=coef(fit.k)[[2]])
@@ -268,7 +268,7 @@ test_that("delta tree rescaling worked (fitContinuous)", {
     fit.d <- fitContinuousQuiet(phy=phy, dat=states, model="delta",
                                 control = list(niter=10))
 
-    phy.unit <- as.unit.tree(fit.d)
+    phy.unit <- make_unit_tree(fit.d)
 
     ## Manual rescaling using Geiger function
     ## Using internal fxn as rescale.phy does a post-hoc adjustment
@@ -284,7 +284,7 @@ test_that("white noise rescaling worked (fitContinuous)", {
     fit.w <- fitContinuousQuiet(phy=phy, dat=states, model="white",
                                 control = list(niter=10))
 
-    phy.unit <- as.unit.tree(fit.w)
+    phy.unit <- make_unit_tree(fit.w)
 
     ## Manual rescaling using Geiger function
     cmp <- rescale(phy, "white", sigsq=coef(fit.w)[[1]])
@@ -337,7 +337,7 @@ drop.attributes <- function(x) {
 
 ## Now, start testing.
 test_that("Unit tree construction from gls works (ML)", {
-  phy.unit <- as.unit.tree(fit.gls.bm.ml)
+  phy.unit <- make_unit_tree(fit.gls.bm.ml)
   expect_that(phy.unit, is_a("unit.tree"))
 
   cmp <- rescale(phy, "BM", s2.ml)
@@ -349,7 +349,7 @@ test_that("Unit tree construction from gls works (ML)", {
 })
 
 test_that("Unit tree construction from gls works (REML)", {
-  phy.unit <- as.unit.tree(fit.gls.bm.reml)
+  phy.unit <- make_unit_tree(fit.gls.bm.reml)
   expect_that(phy.unit, is_a("unit.tree"))
 
   cmp <- rescale(phy, "BM", s2.reml)
@@ -361,7 +361,7 @@ test_that("Unit tree construction from gls works (REML)", {
 })
 
 test_that("Unit tree construction from caper pgls works", {
-  phy.unit <- as.unit.tree(fit.caper)
+  phy.unit <- make_unit_tree(fit.caper)
   expect_that(phy.unit, is_a("unit.tree"))
 
   cmp <- rescale(phy, "BM", s2.ml)
@@ -374,7 +374,7 @@ test_that("Unit tree construction from caper pgls works", {
 
 ## TODO: The ML s2 estimate is incorrect - missing the -1 term off k.
 test_that("Unit tree construction from diversitre pgls (vcv) works", {
-  phy.unit <- as.unit.tree(fit.pgls.bm.vcv)
+  phy.unit <- make_unit_tree(fit.pgls.bm.vcv)
   expect_that(phy.unit, is_a("unit.tree"))
 
   s2 <- coef(fit.pgls.bm.vcv)[["s2"]]
@@ -389,7 +389,7 @@ test_that("Unit tree construction from diversitre pgls (vcv) works", {
 
 ## TODO: The ML s2 estimate is incorrect - missing the -1 term off k.
 test_that("Unit tree construction from diversitre pgls (contrasts) works", {
-  phy.unit <- as.unit.tree(fit.pgls.bm.con)
+  phy.unit <- make_unit_tree(fit.pgls.bm.con)
   expect_that(phy.unit, is_a("unit.tree"))
 
   s2 <- coef(fit.pgls.bm.con)[["s2"]]
@@ -402,7 +402,7 @@ test_that("Unit tree construction from diversitre pgls (contrasts) works", {
 })
 
 test_that("Unit tree construction from diversitre pgls (mcmc) works", {
-  phy.unit <- as.unit.tree(samples.pgls)
+  phy.unit <- make_unit_tree(samples.pgls)
   expect_that(phy.unit, is_a("multiPhylo"))
   expect_that(phy.unit[[1]], is_a("unit.tree"))
   expect_that(length(phy.unit), equals(nrow(samples.pgls)))
@@ -419,8 +419,8 @@ test_that("Unit tree construction from diversitre pgls (mcmc) works", {
 
   nb <- 10
   sample <- 20
-  expect_that(length(as.unit.tree(samples.pgls, burnin=nb)),
+  expect_that(length(make_unit_tree(samples.pgls, burnin=nb)),
               equals(nrow(coef(samples.pgls, burnin=nb))))
-  expect_that(length(as.unit.tree(samples.pgls, sample=sample)),
+  expect_that(length(make_unit_tree(samples.pgls, sample=sample)),
               equals(nrow(coef(samples.pgls, sample=sample))))
 })

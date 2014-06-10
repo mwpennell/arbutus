@@ -1,14 +1,14 @@
 ## fxns for rescaling tree according to fitContinuous type models
 ## adopted from rescale.phylo in GEIGER (written by Jon Eastman)
 
-model.phylo.bm <- function(phy, pars){
+model_phylo_bm <- function(phy, pars){
     if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
     phy$edge.length <- phy$edge.length * pars$sigsq
-    model.phylo.se(phy, pars)
+    model_phylo_se(phy, pars)
 }
 
-model.phylo.ou <- function(phy, pars){
+model_phylo_ou <- function(phy, pars){
     if (pars$sigsq < 0 || pars$alpha < 0)
         stop("Parameters need to be non-negative")
 
@@ -26,10 +26,10 @@ model.phylo.ou <- function(phy, pars){
 
     ## ...and then by sigsq
     phy$edge.length <- phy$edge.length * pars$sigsq
-    model.phylo.se(phy, pars)
+    model_phylo_se(phy, pars)
 }
 
-model.phylo.eb <- function(phy, pars){
+model_phylo_eb <- function(phy, pars){
     if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
 
@@ -45,14 +45,14 @@ model.phylo.eb <- function(phy, pars){
     phy$edge.length <- phy$edge.length * pars$sigsq
 
     ## return phy
-    model.phylo.se(phy, pars)
+    model_phylo_se(phy, pars)
 }
 
 
 ## lambda transformation
 ## NOTE [RGF]: This function seems too complicated; is there a simpler
 ## way of writing it?
-model.phylo.lambda <- function(phy, pars){
+model_phylo_lambda <- function(phy, pars){
     if (pars$sigsq < 0)
         stop("Parameters need to be non-negative")
 
@@ -79,19 +79,19 @@ model.phylo.lambda <- function(phy, pars){
     ## rescale branch lengths according to sigsq
     phy$edge.length <- phy$edge.length * pars$sigsq
 
-    model.phylo.se(phy, pars)
+    model_phylo_se(phy, pars)
 }
 
-model.phylo.kappa <- function(phy, pars){
+model_phylo_kappa <- function(phy, pars){
   if (pars$sigsq < 0 || pars$kappa < 0)
     stop("Parameters need to be non-negative")
   phy$edge.length <- (phy$edge.length^pars$kappa) * pars$sigsq
-  model.phylo.se(phy, pars)
+  model_phylo_se(phy, pars)
 }
 
 ## NOTE [RGF]: I skipped the tidy-up here, because there is a good
 ## chance that this doesn't work (see issue #58).
-model.phylo.delta <- function(phy, pars){
+model_phylo_delta <- function(phy, pars){
     if (pars$sigsq < 0 || pars$delta < 0)
         stop("Parameters need to be non-negative")
 
@@ -121,28 +121,28 @@ model.phylo.delta <- function(phy, pars){
     phy$edge.length <- phy$edge.length * sigsq
 
     ## return phy
-    model.phylo.se(phy, pars)
+    model_phylo_se(phy, pars)
 }
 
 
 ## See issue #59
-model.phylo.trend <- function(phy, pars)
+model_phylo_trend <- function(phy, pars)
     stop("trend model is not currently implemented")
 
 ## NOTE: White noise transformation turns tree into star phylogeny.
-model.phylo.white <- function(phy, pars){
+model_phylo_white <- function(phy, pars){
   if (pars$sigsq < 0)
     stop("Parameters need to be non-negative")
   is.tip <- phy$edge[,2] <= Ntip(phy)
   phy$edge.length[!is.tip] <- 0
   phy$edge.length[ is.tip] <- pars$sigsq
-  model.phylo.se(phy, pars)
+  model_phylo_se(phy, pars)
 }
 
 
-#' @method make.model.phylo fitC
+#' @method make_model_phylo fitC
 #' @export
-make.model.phylo.fitC <- function(x, ...) {
+make_model_phylo.fitC <- function(x, ...) {
     ## get model
     model <- x$type
 
@@ -154,14 +154,14 @@ make.model.phylo.fitC <- function(x, ...) {
 
     ## Translation function; all have argument list (phy, pars)
     tr <- switch(model,
-                 BM=model.phylo.bm,
-                 OU=model.phylo.ou,
-                 EB=model.phylo.eb,
-                 lambda=model.phylo.lambda,
-                 kappa=model.phylo.kappa,
-                 delta=model.phylo.delta,
-                 trend=model.phylo.trend,
-                 white=model.phylo.white)
+                 BM=model_phylo_bm,
+                 OU=model_phylo_ou,
+                 EB=model_phylo_eb,
+                 lambda=model_phylo_lambda,
+                 kappa=model_phylo_kappa,
+                 delta=model_phylo_delta,
+                 trend=model_phylo_trend,
+                 white=model_phylo_white)
 
     if (is.data.frame(pars)) {
       rphy <- lapply(seq_len(nrow(pars)), function(i)
@@ -175,16 +175,16 @@ make.model.phylo.fitC <- function(x, ...) {
     rphy
 }
 
-model.phylo.rescale <- function(type) {
+model_phylo_rescale <- function(type) {
   switch(type,
-         BM=model.phylo.bm,
-         OU=model.phylo.ou,
-         EB=model.phylo.eb,
-         lambda=model.phylo.lambda,
-         kappa=model.phylo.kappa,
-         delta=model.phylo.delta,
-         trend=model.phylo.trend,
-         white=model.phylo.white,
+         BM=model_phylo_bm,
+         OU=model_phylo_ou,
+         EB=model_phylo_eb,
+         lambda=model_phylo_lambda,
+         kappa=model_phylo_kappa,
+         delta=model_phylo_delta,
+         trend=model_phylo_trend,
+         white=model_phylo_white,
          stop("Unknown model type ", type))
 }
 
@@ -193,23 +193,23 @@ model.phylo.rescale <- function(type) {
 #' @description Rescales phylogeny to form a 'unit.tree' using parameters
 #' from fitted model
 #'
-#' @param x an object inherited from a \code{model.info} function
-#' @param ... additional arguments to be passed to \code{make.model.phylo}
+#' @param x an object inherited from a \code{model_info} function
+#' @param ... additional arguments to be passed to \code{make_model_phylo}
 #'
 #' @details This is a generic function which rescales the phylogeny based on the model
 #' specific information. While the class and information may differ, the object must include
 #' the 'phylo' object to be rescaled and model specific information such as model type and
 #' parameter values.
 #'
-#' To include additional types of models, researchers will need to build a new \code{\link{model.info}}
+#' To include additional types of models, researchers will need to build a new \code{\link{model_info}}
 #' function for the given model type. The output should be assigned a novel class.
-#' A \code{make.model.phylo.class} object will need to be created to perform the rescaling.
+#' A \code{make_model_phylo.class} object will need to be created to perform the rescaling.
 #'
 #' @return a \code{phylo} object that can be used to from a \code{unit.tree} object
 #'
-#' @seealso \code{\link{as.unit.tree}}
+#' @seealso \code{\link{make_unit_tree}}
 #'
-#' @export make.model.phylo
+#' @export make_model_phylo
 #'
 #' @examples
 #' ## finch data
@@ -225,17 +225,17 @@ model.phylo.rescale <- function(type) {
 #'                                  control=list(niter=10))
 #'
 #' ## get model info using internal arbutus function
-#' info.bm <- model.info(fit.bm)
+#' info.bm <- model_info(fit.bm)
 #'
 #' ## rescale phylogeny based on model info
-#' make.model.phylo(info.bm)
+#' make_model_phylo(info.bm)
 #' }
 #' 
-make.model.phylo <- function(x, ...)
-    UseMethod("make.model.phylo")
+make_model_phylo <- function(x, ...)
+    UseMethod("make_model_phylo")
 
 
-model.phylo.se <- function(phy, pars) {
+model_phylo_se <- function(phy, pars) {
   if (pars$SE < 0)
     stop("SE must be non-negative")
   tips <- phy$edge[,2] <= Ntip(phy)

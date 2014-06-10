@@ -1,6 +1,6 @@
 ## functions for pulling apart phylolm objects
 
-model.type.phylolm <- function(fit, ...){
+model_type.phylolm <- function(fit, ...){
     model <- fit$model
 
     ## treat random and fixed root OU model as the same for now
@@ -14,17 +14,17 @@ model.type.phylolm <- function(fit, ...){
 ## It does not appear that the original data and phy is included
 ## Must include them separately for now...
 
-model.data.phylolm <- function(fit, phy, ...){
+model_data.phylolm <- function(fit, phy, ...){
     res <- fit$residuals[,1]
     list(phy=phy, data=res)
 }
 
 
-model.pars.phylolm <- function(fit, ...){
+model_pars.phylolm <- function(fit, ...){
     sigsq <- fit$sigma2
 
     ## match model to parameters
-    model <- model.type(fit)
+    model <- model_type(fit)
 
     if (model == "BM"){
         pars <- list(sigsq=sigsq, z0=NA, SE=0)
@@ -39,12 +39,12 @@ model.pars.phylolm <- function(fit, ...){
     pars
 }
 
-#' @method model.info phylolm
+#' @method model_info phylolm
 #' @export
-model.info.phylolm <- function(fit, phy, ...){
-    m <- list(data=model.data(fit, phy),
-              pars=model.pars(fit),
-              type=model.type(fit))
+model_info.phylolm <- function(fit, phy, ...){
+    m <- list(data=model_data(fit, phy),
+              pars=model_pars(fit),
+              type=model_type(fit))
     class(m) <- "fitC"
     m
 }

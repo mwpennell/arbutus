@@ -1,28 +1,29 @@
 #' @title Assess the adequacy of continuous trait models
 #'
-#' @description Use summary statistics to assess model adequacy for
+#' @description Use test statistics to assess model adequacy for
 #' phylogenetic models of continuous character evolution. This function is
 #' a simply a wrapper which does all the steps involved in evaluating model
-#' adequacy using the approach outlined in Pennell et al. (in prep.)
+#' adequacy using the approach outlined in Pennell, FitzJohn, Cornwell and Harmon (in review).
 #'
 #' @param x a fitted model object or a \code{phylo}/\code{multiPhylo} (see Details).
 #'
 #' @param nsim the number of datasets to simulate. This is passed as an argument to the
-#' function \code{\link{sim.char.unit}}.
+#' function \code{\link{simulate_char_unit}}.
 #'
-#' @param stats a named list of summary statistics to calculate on observed and simulated
-#' datasets. See \code{\link{summ.stats}} for details.
+#' @param stats a named list of test statistics to calculate on observed and simulated
+#' datasets. See \code{\link{calculate_pic_stat}} for details. If nothing is supplied,
+#' the function uses the default test statistics (see \code{\link{default_pic_stat}}
 #'
-#' @param ... additional arguments to be passed to \code{\link{as.unit.tree}}
+#' @param ... additional arguments to be passed to \code{\link{make_unit_tree}}
 #'
 #' @details \code{arbutus} was developed to evaluate the adequacy (or absolute goodness-of-fit)
 #' of phylogenetic models of continuous character evolution. The basic principle
 #' underlying the approach is that if the generating model is a Brownian motion
 #' process, the contrasts (sensu Felsenstein, 1985) will be independent and
 #' identically distributed (I.I.D.). We can evaluate this condition by calculating
-#' a set of summary statistics the contrasts on our observed data, then simulating datasets under
-#' a Brownian motion process along the phylogeny and calculating the summary statistics
-#' on the contrasts of each simulated data set. We can then compare our observed summary statistics to the
+#' a set of test statistics on the contrasts of our observed data, then simulating datasets under
+#' a Brownian motion process along the phylogeny and calculating the test statistics
+#' on the contrasts of each simulated data set. We can then compare our observed test statistics to the
 #' simulated distribution of summary statistics.
 #'
 #' The I.I.D. property of the contrasts will hold only for the case of Brownian motion.
@@ -30,22 +31,22 @@
 #' evolution (as long as the model is based on a multivariate normal distribution) by first
 #' rescaling the phylogeny based on the fitted parameter estimates, creating what we refer to
 #' as a 'unit.tree'. Once the rescaling is done, the contrasts will be I.I.D. if the model
-#' that was fit is a adequate one.
+#' that was fit is adequate.
 #'
 #' P-values represent the two-tailed probability that the observed summary statistic
 #' (or distribution of summary statistics) came from the same distribution as the simulated
 #' summary statistics. Low p-values provide evidence that the model is inadequate.
 #'
-#' The function \code{phy.model.check} wraps several other functions:
+#' The function \code{arbutus} wraps several other functions:
 #' \enumerate{
-#'  \item{\code{\link{as.unit.tree}}: }{rescales phylogeny based on fitted parameter values}
-#'  \item{\code{\link{summ.stats}}: }{calculates summary statistics on observed data}
-#'  \item{\code{\link{sim.char.unit}}: }{simulates datasets under Brownian motion}
-#'  \item{\code{\link{summ.stats}}: }{calculates summary statistics on simulated data}
-#'  \item{\code{\link{compare.summ.stats}}: }{compares observed to simulated statistics}
+#'  \item{\code{\link{make_unit_tree}}: }{rescales phylogeny based on fitted parameter values}
+#'  \item{\code{\link{calculate_pic_stat}}: }{calculates test statistics on observed data}
+#'  \item{\code{\link{simulate_char_unit}}: }{simulates datasets under Brownian motion with rate 1}
+#'  \item{\code{\link{calculate_pic_stat}}: }{calculates test statistics on simulated data}
+#'  \item{\code{\link{compare_pic_stat}}: }{compares observed to simulated test statistics}
 #' }
 #'
-#' \code{phy.model.check} interacts with objects produced by fitting evolutionary models using a variety of packages.
+#' \code{arbutus} interacts with objects produced by fitting evolutionary models using a variety of packages.
 #' Currently supported objects are as follows:
 #'
 #' \itemize{
@@ -56,7 +57,8 @@
 #'   using \code{find.mle} in the \code{diversitree} package. 
 #' 
 #'  \item a \code{mcmcsamples} object returned from fitting a model of continuous character evolution
-#'   using MCMC methods in the \code{diversitree} package. \code{as.unit.tree} will apply the same
+#'   using MCMC methods in the \code{diversitree} package.
+#' \code{\link{make_unit_tree}} will apply the same
 #'   trait dataset to a set of unit trees based on sampled parameters. By default this will create a
 #'   unit tree for every sample in the mcmc chain. To modify this, additional arguments can be use.
 #'   \code{burnin} specifies how many samples to remove from the beginning of the chain.
@@ -85,9 +87,9 @@
 #' }
 #' 
 #'
-#' @export phy.model.check
+#' @export arbutus
 #' 
-#' @seealso \code{\link{as.unit.tree}}, \code{\link{summ.stats}}, \code{\link{sim.char.unit}}, \code{\link{compare.summ.stats}}
+#' @seealso \code{\link{make_unit_tree}}, \code{\link{calculate_pic_stat}}, \code{\link{simulate_char_unit}}, \code{\link{compare_pic_stat}}
 #'
 #'
 #' @examples
@@ -105,7 +107,7 @@
 #'
 #' ## check adequacy of BM model
 #' ## get p-values for default summary statistics
-#' modelad.bm <- phy.model.check(fit.bm, nsim=10)
+#' modelad.bm <- arbutus(fit.bm, nsim=10)
 #' modelad.bm
 #'
 #'
@@ -115,7 +117,8 @@
 #'                                                   control=list(niter=10)))
 #'
 #' ## check adequacy of OU model
-#' modelad.ou <- phy.model.check(fit.ou, nsim=10)
+#' modelad.ou <- arbutus(fit.ou, nsim=10)
+#'
 #' require(diversitree)
 #' ## fit Brownian motion model using ML
 #' ## using diversitree's find.mle function
@@ -124,8 +127,8 @@
 #' fit.bm.dt <- find.mle(bmlik, 0.1)
 #'
 #' ## this creates a 'fit.mle' object which can be used
-#' ## in 'as.unit.tree()'
-#' unit.tree.dt <- as.unit.tree(fit.bm.dt)
+#' ## in 'arbutus'
+#' modelad.bm.dt <- arbutus(fit.bm.dt)
 #'
 #' ## fit Brownian motion model using MCMC
 #' mcmc.bm.dt <- mcmc(bmlik, x.init=1, nsteps=1000, w=1)
@@ -133,7 +136,7 @@
 #' ## construct a unit tree object from mcmcsamples
 #' ## removing 100 samples as burnin
 #' ## and sampling 10 parameter sets
-#' unit.tree.mcmc <- as.unit.tree(mcmc.bm.dt,
+#' modelad.bm.dt.mcmc <- arbutus(mcmc.bm.dt,
 #'                        burnin=100, samples=10)
 #' 
 #'
@@ -148,27 +151,27 @@
 #' fit.gls <- gls(t1~t2, data=dd, correlation=corPagel(phy=phy, value=1))
 #'
 #' ## this creates a 'gls' object which can be used
-#' ## in 'as.unit.tree()'
-#' unit.tree.gls <- as.unit.tree(fit.gls)
+#' ## in 'arbutus'
+#' modelad.gls <- arbutus(fit.gls)
 #'
 #' }
 #' 
-phy.model.check <- function(x, nsim=1000, stats=NULL, ...){
+arbutus <- function(x, nsim=1000, stats=NULL, ...){
 
     ## create unit tree
-    unit.tree <- as.unit.tree(x, ...)
+    unit.tree <- make_unit_tree(x, ...)
 
-    ## compute summary statistics on observed data
-    ss.obs <- summ.stats(unit.tree, stats=stats)
+    ## compute test statistics on observed data
+    obs <- calculate_pic_stat(unit.tree, stats=stats)
 
     ## simulate n datasets
-    sims <- sim.char.unit(unit.tree, nsim=nsim)
+    sim.dat <- simulate_char_unit(unit.tree, nsim=nsim)
 
-    ## compute summary statistics on simulated data
-    ss.sim <- summ.stats(sims, stats=stats)
+    ## compute test statistics on simulated data
+    sim <- calculate_pic_stat(sim.dat, stats=stats)
 
-    ## compare summary statistics between observed and simulated
-    p.values <- compare.summ.stats(ss.obs, ss.sim)
+    ## compare test statistics between observed and simulated
+    res <- compare_pic_stat(obs, sim)
 
-    p.values
+    res
 }

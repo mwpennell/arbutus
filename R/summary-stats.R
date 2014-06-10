@@ -1,65 +1,65 @@
-#' @title Calculate summary statistics on a unit tree
+#' @title Calculate test statistics on a unit tree
 #'
-#' @description Calculates a set of summary statistics on the contrasts included with a 'unit.tree' object.
+#' @description Calculates a set of test statistics on the contrasts included with a 'unit.tree' object.
 #'
 #' @param unit.tree a \code{unit.tree} object or list of unit.trees
-#' @param stats a named list of summary statistics to calculate on the unit.tree.
-#'   If no \code{stats} argument supplied, default summary statistics are used.
+#' @param stats a named list of test statistics to calculate on the unit.tree.
+#'   If no \code{stats} argument supplied, default test statistics are used.
 #'
 #' @details This function can be applied to either a single 'unit.tree' of object or a list of 'unit.tree' objects.
-#' If \code{stats=NULL} default summary statistics are used. The default summary statistics are the following:
+#' If \code{stats=NULL} default test statistics are used. The default test statistics are the following:
 #'  \enumerate{
-#'   \item{m.pic: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
+#'   \item{m.sig: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
 #'
-#'   \item{v.pic: }{The coefficient of variation of the absolute value of the contrasts.}
+#'   \item{c.var: }{The coefficient of variation of the absolute value of the contrasts.}
 #'
 #'   \item{s.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
 #'
-#'   \item{s.anc: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
+#'   \item{s.asr: }{The slope of a linear model fit between the contrasts and their inferred ancestral state.}
 #'
 #'   \item{s.hgt: }{The slope of a linear model fit between the contrasts and the node height at which they were calculated.}
 #'
-#'   \item{d.ks: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
+#'   \item{d.cdf: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
 #'  }
-#' User defined summary statistics can be supplied as a named list of functions (see examples). The functions supplied
+#' User defined test statistics can be supplied as a named list of functions (see examples). The functions supplied
 #' must take a unit.tree as argument and perform an operation on at least one of the elements of the object
-#' (see \code{\link{as.unit.tree}} for details).
+#' (see \code{\link{make_unit_tree}} for details).
 #'
-#' @return A data.frame with the calculated summary statistics across all unit.trees provided.
+#' @return A data.frame with the calculated test statistics across all unit.trees provided.
 #'
 #'
-#' @export summ.stats
+#' @export calculate_pic_stat
 #'
-#' @seealso \code{\link{def.summ.stats}}, \code{\link{sigsq.est}}, \code{\link{var.contrast}}, \code{\link{cor.contrast.var}}, \code{\link{cor.contrast.nh}}, \code{\link{cor.contrast.asr}}, \code{\link{ks.contrast}}
+#' @seealso \code{\link{default_pic_stat}}, \code{\link{pic_stat_msig}}, \code{\link{pic_stat_cvar}}, \code{\link{pic_stat_svar}}, \code{\link{pic_stat_shgt}}, \code{\link{pic_stat_sasr}}, \code{\link{pic_stat_dcdf}}
 #'
 #'
 #' @examples
 #' data(finch)
 #' phy <- finch$phy
 #' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## use default statistics
-#' summ.stat <- summ.stats(unit.tree, stats=NULL)
-#' summ.stat
+#' test.stat <- calculate_pic_stat(unit.tree, stats=NULL)
+#' test.stat
 #'
 #' ## user defined statistics
 #' mean.con <- function(x) mean(x$pics[,"contrasts"])
 #' max.con <- function(x) max(x$pics[,"contrasts"])
 #'
-#' summ.stat.user <- summ.stats(unit.tree,
+#' test.stat.user <- calculate_pic_stat(unit.tree,
 #'                     stats=list(mean = mean.con, max = max.con))
-#' summ.stat.user
+#' test.stat.user
 #'  
-summ.stats <- function(unit.tree, stats=NULL){
-  stats <- check.summ.stats(stats)
+calculate_pic_stat <- function(unit.tree, stats=NULL){
+  stats <- check_pic_stat(stats)
   if (inherits(unit.tree, "unit.tree")){
     # One unit.tree
     res <- do.call(cbind.data.frame,
                    lapply(stats, function(x) x(unit.tree)))
   } else if (is.list(unit.tree) && length(unit.tree) > 0) {
     # Multiple unit.trees
-    res <- do.call(rbind, lapply(unit.tree, summ.stats, stats))
+    res <- do.call(rbind, lapply(unit.tree, calculate_pic_stat, stats))
   } else {
     # Anything else
     stop("'unit.tree' must be a single unit.tree, or a list of them")
@@ -79,35 +79,42 @@ summ.stats <- function(unit.tree, stats=NULL){
 #'
 #' @description Calculates the mean of the squared contrasts,
 #' which is equal to the REML estimate of the BM rate parameter.
-#' Used as a summary statistic to evaluate model adequacy
+#' Used as a test statistic to evaluate model adequacy
 #'
 #' @param unit.tree a \code{unit.tree} object
 #'
-#' @details This summary statistic is used to assess the ability of the model
-#' to adequate estimate the rate of evolution. On datasets simulated on a unit.tree (see \code{\link{sim.char.unit}}),
-#' the expected value is equal to 1.
+#' @details This test statistic is used to assess the ability of the model
+#' to adequate estimate the rate of evolution. On datasets simulated on a unit.tree
+#' (see \code{\link{simulate_char_unit}}), the expected value is equal to 1.
 #'
 #' The REML estimate of sigma2 is included as a default
-#' summary statistic in the function \code{\link{summ.stats}}
+#' test statistic in the function \code{\link{calculate_pic_stat}}.
 #'
-#' @return \code{m.pic} estimate of sigma2
+#' The test statistic computed from a single \code{unit.tree} can be visualized
+#' with the function \code{\link{pic_stat_msig_plot}}.
 #'
-#' @export sigsq.est
+#' @return \code{m.sig} estimate of sigma2
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
+#' @export pic_stat_msig
+#'
+#' @seealso \code{\link{calculate_pic_stat}}, \code{\link{default_pic_stat}}, \code{\link{pic_stat_msig_plot}}
 #'
 #'
 #' @examples
 #' data(finch)
 #' phy <- finch$phy
 #' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## Estimate sigsq from unit.tree
 #'
-#' sigsq.est(unit.tree)
+#' pic_stat_msig(unit.tree)
+#'
+#' ## Visualization
+#'
+#' pic_stat_msig_plot(unit.tree)
 #' 
-sigsq.est <- function(unit.tree){
+pic_stat_msig <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
 
@@ -129,35 +136,41 @@ sigsq.est <- function(unit.tree){
 #'
 #' @param unit.tree a \code{unit.tree} object
 #'
-#' @details This summary statistics is used to evaluate whether the assumption of multivariate normailty
+#' @details This test statistics is used to evaluate whether the assumption of multivariate normailty
 #' is appropriate. If the model which generated the data is the fitted model, we expect the
 #' square root ofthe mean of squared contrasts to be equal to 1. The empirical estimate is used
-#' rather than assume a variance of 1 to reduce the overlap between this summary statistic and the
-#' REML estimate of sigma2 (see \code{\link{sigsq.est}}). The Kolmogorov-Smirnov (KS) test is a
+#' rather than assume a variance of 1 to reduce the overlap between this test statistic and the
+#' REML estimate of sigma2 (see \code{\link{pic_stat_msig}}). The Kolmogorov-Smirnov (KS) test is a
 #' non-parameteric test which computes the maximum distance \eqn{D} between two cumulative distribution functions.
 #' Running the test multiple times on the same data will produce slightly different values due to the fact
 #' that the null distribution is produced by randomly drawing from a normal distribution.
 #'
-#' The KS-D statistic is included as a default summary statistic
-#' in the function \code{\link{summ.stats}}.
+#' The KS-D statistic is included as a default test statistic
+#' in the function \code{\link{calculate_pic_stat}}.
 #'
-#' @return \code{d.ks} the D-statistic from a KS-test
+#' The test statistic computed from a single \code{unit.tree} can be visualized
+#' with the function \code{\link{pic_stat_dcdf_plot}}.
 #'
-#' @export ks.contrast
+#' @return \code{d.cdf} the D-statistic from a KS-test
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link[stats]{ks.test}}
+#' @export pic_stat_dcdf
+#'
+#' @seealso \code{\link{calculate_pic_stat}}, \code{\link{default_pic_stat}}, \code{\link[stats]{ks.test}}
 #'
 #'
 #' @examples
 #' data(finch)
 #' phy <- finch$phy
 #' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## KS-D statistic
-#' ks.contrast(unit.tree)
+#' pic_stat_dcdf(unit.tree)
 #'
-ks.contrast <- function(unit.tree){
+#' ## Visualization
+#' pic_stat_dcdf_plot(unit.tree)
+#'
+pic_stat_dcdf <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
         
@@ -177,43 +190,6 @@ ks.contrast <- function(unit.tree){
 
 
 
-#' @title Variance of contrasts
-#'
-#' @description Calculates the variance of the absolute value of the contrasts
-#'
-#' @param unit.tree a \code{unit.tree} object
-#'
-#' @details This summary is used to evaluate whether the model is sufficiently
-#' capturing the variation in rates across the tree.
-#'
-#' The variance of contrasts is NOT included as a default summary statistic
-#' in the function \code{\link{summ.stats}}
-#'
-#' @return the estimate of the variance of the absolute value of the contrasts
-#'
-#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
-#'
-#' @export var.contrast
-#' 
-#' @examples
-#' data(finch)
-#' phy <- finch$phy
-#' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
-#'
-#' ## estimate variance of contrasts
-#' var.contrast(unit.tree)
-#' 
-var.contrast <- function(unit.tree) {
-    ## make sure the unit.tree is of class 'unit.tree'
-    assert.is.unit.tree(unit.tree)
-    
-    var(abs(unit.tree$pics[,"contrasts"]))
-}
-
-
-
-
 
 
 
@@ -225,32 +201,39 @@ var.contrast <- function(unit.tree) {
 #'
 #' @param unit.tree a \code{unit.tree} object
 #'
-#' @details This summary statistic is the estimate of the slope from fitting
+#' @details This test statistic estimates the slope from fitting
 #' a linear model between the contrasts and their expected variance. It is used
 #' to evaluate whether the model is adequately capturing variation relative to branch
 #' lengths. If the model is adequate, we expect there not to be a relationship
 #' between the contrasts and their variances (i.e. slope ~ 0).
 #'
-#' The slope of the contrasts and their variances is included as a default summary statistic
-#' in the function \code{\link{summ.stats}}
+#' The slope of the contrasts and their variances is included as a default test statistic
+#' in the function \code{\link{calculate_pic_stat}}
+#'
+#' The test statistic computed from a single \code{unit.tree} can be visualized
+#' with the function \code{\link{pic_stat_svar_plot}}.
 #'
 #' @return \code{s.var} the estimated slope paramter
 #'
-#' @export cor.contrast.var
+#' @export pic_stat_svar
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link[stats]{lm}}
+#' @seealso \code{\link{calculate_pic_stat}}, \code{\link{default_pic_stat}},
+#' \code{\link{pic_stat_svar_plot}}, \code{\link[stats]{lm}}
 #'
 #'
 #' @examples
 #' data(finch)
 #' phy <- finch$phy
 #' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## estimate slope
-#' cor.contrast.var(unit.tree)
+#' pic_stat_svar(unit.tree)
+#'
+#' ## visualization
+#' pic_stat_svar_plot(unit.tree)
 #' 
-cor.contrast.var <- function(unit.tree){
+pic_stat_svar <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
     
@@ -281,7 +264,7 @@ cor.contrast.var <- function(unit.tree){
 #'
 #' @param unit.tree a \code{unit.tree} object
 #'
-#' @details This summary statistic is the estimate of the slope from fitting
+#' @details This test statistic is the estimate of the slope from fitting
 #' a linear model between the contrasts and the node height (i.e. tree depth)
 #' at which they were calculated. It is used
 #' to evaluate whether the model is adequately capturing variation relative to tree depth.
@@ -290,26 +273,32 @@ cor.contrast.var <- function(unit.tree){
 #' being used here are the absolute node ages from the original phylogeny and not the adjusted
 #' node ages obtained from computing contrasts (see \code{\link{pic}}).
 #'
-#' The slope of the contrasts and their variances is included as a default summary statistic
-#' in the function \code{\link{summ.stats}} 
+#' The slope of the contrasts and their variances is included as a default test statistic
+#' in the function \code{\link{calculate_pic_stat}}.
+#'
+#' The test statistic computed from a single \code{unit.tree} can be visualized
+#' with the function \code{\link{pic_stat_svar_plot}}.
 #' 
 #' @return \code{s.hgt} the estimated slope parameter
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link[stats]{lm}}
+#' @seealso \code{\link{calculate_pic_stat}}, \code{\link{default_pic_stat}}, \code{\link{pic_stat_svar_plot}}, \code{\link[stats]{lm}}
 #'
-#' @export cor.contrast.nh
+#' @export pic_stat_shgt
 #'
 #'
 #' @examples
 #' data(finch)
 #' phy <- finch$phy
 #' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## estimate slope
-#' cor.contrast.nh(unit.tree)
+#' pic_stat_shgt(unit.tree)
+#'
+#' ## visualizaiton
+#' pic_stat_shgt_plot(unit.tree)
 #' 
-cor.contrast.nh <- function(unit.tree){
+pic_stat_shgt <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
 
@@ -343,7 +332,7 @@ cor.contrast.nh <- function(unit.tree){
 #'
 #' @param unit.tree a \code{unit.tree} object
 #'
-#' @details This summary statistic is the estimate of the slope from fitting
+#' @details This test statistic is the estimate of the slope from fitting
 #' a linear model between the contrasts and the inferred ancestral state at the node
 #' at which the contrasts were calculated. It is used
 #' to evaluate whether the model is adequately capturing variation relative to ancestral state.
@@ -355,26 +344,33 @@ cor.contrast.nh <- function(unit.tree){
 #' trait value. If the model is adequate, we expect there not to be a relationship
 #' between the contrasts and their node height (i.e. slope ~ 0).
 #'
-#' The slope of the contrasts and their variances is included as a default summary statistic
-#' in the function \code{\link{summ.stats}} 
+#' The slope of the contrasts and their variances is included as a default test statistic
+#' in the function \code{\link{calculate_pic_stat}}.
+#'
+#' The test statistic computed from a single \code{unit.tree} can be visualized
+#' with the function \code{\link{pic_stat_sasr_plot}}.
 #' 
-#' @return \code{s.anc} the estimated slope parameter
+#' @return \code{s.asr} the estimated slope parameter
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}, \code{\link[stats]{lm}}, \code{\link[ape]{ace}}
+#' @seealso \code{\link{calculate_pic_stat}}, \code{\link{default_pic_stat}}, \code{\link{pic_stat_sasr_plot}},
+#' \code{\link[stats]{lm}}, \code{\link[ape]{ace}}
 #'
 #'
-#' @export cor.contrast.asr
+#' @export pic_stat_sasr
 #'
 #' @examples
 #' data(finch)
 #' phy <- finch$phy
 #' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## estimate slope
-#' cor.contrast.asr(unit.tree)
+#' pic_stat_sasr(unit.tree)
+#'
+#' ## visualization
+#' pic_stat_sasr_plot(unit.tree)
 #' 
-cor.contrast.asr <- function(unit.tree){
+pic_stat_sasr <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
     
@@ -401,29 +397,35 @@ cor.contrast.asr <- function(unit.tree){
 #'
 #' @param unit.tree a \code{unit.tree} object
 #'
-#' @details This summary is used to evaluate whether the model is sufficiently
-#' capturing the variation in rates across the tree.
+#' @details This test statistic is used to evaluate whether the model is sufficiently
+#' capturing the variation in rates across the tree. The coefficient of variation is the sd/mean.
 #'
-#' The coefficient of variation is the sd/mean. The coefficient of variation of the contrasts is included as a default summary statistic
-#' in the function \code{\link{summ.stats}}
+#' The coefficient of variation of the contrasts is included as a default test statistic
+#' in the function \code{\link{calculate_pic_stat}}.
 #'
-#' @return \code{v.pic} the coefficient of variation of the contrasts
+#' The test statistic computed from a single \code{unit.tree} can be visualized
+#' with the function \code{\link{pic_stat_sasr_plot}}.
 #'
-#' @export cv.contrast
+#' @return \code{c.var} the coefficient of variation of the contrasts
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{def.summ.stats}}
+#' @export pic_stat_cvar
+#'
+#' @seealso \code{\link{calculate_pic_stat}}, \code{\link{default_pic_stat}}, \code{\link{pic_stat_cvar_plot}}
 #'
 #'
 #' @examples
 #' data(finch)
 #' phy <- finch$phy
 #' dat <- finch$data[,"wingL"]
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## estimate variance of contrasts
-#' cv.contrast(unit.tree)
+#' pic_stat_cvar(unit.tree)
 #'
-cv.contrast <- function(unit.tree){
+#' ## visualization
+#' pic_stat_cvar_plot(unit.tree)
+#'
+pic_stat_cvar <- function(unit.tree){
     ## make sure the unit.tree is of class 'unit.tree'
     assert.is.unit.tree(unit.tree)
 
@@ -437,16 +439,16 @@ cv.contrast <- function(unit.tree){
 
 
 
-#' @title Internal function for getting default summary statistics
+#' @title Internal function for getting default test statistics
 #'
-#' @description Creates a list of the default summary statistics to be used
+#' @description Creates a list of the default test statistics to be used
 #' to asses model adequacy
 #'
-#' @details The following summary statistics are produced by this function:
+#' @details The following test statistics are produced by this function:
 #'  \enumerate{
-#'   \item{m.pic: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
+#'   \item{m.sig: }{The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.}
 #'
-#'   \item{v.pic: }{The coefficient of variation of the absolute value of the contrasts.}
+#'   \item{c.var: }{The coefficient of variation of the absolute value of the contrasts.}
 #'
 #'   \item{s.var: }{The slope of a linear model fit between the contrasts and their expected variances.}
 #'
@@ -454,25 +456,27 @@ cv.contrast <- function(unit.tree){
 #'
 #'   \item{s.hgt: }{The slope of a linear model fit between the contrasts and the node height at which they were calculated.}
 #'
-#'   \item{d.ks: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
+#'   \item{d.cdf: }{The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.}
 #'  }
 #'
 #' @return a named list of functions
 #'
-#' @export def.summ.stats
+#' @export default_pic_stat
 #'
 #' @keywords internal
 #'
-#' @seealso \code{\link{summ.stats}}, \code{\link{sigsq.est}}, \code{\link{cv.contrast}}, \code{\link{cor.contrast.var}},
-#' \code{\link{cor.contrast.nh}}, \code{\link{cor.contrast.nh}}, \code{\link{ks.contrast}}
+#' @seealso \code{\link{calculate_pic_stat}}, \code{\link{pic_stat_msig}}, \code{\link{pic_stat_cvar}},
+#' \code{\link{pic_stat_svar}}, \code{\link{pic_stat_sasr}}, \code{\link{pic_stat_shgt}},
+#' \code{\link{pic_stat_dcdf}}
 #'
 #'
 #' @examples
-#' ## get default summary stats
-#' stats <- def.summ.stats
+#' ## get default test statistics
+#' stats <- default_pic_stat()
 #' stats
-def.summ.stats <- function()
-    list("m.pic"=sigsq.est, "v.pic"=cv.contrast, "s.var"=cor.contrast.var, "s.anc"=cor.contrast.asr, "s.hgt"=cor.contrast.nh, "d.ks"=ks.contrast)
+default_pic_stat <- function()
+    list("m.sig"=pic_stat_msig, "c.var"=pic_stat_cvar, "s.var"=pic_stat_svar, "s.asr"=pic_stat_sasr,
+         "s.hgt"=pic_stat_shgt, "d.cdf"=pic_stat_dcdf)
 
 
 
@@ -483,34 +487,34 @@ def.summ.stats <- function()
 
 
 
-#' @title Internal function to check summary stats
+#' @title Internal function to check test statistics
 #'
-#' @description Makes sure summary statistics sent to \code{\link{summ.stats}} are in the correct format
+#' @description Makes sure test statistics sent to \code{\link{calculate_pic_stat}} are in the correct format
 #'
-#' @param stats a named list of summary statistics
+#' @param stats a named list of test statistics
 #'
-#' @return named list of summary statistics after being checked.
+#' @return named list of test statistics after being checked.
 #'
-#' @seealso \code{\link{summ.stats}}
+#' @seealso \code{\link{calculate_pic_stat}}
 #'
-#' @export check.summ.stats
+#' @export check_pic_stat
 #'
 #' @keywords internal
 #'
 #'
 #' @examples
-#' ## produce list of summary stats (using default summary statistics)
-#' check.summ.stats(def.summ.stats())
+#' ## produce list of test stats (using default test statistics)
+#' check_pic_stat(default_pic_stat())
 #'
-#' ## use custom list of summary statistics
+#' ## use custom list of test statistics
 #' foo <- function(x) mean(x$pics[,"contrasts"])
 #'
 #' my.stats <- list(mean.of.contrasts=foo)
-#' check.summ.stats(my.stats)
+#' check_pic_stat(my.stats)
 #
-check.summ.stats <- function(stats) {
+check_pic_stat <- function(stats) {
   if (is.null(stats))
-    stats <- def.summ.stats()
+    stats <- default_pic_stat()
   else if (!is.list(stats) || is.null(names(stats)) ||
            any(names(stats) == "" || length(stats) == 0))
     ## (note that the second check does not always enforce

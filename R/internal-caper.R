@@ -6,7 +6,7 @@
 ## if parameter not estimated, still returned as equal to 1
 ## but if it is estimated to be 1, save output returned
 ## so hacked this together
-model.type.pgls <- function(fit, ...){
+model_type.pgls <- function(fit, ...){
     types <- c("kappa", "lambda", "delta")
     tmp <- fit$param.CI
     chk <- Filter(Negate(is.null), tmp)
@@ -27,7 +27,7 @@ model.type.pgls <- function(fit, ...){
 }
 
 
-model.data.pgls <- function(fit, ...){
+model_data.pgls <- function(fit, ...){
     phy <- fit$data$phy
 
     ## data is the residuals
@@ -40,8 +40,8 @@ model.data.pgls <- function(fit, ...){
 
 ## See issues #50 and #51
 ## Also note that REML estimators are not available for this pkg
-model.pars.pgls <- function(fit, ...){
-    model <- model.type(fit)
+model_pars.pgls <- function(fit, ...){
+    model <- model_type(fit)
     if (model == "BM"){
         p <- NULL
     } else {
@@ -53,10 +53,10 @@ model.pars.pgls <- function(fit, ...){
 
 
 estimate.sigma2.pgls <- function(fit, ...){
-    phy <- model.data(fit)$phy
+    phy <- model_data(fit)$phy
 
     pars <- get.pgls.pars.unity(fit)
-    phy <- model.phylo.rescale(model.type(fit))(phy, pars)
+    phy <- model_phylo_rescale(model_type(fit))(phy, pars)
 
     ## The data that we care about are the residuals of the model fit;
     ## it is these that are assumed to be distributed according to the
@@ -66,7 +66,7 @@ estimate.sigma2.pgls <- function(fit, ...){
     names(rr) <- phy$tip.label
     cmp <- resid(fit)
   
-    phy.u <- as.unit.tree(phy, data=rr)
+    phy.u <- make_unit_tree(phy, data=rr)
     ## This is what sigsq.est() (in summary-stats.R) is doing, but I
     ## (RGF) find it easier to think about if it's explicitly copied
     ## here.
@@ -83,7 +83,7 @@ estimate.sigma2.pgls <- function(fit, ...){
 
 ## helper function for pulling out parameters for estimate sigma2.pgls
 get.pgls.pars.unity <- function(fit){
-    model <- model.type(fit)
+    model <- model_type(fit)
     if (model == "BM"){
         pars <- c(list(sigsq=1), list(SE=0))
     } else {
@@ -93,12 +93,12 @@ get.pgls.pars.unity <- function(fit){
 }
 
 
-#' @method model.info pgls
+#' @method model_info pgls
 #' @export
-model.info.pgls <- function(fit, ...){
-    m <- list(data=model.data(fit),
-              pars=model.pars(fit),
-              type=model.type(fit))
+model_info.pgls <- function(fit, ...){
+    m <- list(data=model_data(fit),
+              pars=model_pars(fit),
+              type=model_type(fit))
     class(m) <- "fitC"
     m
 }

@@ -5,15 +5,15 @@ source("helper-arbutus.R")
 
 context("caper (internals)")
 
-model.type <- arbutus:::model.type
-model.data <- arbutus:::model.data
-model.pars <- arbutus:::model.pars
-model.info <- arbutus:::model.info
+model_type <- arbutus:::model_type
+model_data <- arbutus:::model_data
+model_pars <- arbutus:::model_pars
+model_info <- arbutus:::model_info
 
-model.type.pgls <- arbutus:::model.type.pgls
-model.data.pgls <- arbutus:::model.data.pgls
-model.pars.pgls <- arbutus:::model.pars.pgls
-model.info.pgls <- arbutus:::model.info.pgls
+model_type.pgls <- arbutus:::model_type.pgls
+model_data.pgls <- arbutus:::model_data.pgls
+model_pars.pgls <- arbutus:::model_pars.pgls
+model_info.pgls <- arbutus:::model_info.pgls
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa = 100)
@@ -32,15 +32,15 @@ fit.pgls.de <- pgls(y~x, cdat, delta="ML")
 fit.pgls.ka <- pgls(y~x, cdat, kappa="ML")
 
 test_that("Model types are correct", {
-    expect_that(model.type(fit.pgls.bm), is_identical_to("BM"))
-    expect_that(model.type(fit.pgls.la), is_identical_to("lambda"))
-    expect_that(model.type(fit.pgls.de), is_identical_to("delta"))
-    expect_that(model.type(fit.pgls.ka), is_identical_to("kappa"))
+    expect_that(model_type(fit.pgls.bm), is_identical_to("BM"))
+    expect_that(model_type(fit.pgls.la), is_identical_to("lambda"))
+    expect_that(model_type(fit.pgls.de), is_identical_to("delta"))
+    expect_that(model_type(fit.pgls.ka), is_identical_to("kappa"))
 })
 
 test_that("Multiple models throws error", {
     fit.pgls.multi <- pgls(y~x, cdat, lambda="ML", kappa="ML")
-    expect_that(model.type(fit.pgls.multi), throws_error())
+    expect_that(model_type(fit.pgls.multi), throws_error())
 })
 
 test_that("Models return their source data", {
@@ -54,10 +54,10 @@ test_that("Models return their source data", {
     cmp.de <- list(phy=phy, data=pgls.resid(fit.pgls.de))
     cmp.ka <- list(phy=phy, data=pgls.resid(fit.pgls.ka))
 
-    expect_that(model.data(fit.pgls.bm), equals(cmp.bm))
-    expect_that(model.data(fit.pgls.la), equals(cmp.la))
-    expect_that(model.data(fit.pgls.de), equals(cmp.de))
-    expect_that(model.data(fit.pgls.ka), equals(cmp.ka))
+    expect_that(model_data(fit.pgls.bm), equals(cmp.bm))
+    expect_that(model_data(fit.pgls.la), equals(cmp.la))
+    expect_that(model_data(fit.pgls.de), equals(cmp.de))
+    expect_that(model_data(fit.pgls.ka), equals(cmp.ka))
 })
 
 test_that("Coefficient names are as expected", {
@@ -66,17 +66,17 @@ test_that("Coefficient names are as expected", {
     pars.de <- c("delta", "sigsq", "SE", "z0")
     pars.ka <- c("kappa", "sigsq", "SE", "z0")
 
-    expect_that(names(model.pars(fit.pgls.bm)), is_identical_to(pars.bm))
-    expect_that(names(model.pars(fit.pgls.la)), is_identical_to(pars.la))
-    expect_that(names(model.pars(fit.pgls.de)), is_identical_to(pars.de))
-    expect_that(names(model.pars(fit.pgls.ka)), is_identical_to(pars.ka))
+    expect_that(names(model_pars(fit.pgls.bm)), is_identical_to(pars.bm))
+    expect_that(names(model_pars(fit.pgls.la)), is_identical_to(pars.la))
+    expect_that(names(model_pars(fit.pgls.de)), is_identical_to(pars.de))
+    expect_that(names(model_pars(fit.pgls.ka)), is_identical_to(pars.ka))
 })
 
 test_that("Overall processed object looks legit", {
-    obj.bm <- model.info(fit.pgls.bm)
-    obj.la <- model.info(fit.pgls.la)
-    obj.de <- model.info(fit.pgls.de)
-    obj.ka <- model.info(fit.pgls.ka)
+    obj.bm <- model_info(fit.pgls.bm)
+    obj.la <- model_info(fit.pgls.la)
+    obj.de <- model_info(fit.pgls.de)
+    obj.ka <- model_info(fit.pgls.ka)
 
     obj.names <- c("data", "pars", "type")
     expect_that(names(obj.bm), is_identical_to(obj.names))

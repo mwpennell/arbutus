@@ -69,16 +69,16 @@ test_that("High level interface works", {
   td <- suppressWarnings(treedata(geospiza$phy, geospiza$dat))
   phy <- td$phy
   dat <- td$data[phy$tip.label,"wingL"]
-  unit.tree <- as.unit.tree(phy, dat)
+  unit.tree <- make_unit_tree(phy, dat)
 
   nsim <- 2
-  sims <- sim.char.unit(unit.tree, nsim=nsim)
+  sims <- simulate_char_unit(unit.tree, nsim=nsim)
   expect_that(length(sims), equals(nsim))
   expect_that(sims, is_a("list"))
   expect_that(all(sapply(sims, inherits, "unit.tree")),
               is_true())
 
-  sims <- sim.char.unit(list(unit.tree, unit.tree), nsim=10)
+  sims <- simulate_char_unit(list(unit.tree, unit.tree), nsim=10)
   expect_that(length(sims), equals(nsim))
   expect_that(sims, is_a("list"))
   expect_that(all(sapply(sims, inherits, "unit.tree")),

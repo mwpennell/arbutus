@@ -2,7 +2,7 @@
 ## fxns for parsing a gls object from fitting a pgls model using gls (from nlme)
 ## note here that the relevant data is the residuals, not the original trait values
 
-model.type.gls <- function(fit, ...){
+model_type.gls <- function(fit, ...){
     cor <- class(fit$modelStruct$corStruct)[1]
     if (is.null(cor) || !is.character(cor) || length(cor) != 1)
         stop("Failed to extract model type from gls fit")
@@ -20,7 +20,7 @@ model.type.gls <- function(fit, ...){
     model
 }
 
-model.data.gls <- function(fit, ...){
+model_data.gls <- function(fit, ...){
     phy <- attr(fit$modelStruct$corStruct, "tree")
 
     ## data is the residuals
@@ -31,17 +31,17 @@ model.data.gls <- function(fit, ...){
 }
 
 ## See issues #50 and #51 here.
-model.pars.gls <- function(fit, ...){
+model_pars.gls <- function(fit, ...){
   p <- translate.ape.arbutus(coef(fit$modelStruct$corStruct, FALSE))
   as.list(c(p, sigsq=estimate.sigma2.gls(fit), SE=0, z0=NA))
 }
 
-#' @method model.info gls
+#' @method model_info gls
 #' @export
-model.info.gls <- function(fit, ...){
-    m <- list(data=model.data(fit),
-         pars=model.pars(fit),
-         type=model.type(fit))
+model_info.gls <- function(fit, ...){
+    m <- list(data=model_data(fit),
+         pars=model_pars(fit),
+         type=model_type(fit))
     class(m) <- "fitC"
     m
 }
@@ -63,11 +63,11 @@ translate.ape.arbutus <- function(x) {
 ## extracted from the correlation structure, though the parameters
 ## need a little tweaking to get.
 estimate.sigma2.gls <- function(fit) {
-  phy <- model.data(fit)$phy
-  pars <- model.pars(fit$modelStruct$corStruct)
+  phy <- model_data(fit)$phy
+  pars <- model_pars(fit$modelStruct$corStruct)
 
   ## Appropriately rescale the tree:
-  phy <- model.phylo.rescale(model.type(fit))(phy, pars)
+  phy <- model_phylo_rescale(model_type(fit))(phy, pars)
 
   ## The data that we care about are the residuals of the model fit;
   ## it is these that are assumed to be distributed according to the
@@ -77,7 +77,7 @@ estimate.sigma2.gls <- function(fit) {
   names(rr) <- names(resid(fit))
   cmp <- resid(fit)
   
-  phy.u <- as.unit.tree(phy, data=rr)
+  phy.u <- make_unit_tree(phy, data=rr)
   ## This is what sigsq.est() (in summary-stats.R) is doing, but I
   ## (RGF) find it easier to think about if it's explicitly copied
   ## here.
@@ -90,7 +90,7 @@ estimate.sigma2.gls <- function(fit) {
 }
 
 
-model.pars.corStruct <- function(fit, ...) {
+model_pars.corStruct <- function(fit, ...) {
   ## RGF: What happens when SE != 0; is that just not possible with
   ## this approach?
   pars <- c(list(sigsq=1), as.list(coef(fit, FALSE)), list(SE=0))

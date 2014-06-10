@@ -2,15 +2,15 @@ source("helper-arbutus.R")
 
 context("GLS (internals)")
 
-model.type <- arbutus:::model.type
-model.data <- arbutus:::model.data
-model.pars <- arbutus:::model.pars
-model.info <- arbutus:::model.info
+model_type <- arbutus:::model_type
+model_data <- arbutus:::model_data
+model_pars <- arbutus:::model_pars
+model_info <- arbutus:::model_info
 
-model.type.gls <- arbutus:::model.type.gls
-model.data.gls <- arbutus:::model.data.gls
-model.pars.gls <- arbutus:::model.pars.gls
-model.info.gls <- arbutus:::model.info.gls
+model_type.gls <- arbutus:::model_type.gls
+model_data.gls <- arbutus:::model_data.gls
+model_pars.gls <- arbutus:::model_pars.gls
+model_info.gls <- arbutus:::model_info.gls
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa=100)
@@ -30,10 +30,10 @@ fit.gls.eb.ml <- gls(y ~ x, data, corBlomberg(1, phy, fixed=TRUE), method="ML")
 fit.gls.la.ml <- gls(y ~ x, data, corPagel(1, phy), method="ML")
 
 test_that("Model types are correct", {
-  expect_that(model.type(fit.gls.bm), is_identical_to("BM"))
-  expect_that(model.type(fit.gls.ou), is_identical_to("OU"))
-  expect_that(model.type(fit.gls.eb), is_identical_to("EB"))
-  expect_that(model.type(fit.gls.la), is_identical_to("lambda"))
+  expect_that(model_type(fit.gls.bm), is_identical_to("BM"))
+  expect_that(model_type(fit.gls.ou), is_identical_to("OU"))
+  expect_that(model_type(fit.gls.eb), is_identical_to("EB"))
+  expect_that(model_type(fit.gls.la), is_identical_to("lambda"))
 })
 
 test_that("Models return their source data", {
@@ -46,10 +46,10 @@ test_that("Models return their source data", {
   cmp.eb <- list(phy=phy, data=drop.attributes(resid(fit.gls.eb)))
   cmp.la <- list(phy=phy, data=drop.attributes(resid(fit.gls.la)))
 
-  expect_that(model.data(fit.gls.bm), equals(cmp.bm))
-  expect_that(model.data(fit.gls.ou), equals(cmp.ou))
-  expect_that(model.data(fit.gls.eb), equals(cmp.eb))
-  expect_that(model.data(fit.gls.la), equals(cmp.la))
+  expect_that(model_data(fit.gls.bm), equals(cmp.bm))
+  expect_that(model_data(fit.gls.ou), equals(cmp.ou))
+  expect_that(model_data(fit.gls.eb), equals(cmp.eb))
+  expect_that(model_data(fit.gls.la), equals(cmp.la))
 })
 
 ## Checking that the s2 values are correct is actually quite
@@ -57,29 +57,29 @@ test_that("Models return their source data", {
 ## here is Matt's original function, so at least it's a separate
 ## implementation to check against.
 get.sigma2.gls <- function(fit) {
-  model <- model.type(fit)
-  phy <- model.data(fit)$phy
+  model <- model_type(fit)
+  phy <- model_data(fit)$phy
   rr <- as.numeric(resid(fit))
   names(rr) <- names(resid(fit))
    
   if (model == "BM"){
-    sigsq <- sigsq.est(as.unit.tree(phy, data=rr))
+    sigsq <- pic_stat_msig(make_unit_tree(phy, data=rr))
     pars <- list(sigsq=sigsq, z0=NA, SE=0)
   } else if (model == "OU"){
     alpha <- as.numeric(fit$modelStruct$corStruct)
     tmp <- list(sigsq=1, alpha=alpha, SE=0)
-    rescalephy <- model.phylo.ou(phy, pars=tmp)
-    sigsq <- sigsq.est(as.unit.tree(rescalephy, data=rr)) 
+    rescalephy <- model_phylo_ou(phy, pars=tmp)
+    sigsq <- pic_stat_msig(make_unit_tree(rescalephy, data=rr)) 
   } else if (model == "EB"){
     a <- as.numeric(fit$modelStruct$corStruct)
     tmp <- list(sigsq=1, a=a, SE=0)
-    rescalephy <- model.phylo.eb(phy, pars=tmp)
-    sigsq <- sigsq.est(as.unit.tree(rescalephy, data=rr)) 
+    rescalephy <- model_phylo_eb(phy, pars=tmp)
+    sigsq <- pic_stat_msig(make_unit_tree(rescalephy, data=rr)) 
   } else if (model == "lambda") {
     lambda <- as.numeric(fit$modelStruct$corStruct)
     tmp <- list(sigsq=1, lambda=lambda, SE=0)
-    rescalephy <- model.phylo.lambda(phy, pars=tmp)
-    sigsq <- sigsq.est(as.unit.tree(rescalephy, data=rr))  
+    rescalephy <- model_phylo_lambda(phy, pars=tmp)
+    sigsq <- pic_stat_msig(make_unit_tree(rescalephy, data=rr))  
   }
 
   if (fit$method == "ML")
@@ -87,7 +87,7 @@ get.sigma2.gls <- function(fit) {
 
   sigsq
 }
-environment(get.sigma2.gls) <- environment(arbutus:::sigsq.est)
+environment(get.sigma2.gls) <- environment(arbutus:::pic_stat_msig)
 estimate.sigma2.gls <- arbutus:::estimate.sigma2.gls
 
 test_that("Diffusion parameter is correct (REML)", {
@@ -123,17 +123,17 @@ test_that("Coefficient names are as expected", {
   pars.eb <- c("a", "sigsq", "SE", "z0")
   pars.la <- c("lambda", "sigsq", "SE", "z0")
 
-  expect_that(names(model.pars(fit.gls.bm)), is_identical_to(pars.bm))
-  expect_that(names(model.pars(fit.gls.ou)), is_identical_to(pars.ou))
-  expect_that(names(model.pars(fit.gls.eb)), is_identical_to(pars.eb))
-  expect_that(names(model.pars(fit.gls.la)), is_identical_to(pars.la))
+  expect_that(names(model_pars(fit.gls.bm)), is_identical_to(pars.bm))
+  expect_that(names(model_pars(fit.gls.ou)), is_identical_to(pars.ou))
+  expect_that(names(model_pars(fit.gls.eb)), is_identical_to(pars.eb))
+  expect_that(names(model_pars(fit.gls.la)), is_identical_to(pars.la))
 })
 
 test_that("Overall processed object looks legit", {
-  obj.bm <- model.info(fit.gls.bm)
-  obj.ou <- model.info(fit.gls.ou)
-  obj.eb <- model.info(fit.gls.eb)
-  obj.la <- model.info(fit.gls.la)
+  obj.bm <- model_info(fit.gls.bm)
+  obj.ou <- model_info(fit.gls.ou)
+  obj.eb <- model_info(fit.gls.eb)
+  obj.la <- model_info(fit.gls.la)
 
   obj.names <- c("data", "pars", "type")
   expect_that(names(obj.bm), is_identical_to(obj.names))

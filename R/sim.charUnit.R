@@ -10,11 +10,11 @@
 #'   but the data and the contrasts will be replaced by the simulated datasets.
 #' 
 #' @details If a single unit.tree is supplied, the function will simulate \code{nsim} datasets under a Brownian motion
-#'   process with a rate of 1. If a lits of unit.trees supplied (such as those derived from a Bayesian analysis)
+#'   process with a rate of 1. If a list of unit.trees supplied (such as those derived from a Bayesian analysis)
 #'   \code{sim.char.unit} will simulate a single data set on each tree in the list and the \code{nsim} argument will
 #'   be ignored.
 #' 
-#' @export sim.char.unit
+#' @export simulate_char_unit
 #'
 #' @examples
 #' data(finch)
@@ -22,21 +22,21 @@
 #' dat <- finch$data[,"wingL"]
 #'
 #' ## build unit.tree object
-#' unit.tree <- as.unit.tree(phy, data=dat)
+#' unit.tree <- make_unit_tree(phy, data=dat)
 #'
 #' ## simulate 2 datasets on unit tree
-#' sims <- sim.char.unit(unit.tree, nsim=2)
+#' sims <- simulate_char_unit(unit.tree, nsim=2)
 #' 
 #' sims
 #' 
-sim.char.unit <- function(unit.tree, nsim=1000) {
+simulate_char_unit <- function(unit.tree, nsim=1000) {
   if (inherits(unit.tree, "unit.tree")) {
     phy <- unit.tree$phy
     dat <- sim.char.std.bm(phy, nsim)
-    lapply(seq_len(nsim), function(i) as.unit.tree(phy, dat[,i]))
+    lapply(seq_len(nsim), function(i) make_unit_tree(phy, data=dat[,i]))
   } else if (is.list(unit.tree)) {
     ## Simulate one data set per tree
-    lapply(unit.tree, function(u) sim.char.unit(u, nsim=1)[[1]])
+    lapply(unit.tree, function(u) simulate_char_unit(u, nsim=1)[[1]])
   } else {
     stop("'unit.tree' must be a single unit tree or a list of unit.trees")
   }
