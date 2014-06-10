@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>Index. arbutus 1.0</title>
+<title>Index. arbutus 1.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="Matthew Pennell, Richard FitzJohn, Will Cornwell, Luke Harmon">
 
@@ -20,7 +20,7 @@
     <div class="navbar">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">arbutus 1.0</a>
+      <a class="brand" href="#">arbutus 1.1</a>
       <div class="nav">
         <ul class="nav">
           <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
@@ -37,9 +37,9 @@
       
       <div class="row">
   <div class="span8">
-    <h1>arbutus</h1>
+    <p><a href="https://travis-ci.org/mwpennell/arbutus"><img src="https://travis-ci.org/mwpennell/arbutus.png?branch=master" alt="Build Status"/></a></p>
 
-<p><a href="https://travis-ci.org/mwpennell/arbutus"><img src="https://travis-ci.org/mwpennell/arbutus.png?branch=master" alt="Build Status"/></a></p>
+<p><img src="https://github.com/mwpennell/arbutus/raw/master/extra/arbutus_logo.png" alt="arbutus logo"/></p>
 
 <p>This package was developed to assess the adequacy of continuous trait models. The package includes functions to parse the output of various model-fitting functions in R, rescale phylogenies according to fitted parameters, simulate datasets, calculate summary statistics and plot results. The methods is described in a forthcoming paper: &ldquo;Model adequacy and the macroevolution of angiosperm functional traits&rdquo; <a href="http://biorxiv.org/content/early/2014/04/07/004002">(preprint here)</a>.</p>
 
@@ -51,12 +51,7 @@
 install_github(&quot;mwpennell/arbutus&quot;)
 </code></pre>
 
-<p>The package depends on the following libraries:</p>
-
-<ul>
-<li><code>ape</code></li>
-<li><code>ggplot2</code></li>
-</ul>
+<p>The package depends on the <code>ape</code> library</p>
 
 <h2>Supported packages</h2>
 
@@ -87,31 +82,18 @@ install_github(&quot;mwpennell/arbutus&quot;)
         <code><a href="arbutus.html">arbutus</a></code>(arbutus-arbutus, arbutus-package)<br />Arbutus: Evaluate model adequacy for phylogenetic models of continuous character evolution</li>
             
       <li>
-        <code><a href="as.unit.tree.html">as.unit.tree</a></code><br />Create unit.tree object</li>
+        <code><a href="arbutus_plot_dist.html">arbutus_plot_dist</a></code><br />Plot the simulated test statistics versus observed test statistic
+</li>
             
       <li>
-        <code><a href="compare.summ.stats.html">compare.summ.stats</a></code><br />Compare observed and simulated summary statistics</li>
+        <code><a href="arbutus_plot_point.html">arbutus_plot_point</a></code><br />Plot the simulated test statistics versus observed test statistic
+</li>
             
       <li>
-        <code><a href="contrast.asr.plot.html">contrast.asr.plot</a></code><br />Plot contrasts versus their inferred ancestral states</li>
+        <code><a href="calculate_pic_stat.html">calculate_pic_stat</a></code><br />Calculate test statistics on a unit tree</li>
             
       <li>
-        <code><a href="contrast.nh.plot.html">contrast.nh.plot</a></code><br />Plot contrasts versus their node height</li>
-            
-      <li>
-        <code><a href="contrast.var.plot.html">contrast.var.plot</a></code><br />Plot contrasts versus their variances</li>
-            
-      <li>
-        <code><a href="cor.contrast.asr.html">cor.contrast.asr</a></code><br />Relationship between contrasts and inferred ancestral state</li>
-            
-      <li>
-        <code><a href="cor.contrast.nh.html">cor.contrast.nh</a></code><br />Relationship between contrasts and node height</li>
-            
-      <li>
-        <code><a href="cor.contrast.var.html">cor.contrast.var</a></code><br />Relationship between contrasts and their variances</li>
-            
-      <li>
-        <code><a href="cv.contrast.html">cv.contrast</a></code><br />Coefficient of variation of contrasts</li>
+        <code><a href="compare_pic_stat.html">compare_pic_stat</a></code><br />Compare observed and simulated test statistics</li>
             
       <li>
         <code><a href="finch.html">finch</a></code><br />Galapagos finch dataset</li>
@@ -120,40 +102,65 @@ install_github(&quot;mwpennell/arbutus&quot;)
         <code><a href="is.unit.tree.html">is.unit.tree</a></code><br />Check if object is a unit.tree</li>
             
       <li>
-        <code><a href="ks.contrast.html">ks.contrast</a></code><br />Evaluate normality of contrasts</li>
+        <code><a href="mahalanobis_arbutus.html">mahalanobis_arbutus</a></code><br />Multivariate measure of model adequacy</li>
             
       <li>
-        <code><a href="make.model.phylo.html">make.model.phylo</a></code><br />Rescale phylogeny based on fitted model parameters</li>
+        <code><a href="make_model_phylo.html">make_model_phylo</a></code><br />Rescale phylogeny based on fitted model parameters</li>
             
       <li>
-        <code><a href="model.info.html">model.info</a></code><br />Get model and data from model fitted object</li>
+        <code><a href="make_unit_tree.html">make_unit_tree</a></code><br />Create unit.tree object</li>
             
       <li>
-        <code><a href="mv.summ.stats.html">mv.summ.stats</a></code><br />Multivariate measure of model adequacy</li>
+        <code><a href="model_info.html">model_info</a></code><br />Get model and data from model fitted object</li>
             
       <li>
-        <code><a href="phy.model.check.html">phy.model.check</a></code><br />Assess the adequacy of continuous trait models</li>
+        <code><a href="pic_stat_cvar.html">pic_stat_cvar</a></code><br />Coefficient of variation of contrasts</li>
             
       <li>
-        <code><a href="plot.phy.ss.html">plot.phy.ss</a></code><br />Plot summary statistics for model adequacy</li>
+        <code><a href="pic_stat_cvar_plot.html">pic_stat_cvar_plot</a></code><br />Plot histogram of contrasts with variance</li>
             
       <li>
-        <code><a href="print.phy.ss.html">print.phy.ss</a></code><br />Print summary statistics</li>
+        <code><a href="pic_stat_dcdf.html">pic_stat_dcdf</a></code><br />Evaluate normality of contrasts</li>
             
       <li>
-        <code><a href="pval.summ.stats.html">pval.summ.stats</a></code><br />Extract p--values for summary statistics</li>
+        <code><a href="pic_stat_dcdf_plot.html">pic_stat_dcdf_plot</a></code><br />Plot empirical cumulative distribution of contrasts versus a normal
+</li>
             
       <li>
-        <code><a href="sigsq.est.html">sigsq.est</a></code><br />REML estimate of BM parameter</li>
+        <code><a href="pic_stat_msig.html">pic_stat_msig</a></code><br />REML estimate of BM parameter</li>
             
       <li>
-        <code><a href="sim.char.unit.html">sim.char.unit</a></code><br />Simulate character evolution on unit tree</li>
+        <code><a href="pic_stat_msig_plot.html">pic_stat_msig_plot</a></code><br />Plot histogram of squared contrasts</li>
             
       <li>
-        <code><a href="summ.stats.html">summ.stats</a></code><br />Calculate summary statistics on a unit tree</li>
+        <code><a href="pic_stat_sasr.html">pic_stat_sasr</a></code><br />Relationship between contrasts and inferred ancestral state</li>
             
       <li>
-        <code><a href="var.contrast.html">var.contrast</a></code><br />Variance of contrasts</li>
+        <code><a href="pic_stat_sasr_plot.html">pic_stat_sasr_plot</a></code><br />Plot contrasts versus their inferred ancestral states</li>
+            
+      <li>
+        <code><a href="pic_stat_shgt.html">pic_stat_shgt</a></code><br />Relationship between contrasts and node height</li>
+            
+      <li>
+        <code><a href="pic_stat_shgt_plot.html">pic_stat_shgt_plot</a></code><br />Plot contrasts versus their node height</li>
+            
+      <li>
+        <code><a href="pic_stat_svar.html">pic_stat_svar</a></code><br />Relationship between contrasts and their variances</li>
+            
+      <li>
+        <code><a href="pic_stat_svar_plot.html">pic_stat_svar_plot</a></code><br />Plot contrasts versus their variances</li>
+            
+      <li>
+        <code><a href="plot.arbutus.html">plot.arbutus</a></code><br />Plot the simulated test statistics versus observed test statistics</li>
+            
+      <li>
+        <code><a href="print.arbutus.html">print.arbutus</a></code><br />Print arbutus object</li>
+            
+      <li>
+        <code><a href="pvalue_arbutus.html">pvalue_arbutus</a></code><br />Extract p--values for test statistics</li>
+            
+      <li>
+        <code><a href="simulate_char_unit.html">simulate_char_unit</a></code><br />Simulate character evolution on unit tree</li>
     
     </ul>
   </div>
@@ -162,7 +169,7 @@ install_github(&quot;mwpennell/arbutus&quot;)
         
     <h2>Dependencies</h2>
     <ul>
-      <li><strong>Depends</strong>: ape, ggplot2</li>
+      <li><strong>Depends</strong>: ape</li>
       <li><strong>Imports</strong>: </li>
       <li><strong>Suggests</strong>: diversitree</li>
       <li><strong>Extends</strong>: </li>

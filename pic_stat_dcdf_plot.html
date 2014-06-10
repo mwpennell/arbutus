@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>pic_stat_dcdf_plot. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Plot empirical cumulative distribution of contrasts versus a normal
+distribution</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>pic_stat_dcdf_plot(x, xlab&nbsp;=&nbsp;"Sample quantiles", ylab&nbsp;=&nbsp;expression(hat(F)[n](x)), col&nbsp;=&nbsp;NA, las&nbsp;=&nbsp;1, lwd&nbsp;=&nbsp;2, legend&nbsp;=&nbsp;TRUE, legend.obs&nbsp;=&nbsp;"Contrasts", legend.norm&nbsp;=&nbsp;"Normal", cex&nbsp;=&nbsp;1, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a <code>unit.tree</code> object (see <code><a href='make_unit_tree.html'>make_unit_tree</a></code>).</dd>
+      <dt>xlab</dt>
+      <dd>x-axis label. Defaults to "Sample quantiles".</dd>
+      <dt>ylab</dt>
+      <dd>y-axis label. Defaults to "expression(hat(F)[n](x))".</dd>
+      <dt>col</dt>
+      <dd>plot colours. The first colour is the colour of the cdf of the
+contrats and the second is that of the normal distribution. If no argument,
+uses default colours.</dd>
+      <dt>las</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>). Defaults to 1.</dd>
+      <dt>lwd</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>). Defaults to 2.</dd>
+      <dt>legend</dt>
+      <dd>logical, whether legend should be plotted.</dd>
+      <dt>legend.obs</dt>
+      <dd>legend label for distribution of contrasts. Defaults to
+"Contrats"</dd>
+      <dt>legend.norm</dt>
+      <dd>legend label for normal distribution. Defaults to
+"Normal"</dd>
+      <dt>cex</dt>
+      <dd>plot parameter for legend (see <code>link{par}</code>). Defaults to 1.</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot'>plot</a></code>.</dd>
+    </dl>
+    
+    <div class="Plot empirical cumulative distribution of contrasts versus a normal
+distribution">
+      <h2>Plot empirical cumulative distribution of contrasts versus a normal
+distribution</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Plot the empirical cumulative distribution of the contrats
+derived from a rescaled 'unit.tree' against the ecdf of a normal distribution
+with mean 0 and sd of the observed contrasts.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function plots the empirical cumulative distribution function
+of the contrasts computed on the unit tree against that of a normal
+distribution. The empirical sd of the contrasts is used rather than the
+expected (i.e., 1) to distinguish non-normailty vs. inflated/deflated
+variance.</p>
+  
+      <p>The D-statistics from the KS test (used in <code><a href='pic_stat_dcdf.html'>pic_stat_dcdf</a></code>) is
+the maximum distance between the two curves. This is a default test
+test statistic in <code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>.</p>
+  
+      <p>If the model is adequate, the two curves should line up.</p>
+  
+      <p>The function can currently only take a single unit.tree (does not
+integrate across unit.trees)</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## finch data
+data(finch)
+phy &lt;- finch$phy
+data &lt;- finch$data[,1]
+
+u &lt;- make_unit_tree(phy, data=data)
+
+pic_stat_dcdf_plot(u)
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>pic_stat_dcdf_plot</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='make_unit_tree.html'>make_unit_tree</a></code>, <code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>,
+<code><a href='pic_stat_dcdf.html'>pic_stat_dcdf</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

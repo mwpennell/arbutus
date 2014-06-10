@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>arbutus_plot_dist. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Plot the simulated test statistics versus observed test statistic
+(distribution of parameter estimates)</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>arbutus_plot_dist(x, stat, xlab&nbsp;=&nbsp;NA, ylab&nbsp;=&nbsp;"Counts", col&nbsp;=&nbsp;NA, breaks&nbsp;=&nbsp;NA, las&nbsp;=&nbsp;1, lwd&nbsp;=&nbsp;3, legend&nbsp;=&nbsp;TRUE, legend.pos&nbsp;=&nbsp;"topright", cex&nbsp;=&nbsp;1, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an <code>arbutus</code> object inherited from
+<code><a href='compare_pic_stat.html'>compare_pic_stat</a></code></dd>
+      <dt>stat</dt>
+      <dd>the name of the test statistic to plot</dd>
+      <dt>xlab</dt>
+      <dd>x-axis label. Defaults to <code>stat</code>.</dd>
+      <dt>ylab</dt>
+      <dd>y-axis label. Defaults to "Counts".</dd>
+      <dt>col</dt>
+      <dd>colours used in plot. The first colour corresponds to the
+histogram of simulated test statistics. The second colour to the line
+representing the observed value of the test statistic. If no argument is
+supplied, the function uses the default colours.</dd>
+      <dt>breaks</dt>
+      <dd>the number of breaks in the histogram. Defaults to
+20.</dd>
+      <dt>las</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>).</dd>
+      <dt>lwd</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>).</dd>
+      <dt>legend</dt>
+      <dd>logical, specifying whether a legend should be included.</dd>
+      <dt>legend.pos</dt>
+      <dd>postiion of the legend (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/legend'>legend</a></code>).</dd>
+      <dt>cex</dt>
+      <dd>plot parameter for legend (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>).</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to plot</dd>
+    </dl>
+    
+    <div class="Plot the simulated test statistics versus observed test statistic
+(distribution of parameter estimates)">
+      <h2>Plot the simulated test statistics versus observed test statistic
+(distribution of parameter estimates)</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Plots a histogram of the simulated values along a histogram of
+the observed values for a single test statistic when a distribution of
+estimates is used</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function is designed to give researchers a quick visual
+inspection of model adequacy by plotting the simulated distribution of
+a test statistic along with the distribution of empirical estimates.</p>
+  
+      <p>If the empirical distribution of the test statistic lies in the tails of the
+distribution of simulated test statistics, the model can be rejected
+as inadequate.</p>
+  
+      <p>The p-values corresponding to this plot can be obtained with the function
+<code><a href='pvalue_arbutus.html'>pvalue_arbutus</a></code>.</p>
+  
+      <p><code><a href='plot.arbutus.html'>plot.arbutus</a></code> wraps this function and allows results from all
+test statistics to be viewed in a single plot.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## finch data
+data(finch)
+phy &lt;- finch$phy
+data &lt;- finch$data[,1]
+
+## pretend that the tree has already been rescaled
+## and that we have a list of rescaled trees
+mphy &lt;- lapply(seq_len(50), function(x) {phy})
+class(mphy) &lt;- &quot;multiPhylo&quot;
+modelad &lt;- arbutus(mphy, data=data)
+arbutus_plot_dist(modelad, &quot;m.sig&quot;)
+
+
+## &lt;strong&gt;Not run&lt;/strong&gt;: 
+# ## use diversitree to fit a BM model with MCMC
+# require(diversitree)
+# lik &lt;- make.bm(phy, data)
+# f &lt;- mcmc(lik, x.init=1, nsteps=1000, w=1, print.every=0
+# modelad.bm &lt;- arbutus(f, sample=100)
+# arbutus_plot_dist(modelad.bm, &quot;m.sig&quot;)
+# ## &lt;strong&gt;End(Not run)&lt;/strong&gt;
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>arbutus_plot_dist</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='arbutus.html'>arbutus</a></code>, <code><a href='compare_pic_stat.html'>compare_pic_stat</a></code>,
+<code><a href='plot.arbutus.html'>plot.arbutus</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

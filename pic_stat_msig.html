@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>pic_stat_msig. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>REML estimate of BM parameter</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>pic_stat_msig(unit.tree)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>unit.tree</dt>
+      <dd>a <code>unit.tree</code> object</dd>
+    </dl>
+    
+    <div class="REML estimate of BM parameter">
+      <h2>REML estimate of BM parameter</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>m.sig</code> estimate of sigma2</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Calculates the mean of the squared contrasts,
+which is equal to the REML estimate of the BM rate parameter.
+Used as a test statistic to evaluate model adequacy</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This test statistic is used to assess the ability of the model
+to adequate estimate the rate of evolution. On datasets simulated on a unit.tree
+(see <code><a href='simulate_char_unit.html'>simulate_char_unit</a></code>), the expected value is equal to 1.</p>
+  
+      <p>The REML estimate of sigma2 is included as a default
+test statistic in the function <code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>.</p>
+  
+      <p>The test statistic computed from a single <code>unit.tree</code> can be visualized
+with the function <code><a href='pic_stat_msig_plot.html'>pic_stat_msig_plot</a></code>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- make_unit_tree(phy, data=dat)
+
+## Estimate sigsq from unit.tree
+
+pic_stat_msig(unit.tree)
+</div>
+<div class='output'>[1] 0.07642449
+</div>
+<div class='input'>
+## Visualization
+
+pic_stat_msig_plot(unit.tree)
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>pic_stat_msig</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>, <code><a href='default_pic_stat.html'>default_pic_stat</a></code>, <code><a href='pic_stat_msig_plot.html'>pic_stat_msig_plot</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

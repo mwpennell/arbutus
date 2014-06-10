@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>default_pic_stat. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Internal function for getting default test statistics</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>default_pic_stat()</div></pre>
+        
+    <div class="Internal function for getting default test statistics">
+      <h2>Internal function for getting default test statistics</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a named list of functions</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Creates a list of the default test statistics to be used
+to asses model adequacy</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The following test statistics are produced by this function:
+ <ol>
+<li>m.sig: The mean of the squared contrasts. This is equivalent to the REML estimate of sigsq.</p>
+  
+      <p></li>
+<li>c.var: The coefficient of variation of the absolute value of the contrasts.</p>
+  
+      <p></li>
+<li>s.var: The slope of a linear model fit between the contrasts and their expected variances.</p>
+  
+      <p></li>
+<li>s.anc: The slope of a linear model fit between the contrasts and their inferred ancestral state.</p>
+  
+      <p></li>
+<li>s.hgt: The slope of a linear model fit between the contrasts and the node height at which they were calculated.</p>
+  
+      <p></li>
+<li>d.cdf: The D-statistic from a KS test comparing the distribution of the contrasts to a normal distribution  with mean 0 and variance equal to the square root of the squared mean of the contrasts.
+ </li>
+</ol></p>
+  
+      <p></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## get default test statistics
+stats &lt;- default_pic_stat()
+stats
+</div>
+<div class='output'>$m.sig
+function (unit.tree) 
+{
+    assert.is.unit.tree(unit.tree)
+    mean(unit.tree$pics[, &quot;contrasts&quot;]^2)
+}
+&lt;environment: namespace:arbutus&gt;
+
+$c.var
+function (unit.tree) 
+{
+    assert.is.unit.tree(unit.tree)
+    con &lt;- abs(unit.tree$pics[, &quot;contrasts&quot;])
+    sd(con)/mean(con)
+}
+&lt;environment: namespace:arbutus&gt;
+
+$s.var
+function (unit.tree) 
+{
+    assert.is.unit.tree(unit.tree)
+    sd.pic &lt;- sqrt(unit.tree$pics[, &quot;variance&quot;])
+    abs.pic &lt;- abs(unit.tree$pics[, &quot;contrasts&quot;])
+    cv &lt;- lm(abs.pic ~ sd.pic)
+    unname(coef(cv)[&quot;sd.pic&quot;])
+}
+&lt;environment: namespace:arbutus&gt;
+
+$s.asr
+function (unit.tree) 
+{
+    assert.is.unit.tree(unit.tree)
+    asr &lt;- ace(unit.tree$data, unit.tree$phy, method = &quot;pic&quot;)$ace
+    abs.pic &lt;- abs(unit.tree$pics[, &quot;contrasts&quot;])
+    ca &lt;- lm(abs.pic ~ asr)
+    unname(coef(ca)[&quot;asr&quot;])
+}
+&lt;environment: namespace:arbutus&gt;
+
+$s.hgt
+function (unit.tree) 
+{
+    assert.is.unit.tree(unit.tree)
+    ht &lt;- edge.height(unit.tree$phy)
+    N &lt;- Ntip(unit.tree$phy)
+    nh &lt;- ht$end[c((N + 1):nrow(ht))]
+    names(nh) &lt;- rownames(ht[c((N + 1):nrow(ht)), ])
+    abs.pic &lt;- abs(unit.tree$pics[, &quot;contrasts&quot;])
+    ch &lt;- lm(abs.pic ~ nh)
+    unname(coef(ch)[&quot;nh&quot;])
+}
+&lt;environment: namespace:arbutus&gt;
+
+$d.cdf
+function (unit.tree) 
+{
+    assert.is.unit.tree(unit.tree)
+    sd &lt;- sqrt(mean(unit.tree$pics[, &quot;contrasts&quot;]^2))
+    nd &lt;- rnorm(10000, mean = 0, sd = sd)
+    ksbm &lt;- suppressWarnings(ks.test(unit.tree$pics[, &quot;contrasts&quot;], 
+        nd)$statistic)
+    unname(ksbm)
+}
+&lt;environment: namespace:arbutus&gt;
+
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>default_pic_stat</li>
+    </ul>
+    <ul>
+      <li>internal</li>
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>, <code><a href='pic_stat_msig.html'>pic_stat_msig</a></code>, <code><a href='pic_stat_cvar.html'>pic_stat_cvar</a></code>,
+<code><a href='pic_stat_svar.html'>pic_stat_svar</a></code>, <code><a href='pic_stat_sasr.html'>pic_stat_sasr</a></code>, <code><a href='pic_stat_shgt.html'>pic_stat_shgt</a></code>,
+<code><a href='pic_stat_dcdf.html'>pic_stat_dcdf</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

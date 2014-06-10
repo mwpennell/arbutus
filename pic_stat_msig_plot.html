@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>pic_stat_msig_plot. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Plot histogram of squared contrasts</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>pic_stat_msig_plot(x, xlab&nbsp;=&nbsp;"Squared contrasts", ylab&nbsp;=&nbsp;"Counts", col&nbsp;=&nbsp;NA, breaks&nbsp;=&nbsp;NA, las&nbsp;=&nbsp;1, lwd&nbsp;=&nbsp;2, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>a <code>unit.tree</code> object (see <code><a href='make_unit_tree.html'>make_unit_tree</a></code>).</dd>
+      <dt>xlab</dt>
+      <dd>x-axis label. Defaults to "Squared contrasts".</dd>
+      <dt>ylab</dt>
+      <dd>y-axis label. Defaults to "Counts".</dd>
+      <dt>col</dt>
+      <dd>plot colours. The first colour is used for the histogram, the
+second designates the mean. If no argument supplied, uses default colours.</dd>
+      <dt>breaks</dt>
+      <dd>number of breaks for histogram. Defaults to the number of
+contrats/10.</dd>
+      <dt>las</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>). Defaults to 1.</dd>
+      <dt>lwd</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>). Defaults to 2.</dd>
+      <dt>...</dt>
+      <dd>aditional arguments to be passed to <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot'>plot</a></code>.</dd>
+    </dl>
+    
+    <div class="Plot histogram of squared contrasts">
+      <h2>Plot histogram of squared contrasts</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>This is a diagnostic plot for looking at the distribution
+of squared contrasts derived from a rescaled 'unit.tree' object.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function is just intended to be a quick diagnostic for looking
+at the distribution of squared contrats. The mean value (the vertical line
+in the plot) is equal to the value of <code><a href='pic_stat_msig.html'>pic_stat_msig</a></code> and is
+the REML estimate of the Brownian motion rate parameter. It is a default
+test statistic in <code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>.</p>
+  
+      <p>If the model is adequate the mean should be close to 1.</p>
+  
+      <p>This function can currently only take a single unit.tree (does not
+integrate across unit.trees)</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## finch data
+data(finch)
+phy &lt;- finch$phy
+data &lt;- finch$data[,1]
+
+u &lt;- make_unit_tree(phy, data=data)
+
+pic_stat_msig_plot(u)
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>pic_stat_msig_plot</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='make_unit_tree.html'>make_unit_tree</a></code>, <code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>,
+<code><a href='pic_stat_msig.html'>pic_stat_msig</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

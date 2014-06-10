@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>is.unit.tree. arbutus 1.1</title>
+<title>pvalue_arbutus. arbutus 1.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -35,56 +35,76 @@
         
       </header>
       
-      <h1>Check if object is a unit.tree</h1>
+      <h1>Extract p--values for test statistics</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>is.unit.tree(x)</div></pre>
+    <pre><div>pvalue_arbutus(x)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>object</dd>
+      <dd>an <code>arbutus</code> object from the function <code><a href='compare_pic_stat.html'>compare_pic_stat</a></code></dd>
     </dl>
     
-    <div class="Check if object is a unit.tree">
-      <h2>Check if object is a unit.tree</h2>
+    <div class="Extract p--values for test statistics">
+      <h2>Extract p--values for test statistics</h2>
       
     </div>
 
     <div class="Value">
       <h2>Value</h2>
       
-      <p>logical</p>
+      <p>a named vector of two-tailed p-values</p>
   
     </div>
 
     <div class="Description">
       <h2>Description</h2>
       
-      <p>Utility function for checking if object is of class 'unit.tree'</p>
+      <p>Utility function for extracting p-values from the output
+of <code><a href='compare_pic_stat.html'>compare_pic_stat</a></code></p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## finch data
-data(finch)
+    <pre class="examples"><div class='input'>data(finch)
 phy &lt;- finch$phy
-data &lt;- finch$data[,&quot;wingL&quot;]
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- make_unit_tree(phy, data=dat)
 
+## calculate default test stats on observed data
+obs &lt;- calculate_pic_stat(unit.tree, stats=NULL)
 
-## using just the given phylogeny
-unit.tree.phy &lt;- make_unit_tree(phy, data=data)
+## simulate data on unit.tree
+sim.dat &lt;- simulate_char_unit(unit.tree, nsim=10)
 
-is.unit.tree(unit.tree.phy)
+## calculate default test stats on simulated data
+sim &lt;- calculate_pic_stat(sim.dat, stats=NULL)
+
+## compare simulated to observed test statistics
+res &lt;- compare_pic_stat(obs, sim)
+
+## get p-values
+pvalue_arbutus(res)
 </div>
-<div class='output'>[1] TRUE
+<div class='output'>    m.sig     c.var     s.var     s.asr     s.hgt     d.cdf 
+0.0000000 0.5454545 0.9090909 0.0000000 0.9090909 0.7272727 
+</div>
+<div class='input'>
+## note these are returned by default with print.arbutus
+res
+</div>
+<div class='output'>Two-tailed p-values for test statistics: 
+
+    m.sig     c.var     s.var     s.asr     s.hgt     d.cdf 
+0.0000000 0.5454545 0.9090909 0.0000000 0.9090909 0.7272727 
 </div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>is.unit.tree</li>
+      <li>pvalue_arbutus</li>
     </ul>
     <ul>
       
@@ -92,7 +112,7 @@ is.unit.tree(unit.tree.phy)
       
     <h2>See also</h2>
     
-<code><a href='make_unit_tree.html'>make_unit_tree</a></code>
+<code><a href='compare_pic_stat.html'>compare_pic_stat</a></code>
 
         
   </div>

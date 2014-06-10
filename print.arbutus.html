@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>is.unit.tree. arbutus 1.1</title>
+<title>print.arbutus. arbutus 1.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -35,65 +35,67 @@
         
       </header>
       
-      <h1>Check if object is a unit.tree</h1>
+      <h1>Print arbutus object</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>is.unit.tree(x)</div></pre>
+    <pre><div>"print"(x, ...)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>object</dd>
+      <dd>an <code>arbutus</code> object</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to print</dd>
     </dl>
     
-    <div class="Check if object is a unit.tree">
-      <h2>Check if object is a unit.tree</h2>
+    <div class="Print arbutus object">
+      <h2>Print arbutus object</h2>
       
     </div>
 
     <div class="Value">
       <h2>Value</h2>
       
-      <p>logical</p>
+      <p>prints p.values to screen</p>
   
     </div>
 
     <div class="Description">
       <h2>Description</h2>
       
-      <p>Utility function for checking if object is of class 'unit.tree'</p>
+      <p>Generic function for printing 'arbutus' objects
+from <code><a href='compare_pic_stat.html'>compare_pic_stat</a></code></p>
   
     </div>
     
     <h2 id="examples">Examples</h2>
-    <pre class="examples"><div class='input'>## finch data
-data(finch)
+    <pre class="examples"><div class='input'>data(finch)
 phy &lt;- finch$phy
-data &lt;- finch$data[,&quot;wingL&quot;]
+dat &lt;- finch$data[,&quot;wingL&quot;]
 
+## use arbutus() to assess model adequacy
+## pretend as if tree has already been rescaled
+p &lt;- arbutus(phy, data=dat, nsim=10)
 
-## using just the given phylogeny
-unit.tree.phy &lt;- make_unit_tree(phy, data=data)
-
-is.unit.tree(unit.tree.phy)
+## print output
+p
 </div>
-<div class='output'>[1] TRUE
+<div class='output'>Two-tailed p-values for test statistics: 
+
+    m.sig     c.var     s.var     s.asr     s.hgt     d.cdf 
+0.0000000 0.5454545 0.5454545 0.0000000 0.3636364 0.5454545 
 </div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>is.unit.tree</li>
+      <li>print.arbutus</li>
     </ul>
     <ul>
       
     </ul> -->
       
-    <h2>See also</h2>
-    
-<code><a href='make_unit_tree.html'>make_unit_tree</a></code>
-
         
   </div>
 </div>

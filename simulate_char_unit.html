@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>simulate_char_unit. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Simulate character evolution on unit tree</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>simulate_char_unit(unit.tree, nsim&nbsp;=&nbsp;1000)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>unit.tree</dt>
+      <dd>a 'unit.tree' object</dd>
+      <dt>nsim</dt>
+      <dd>the number of datasets to simulate (if single unit.tree is provided; see below)</dd>
+    </dl>
+    
+    <div class="Simulate character evolution on unit tree">
+      <h2>Simulate character evolution on unit tree</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>A list of unit.trees. In each unit.tree, the phylogeny will be the same as that of the input unit.tree(s)
+  but the data and the contrasts will be replaced by the simulated datasets.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Simulates continuous characters along a unit tree according to a Brownian motion
+  process with rate 1.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>If a single unit.tree is supplied, the function will simulate <code>nsim</code> datasets under a Brownian motion
+  process with a rate of 1. If a list of unit.trees supplied (such as those derived from a Bayesian analysis)
+  <code>sim.char.unit</code> will simulate a single data set on each tree in the list and the <code>nsim</code> argument will
+  be ignored.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+
+## build unit.tree object
+unit.tree &lt;- make_unit_tree(phy, data=dat)
+
+## simulate 2 datasets on unit tree
+sims &lt;- simulate_char_unit(unit.tree, nsim=2)
+
+sims
+</div>
+<div class='output'>[[1]]
+$phy
+
+Phylogenetic tree with 13 tips and 12 internal nodes.
+
+Tip labels:
+	fuliginosa, fortis, magnirostris, conirostris, scandens, difficilis, ...
+
+Rooted; includes branch lengths.
+
+$data
+  fuliginosa       fortis magnirostris  conirostris     scandens   difficilis 
+ -0.08842097   0.18204346   0.36030501  -0.25040376   0.35994066  -0.35517809 
+     pallida     parvulus   psittacula       pauper   Platyspiza        fusca 
+ -0.51228274  -0.29047271  -0.41542763  -0.12182210  -0.88990526   0.41662315 
+Pinaroloxias 
+ -0.50622799 
+
+$pics
+    contrasts  variance
+14  0.3910402 0.7918282
+15 -0.9389940 0.7610138
+16  0.8794009 0.7054494
+17  0.5145100 0.4518253
+18  0.8289551 0.3209403
+19 -0.6680254 0.2743694
+20  0.7829874 0.3038029
+21 -0.7145186 0.1925000
+22 -0.8154809 0.1100000
+23 -0.6537098 0.1529233
+24 -0.9435764 0.0600000
+25  0.6247746 0.0400000
+
+attr(,&quot;class&quot;)
+[1] &quot;unit.tree&quot;
+
+[[2]]
+$phy
+
+Phylogenetic tree with 13 tips and 12 internal nodes.
+
+Tip labels:
+	fuliginosa, fortis, magnirostris, conirostris, scandens, difficilis, ...
+
+Rooted; includes branch lengths.
+
+$data
+  fuliginosa       fortis magnirostris  conirostris     scandens   difficilis 
+ -0.71059875  -0.52071692  -0.97106184  -0.93090311  -1.37114533  -0.95728182 
+     pallida     parvulus   psittacula       pauper   Platyspiza        fusca 
+ -0.29301400  -0.23822022  -0.07574516   0.32566002  -0.95827351  -0.17966638 
+Pinaroloxias 
+  0.50986813 
+
+$pics
+    contrasts  variance
+14 -1.2297936 0.7918282
+15 -0.6611741 0.7610138
+16  0.3641559 0.7054494
+17 -1.3105377 0.4518253
+18 -0.0635528 0.3209403
+19  1.0281769 0.2743694
+20  0.2955992 0.3038029
+21  0.8100409 0.1925000
+22 -0.5725153 0.1100000
+23 -0.8621120 0.1529233
+24 -1.9703806 0.0600000
+25 -0.8123753 0.0400000
+
+attr(,&quot;class&quot;)
+[1] &quot;unit.tree&quot;
+
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>simulate_char_unit</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>pic_stat_sasr. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Relationship between contrasts and inferred ancestral state</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>pic_stat_sasr(unit.tree)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>unit.tree</dt>
+      <dd>a <code>unit.tree</code> object</dd>
+    </dl>
+    
+    <div class="Relationship between contrasts and inferred ancestral state">
+      <h2>Relationship between contrasts and inferred ancestral state</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p><code>s.asr</code> the estimated slope parameter</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Fits a linear model between the absolute value of the contrasts
+and the ancestral state inferred at the node at which the contrast was calculated</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This test statistic is the estimate of the slope from fitting
+a linear model between the contrasts and the inferred ancestral state at the node
+at which the contrasts were calculated. It is used
+to evaluate whether the model is adequately capturing variation relative to ancestral state.
+The ancestral states are calculated using the contrast based approach and are not technically
+ancestral state estimates (see Felsenstein 1985 -- American Naturalist); this is conceptually and statistically
+different from the maximum likelihood approach to reconstructing ancestral states.
+The contrast based approach is
+used here as there is a clear expectation of the relationship between the the contrasts and
+trait value. If the model is adequate, we expect there not to be a relationship
+between the contrasts and their node height (i.e. slope ~ 0).</p>
+  
+      <p>The slope of the contrasts and their variances is included as a default test statistic
+in the function <code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>.</p>
+  
+      <p>The test statistic computed from a single <code>unit.tree</code> can be visualized
+with the function <code><a href='pic_stat_sasr_plot.html'>pic_stat_sasr_plot</a></code>.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- make_unit_tree(phy, data=dat)
+
+## estimate slope
+pic_stat_sasr(unit.tree)
+</div>
+<div class='output'>[1] -1.22337
+</div>
+<div class='input'>
+## visualization
+pic_stat_sasr_plot(unit.tree)
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>pic_stat_sasr</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>, <code><a href='default_pic_stat.html'>default_pic_stat</a></code>, <code><a href='pic_stat_sasr_plot.html'>pic_stat_sasr_plot</a></code>,
+<code><a href='http://www.inside-r.org/packages/cran/stats/docs/lm'>lm</a></code>, <code><a href='http://www.inside-r.org/packages/cran/ape/docs/ace'>ace</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

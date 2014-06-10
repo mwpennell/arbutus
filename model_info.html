@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>model_info. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Get model and data from model fitted object</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>model_info(fit, ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>fit</dt>
+      <dd>a model fitted object (see <code><a href='make_unit_tree.html'>make_unit_tree</a></code> for details)</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to <code>model_info</code></dd>
+    </dl>
+    
+    <div class="Get model and data from model fitted object">
+      <h2>Get model and data from model fitted object</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>a classed object compatibile with a <code><a href='make_model_phylo.html'>make_model_phylo</a></code> function.</p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Generic function for pulling apart model fitted objects
+and obtaining phylogeny, data, model type and parameters</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>These functions are primarily used internally within the function
+<code><a href='make_unit_tree.html'>make_unit_tree</a></code>. A different <code>model_info.xx</code> function is built for every implemented
+class of model fitted object and is tailored to the specifics of the form of model output.
+The return value will differ depending on the model used. For example, if a single phylogeny
+is supplied which has been used to fit a single rate model, <code>model_info</code> will return
+a object of class <code>fitC</code>, consisting of the original tree to be rescaled, the
+original comparative dataset, the model class (e.g. "BM", "OU", etc.) and the model-specific
+parameters.</p>
+  
+      <p>The returned object needs to be of a class for which a <code><a href='make_model_phylo.html'>make_model_phylo</a></code> function
+exists. <code><a href='make_model_phylo.html'>make_model_phylo</a></code> will take the object output by <code>model_info</code> and
+return a 'unit.tree' object.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## finch data
+data(finch)
+phy &lt;- finch$phy
+data &lt;- finch$data[,&quot;wingL&quot;]
+
+## &lt;strong&gt;Not run&lt;/strong&gt;: 
+# require(geiger)
+# ## fit Brownian motion model
+# ## using geiger&#39;s fitContinuous function
+# fit.bm &lt;- fitContinuous(phy=phy, dat=data, model=&quot;BM&quot;,
+#                                  control=list(niter=10))
+# 
+# ## get model info using internal arbutus function
+# info.bm &lt;- model_info(fit.bm)
+# 
+# ## now using diversitree function
+# require(diversitree)
+# bmlik &lt;- make.bm(phy, data)
+# fit.bm.dt &lt;- find.mle(bmlik, x.init=1)
+# 
+# info.bm.dt &lt;- model_info(fit.bm.dt, lik=bmlik)
+# ## &lt;strong&gt;End(Not run)&lt;/strong&gt;
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>model_info</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='make_unit_tree.html'>make_unit_tree</a></code>, <code><a href='make_model_phylo.html'>make_model_phylo</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

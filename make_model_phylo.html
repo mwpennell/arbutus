@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-<title>is.unit.tree. arbutus 1.1</title>
+<title>make_model_phylo. arbutus 1.1</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="author" content="">
 
@@ -35,35 +35,52 @@
         
       </header>
       
-      <h1>Check if object is a unit.tree</h1>
+      <h1>Rescale phylogeny based on fitted model parameters</h1>
 
 <div class="row">
   <div class="span8">
     <h2>Usage</h2>
-    <pre><div>is.unit.tree(x)</div></pre>
+    <pre><div>make_model_phylo(x, ...)</div></pre>
     
     <h2>Arguments</h2>
     <dl>
       <dt>x</dt>
-      <dd>object</dd>
+      <dd>an object inherited from a <code>model_info</code> function</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to <code>make_model_phylo</code></dd>
     </dl>
     
-    <div class="Check if object is a unit.tree">
-      <h2>Check if object is a unit.tree</h2>
+    <div class="Rescale phylogeny based on fitted model parameters">
+      <h2>Rescale phylogeny based on fitted model parameters</h2>
       
     </div>
 
     <div class="Value">
       <h2>Value</h2>
       
-      <p>logical</p>
+      <p>a <code>phylo</code> object that can be used to from a <code>unit.tree</code> object</p>
   
     </div>
 
     <div class="Description">
       <h2>Description</h2>
       
-      <p>Utility function for checking if object is of class 'unit.tree'</p>
+      <p>Rescales phylogeny to form a 'unit.tree' using parameters
+from fitted model</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This is a generic function which rescales the phylogeny based on the model
+specific information. While the class and information may differ, the object must include
+the 'phylo' object to be rescaled and model specific information such as model type and
+parameter values.</p>
+  
+      <p>To include additional types of models, researchers will need to build a new <code><a href='model_info.html'>model_info</a></code>
+function for the given model type. The output should be assigned a novel class.
+A <code>make_model_phylo.class</code> object will need to be created to perform the rescaling.</p>
   
     </div>
     
@@ -73,18 +90,24 @@ data(finch)
 phy &lt;- finch$phy
 data &lt;- finch$data[,&quot;wingL&quot;]
 
-
-## using just the given phylogeny
-unit.tree.phy &lt;- make_unit_tree(phy, data=data)
-
-is.unit.tree(unit.tree.phy)
-</div>
-<div class='output'>[1] TRUE
+## &lt;strong&gt;Not run&lt;/strong&gt;: 
+# require(geiger)
+# ## fit Brownian motion model
+# ## using geiger&#39;s fitContinuous function
+# fit.bm &lt;- fitContinuous(phy=phy, dat=data, model=&quot;BM&quot;,
+#                                  control=list(niter=10))
+# 
+# ## get model info using internal arbutus function
+# info.bm &lt;- model_info(fit.bm)
+# 
+# ## rescale phylogeny based on model info
+# make_model_phylo(info.bm)
+# ## &lt;strong&gt;End(Not run)&lt;/strong&gt;
 </div></pre>
   </div>
   <div class="span4">
     <!-- <ul>
-      <li>is.unit.tree</li>
+      <li>make_model_phylo</li>
     </ul>
     <ul>
       

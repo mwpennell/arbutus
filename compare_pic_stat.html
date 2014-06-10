@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>compare_pic_stat. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Compare observed and simulated test statistics</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>compare_pic_stat(obs, sim)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>obs</dt>
+      <dd>a data.frame containing the observed test statistics
+with the column names denoting the names of the statistics used.</dd>
+      <dt>sim</dt>
+      <dd>a data.frame containing the simulated test statistics
+with the column names denoting the names of the statistics used.</dd>
+    </dl>
+    
+    <div class="Compare observed and simulated test statistics">
+      <h2>Compare observed and simulated test statistics</h2>
+      
+    </div>
+
+    <div class="Value">
+      <h2>Value</h2>
+      
+      <p>an object of class <code>arbutus</code> which is a list containing the following objects:
+<dl>
+<dt>p.values</dt><dd>Two--tailed p-values for all test statistics</dd>
+<dt>obs</dt><dd>The input data frame of observed test statistics</dd>
+<dt>sim</dt><dd>The input data frame of simulated test statistics</dd>
+</dl></p>
+  
+      <p></p>
+  
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Calculates two--tailed p-values from comparing
+observed to simulated test statistics in order to evaluate
+model adequacy for phylogenetic models of continuous character evolution.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>The column names must be the same for the observed and simulated
+test statistics (though not necessarily in the same order). Both
+<code>obs</code> and <code>sim</code> are designed to be obtained
+from the function <code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>.</p>
+  
+      <p>If there is only 1 row in <code>obs</code> (such as the case if ML estimate
+of model is used), then the function will compare the observed test statistic(s) to
+the distribution of simulated simulated test statistics.</p>
+  
+      <p>If there is more than 1 row in <code>obs</code> (such as the case if we have
+a posterior distribution of parameter estimates or the test statistics are calculated
+across many trees), then the function requires that the number of rows in
+<code>obs</code> and <code>sim</code> be equal. This is because the function
+calculates the p-values by performing pairwise comparisons. the function will automatically
+check that this condition is met and produce an error if it is not.</p>
+  
+      <p>In both cases, the p-values that are returned are two--tailed p-values as
+the function considers the probability of the observed statistics being larger
+or smaller than the simulated statistics.</p>
+  
+      <p>The distribution of simulated test statistics along with the observed test
+statistic using a generic <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot'>plot</a></code> function (see <code><a href='plot.arbutus.html'>plot.arbutus</a></code>)
+for more details. For the purposes of plotting, the observed and simulated test
+statistics used as arguments are returned with the p-values.</p>
+  
+      <p>The p-values can be extracted from the output of <code><a href='compare_pic_stat.html'>compare_pic_stat</a></code> using the
+function <code><a href='pvalue_arbutus.html'>pvalue_arbutus</a></code></p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>data(finch)
+phy &lt;- finch$phy
+dat &lt;- finch$data[,&quot;wingL&quot;]
+unit.tree &lt;- make_unit_tree(phy, data=dat)
+
+## calculate default test stats on observed data
+obs &lt;- calculate_pic_stat(unit.tree, stats=NULL)
+
+## simulate data on unit.tree
+simdat &lt;- simulate_char_unit(unit.tree, nsim=10)
+
+## calculate default test stats on simulated data
+sim &lt;- calculate_pic_stat(simdat, stats=NULL)
+
+## compare simulated to observed test statistics
+res &lt;- compare_pic_stat(obs, sim)
+
+## extract p-values
+pvalue_arbutus(res)
+</div>
+<div class='output'>    m.sig     c.var     s.var     s.asr     s.hgt     d.cdf 
+0.0000000 0.7272727 0.5454545 0.0000000 0.7272727 0.5454545 
+</div>
+<div class='input'>
+## plot results
+plot(res)
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>compare_pic_stat</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='calculate_pic_stat.html'>calculate_pic_stat</a></code>, <code><a href='plot.arbutus.html'>plot.arbutus</a></code>, <code><a href='pvalue_arbutus.html'>pvalue_arbutus</a></code>,
+<code><a href='arbutus.html'>arbutus</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>

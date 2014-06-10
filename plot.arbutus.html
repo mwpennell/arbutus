@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+<title>plot.arbutus. arbutus 1.1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="author" content="">
+
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/bootstrap-responsive.css" rel="stylesheet">
+<link href="css/highlight.css" rel="stylesheet">
+<link href="css/staticdocs.css" rel="stylesheet">
+
+<!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  </head>
+
+  <body>
+    <div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="brand" href="#">arbutus 1.1</a>
+      <div class="nav">
+        <ul class="nav">
+          <li><a href="index.html"><i class="icon-home icon-white"></i> Index</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <header>
+        
+      </header>
+      
+      <h1>Plot the simulated test statistics versus observed test statistics</h1>
+
+<div class="row">
+  <div class="span8">
+    <h2>Usage</h2>
+    <pre><div>"plot"(x, xlab&nbsp;=&nbsp;NA, ylab&nbsp;=&nbsp;"Counts", col&nbsp;=&nbsp;NA, breaks&nbsp;=&nbsp;NA, las&nbsp;=&nbsp;1, lwd&nbsp;=&nbsp;3, legend&nbsp;=&nbsp;TRUE, legend.pos&nbsp;=&nbsp;"topright", cex&nbsp;=&nbsp;1, n.row&nbsp;=&nbsp;2, n.col&nbsp;=&nbsp;NA, mar&nbsp;=&nbsp;c(5, 4, 2, 2), ...)</div></pre>
+    
+    <h2>Arguments</h2>
+    <dl>
+      <dt>x</dt>
+      <dd>an <code>arbutus</code> object inherited from
+<code><a href='compare_pic_stat.html'>compare_pic_stat</a></code></dd>
+      <dt>xlab</dt>
+      <dd>x-axis label. Defaults to <code>stat</code>.</dd>
+      <dt>ylab</dt>
+      <dd>y-axis label. Defaults to "Counts".</dd>
+      <dt>col</dt>
+      <dd>colours used in plot. The first colour corresponds to the
+histogram of simulated test statistics. The second colour to the line, or
+histogram,
+representing the observed value of the test statistic. If no argument is
+supplied, the function uses the default colours.</dd>
+      <dt>breaks</dt>
+      <dd>the number of breaks in the histogram. Defaults to
+20.</dd>
+      <dt>las</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>).</dd>
+      <dt>lwd</dt>
+      <dd>plot parameter (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>).</dd>
+      <dt>legend</dt>
+      <dd>logical, specifying whether a legend should be included (see
+details).</dd>
+      <dt>legend.pos</dt>
+      <dd>postiion of the legend (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/legend'>legend</a></code>).</dd>
+      <dt>cex</dt>
+      <dd>plot parameter for legend (see <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/par'>par</a></code>).</dd>
+      <dt>n.row</dt>
+      <dd>number of rows to plot when plotting multiple test statistics.
+Defaults to 2.</dd>
+      <dt>n.col</dt>
+      <dd>number of columns to plot when plotting multiple test statistics.
+Defaults to <code>ncol(obs)/2</code>.</dd>
+      <dt>mar</dt>
+      <dd>margins for each plot. Defaults to 5,4,2,2.</dd>
+      <dt>...</dt>
+      <dd>additional arguments to be passed to plot</dd>
+    </dl>
+    
+    <div class="Plot the simulated test statistics versus observed test statistics">
+      <h2>Plot the simulated test statistics versus observed test statistics</h2>
+      
+    </div>
+
+    <div class="Description">
+      <h2>Description</h2>
+      
+      <p>Plots a histogram of the simulated values along with
+the observed values for a single test statistic. Either a point estimate or
+distribution of observed values may be used. Is the generic <code><a href='http://www.inside-r.org/packages/cran/graphics/docs/plot'>plot</a></code>
+function for objects of class <code>arbutus</code>.</p>
+  
+    </div>
+
+    <div class="Details">
+      <h2>Details</h2>
+      
+      <p>This function is designed to give researchers a quick visual
+inspection of model adequacy by plotting the simulated distribution of
+all test statistics versus the emprical values.</p>
+  
+      <p>This function is a simply a wrapper for the functions
+<code><a href='arbutus_plot_point.html'>arbutus_plot_point</a></code> and <code><a href='arbutus_plot_dist.html'>arbutus_plot_dist</a></code>. It
+creates plots for all test statistics used in <code><a href='arbutus.html'>arbutus</a></code> and
+<code><a href='compare_pic_stat.html'>compare_pic_stat</a></code>. The function can be supplied either a point
+estimate for the observed test statistics or a distribution of estimates.</p>
+  
+      <p>If the empirical estimate lies in the tails of the distribution of simulated
+test statistics, the model can be rejected as inadequate.</p>
+  
+      <p>The p-values corresponding to this plot can be obtained with the function
+<code><a href='pvalue_arbutus.html'>pvalue_arbutus</a></code>.</p>
+  
+      <p>We are still working on a general function for plotting legends. For the time
+being, if <code>legend=TRUE</code>, a legend will appear with each test statistic.
+This is obviously not ideal, but we are working on it.</p>
+  
+      <p>If users wish to create their own plots, all of the information is stored
+in the <code>arbutus</code> object. <code>x$obs</code> contains a data.frame of observed
+test statistics and <code>x$sim</code>, a data.frame of simulated test statistics.</p>
+  
+    </div>
+    
+    <h2 id="examples">Examples</h2>
+    <pre class="examples"><div class='input'>## finch data
+data(finch)
+phy &lt;- finch$phy
+data &lt;- finch$data[,1]
+
+## pretend that the tree has already been rescaled
+modelad &lt;- arbutus(phy, data=data, nsim=20)
+plot(modelad)
+
+
+## &lt;strong&gt;Not run&lt;/strong&gt;: 
+# ## use diversitree to fit a BM model with ML
+# require(diversitree)
+# lik &lt;- make.bm(phy, data)
+# f &lt;- find.mle(lik, x.init=1)
+# modelad.bm.ml &lt;- arbutus(f)
+# plot(modelad.bm.ml, legend=FALSE)
+# 
+# ## use diversitree to fit a BM model with MCMC
+# m &lt;- mcmc(lik, x.init=1, nsteps=1000, w=1, print.every=0)
+# modelad.bm.mcmc &lt;- arbutus(m, sample=100)
+# plot(modelad.bm.mcmc)
+# ## &lt;strong&gt;End(Not run)&lt;/strong&gt;
+</div></pre>
+  </div>
+  <div class="span4">
+    <!-- <ul>
+      <li>plot.arbutus</li>
+    </ul>
+    <ul>
+      
+    </ul> -->
+      
+    <h2>See also</h2>
+    
+<code><a href='arbutus.html'>arbutus</a></code>, <code><a href='compare_pic_stat.html'>compare_pic_stat</a></code>,
+<code><a href='arbutus_plot_point.html'>arbutus_plot_point</a></code>, <code><a href='arbutus_plot_dist.html'>arbutus_plot_dist</a></code>
+
+        
+  </div>
+</div>
+      
+      <footer>
+      <p class="pull-right"><a href="#">Back to top</a></p>
+<p>Built by <a href="https://github.com/hadley/staticdocs">staticdocs</a>. Styled with <a href="http://twitter.github.com/bootstrap">bootstrap</a>.</p>
+      </footer>
+    </div>
+  </body>
+</html>
