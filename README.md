@@ -14,10 +14,8 @@ library(devtools)
 install_github("mwpennell/arbutus")
 ```
 
-The package depends on the following libraries:
+The package depends on the `ape` library
 
-* `ape`
-* `ggplot2`
 
 
 ## Supported packages
