@@ -120,7 +120,7 @@ test_that("Unit tree construction from BM/diversitree/MCMC works", {
 
   ## Quick check:
   idx <- 5
-  fit.bm$par <- coef(samples.bm)[idx,]
+  fit.bm$par <- structure(coef(samples.bm)[idx,], names="s2")
   fit.bm$lnLik <- samples.bm$p[idx]
   cmp <- make_unit_tree(fit.bm)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
@@ -148,7 +148,7 @@ test_that("Unit tree construction from BM/diversitree/MCMC with SE works", {
 
   ## Quick check:
   idx <- 5
-  fit.bm$par <- coef(samples.bm)[idx,]
+  fit.bm$par <- structure(coef(samples.bm)[idx,], names="s2")
   fit.bm$lnLik <- samples.bm$p[idx]
   cmp <- make_unit_tree(fit.bm)
   expect_that(phy.unit[[idx]], is_identical_to(cmp))
