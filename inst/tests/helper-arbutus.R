@@ -31,6 +31,6 @@ fitContinuousQuiet <- function(...)
 rescale.se <- function(phy, ..., SE=0) {
   phy <- rescale(phy, ...)
   tips <- phy$edge[,2] <= Ntip(phy)
-  phy$edge.length[tips] <- phy$edge.length[tips] + SE
+  phy$edge.length[tips] <- phy$edge.length[tips] + SE^2
   phy
 }

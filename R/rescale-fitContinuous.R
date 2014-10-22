@@ -239,7 +239,7 @@ model_phylo_se <- function(phy, pars) {
   if (pars$SE < 0)
     stop("SE must be non-negative")
   tips <- phy$edge[,2] <= Ntip(phy)
-  phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE
+  phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE^2
   phy
 }
 
