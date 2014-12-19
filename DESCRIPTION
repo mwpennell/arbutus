@@ -1,8 +1,8 @@
 Package: arbutus
 Type: Package
 Title: Evaluate the adequacy of continuous trait models
-Version: 1.1
-Date: 2014-06-09
+Version: 0.1
+Date: 2014-12-19
 Author: Matthew Pennell, Richard FitzJohn, Will Cornwell, Luke Harmon
 Maintainer: Matthew Pennell <mwpennell@gmail.com>
 Description: Using summary statistics and simulations to evaluate whether a
@@ -13,5 +13,7 @@ License: GPL-2 | GPL-3
 Depends:
     ape
 Suggests:
-    diversitree
+    diversitree,
+    testthat,
+    roxygen2
 Roxygen: list(wrap = FALSE)
