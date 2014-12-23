@@ -16,4 +16,3 @@ Suggests:
     diversitree,
     testthat,
     roxygen2
-Roxygen: list(wrap = FALSE)
