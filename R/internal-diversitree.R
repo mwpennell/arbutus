@@ -9,7 +9,7 @@ model_type.fit.mle <- function(fit, ...) {
 
 model_data.fit.mle <- function(fit, ...) {
   require(diversitree)
-  cache <- diversitree:::get.cache(get.likelihood(fit))
+  cache <- get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
@@ -36,7 +36,7 @@ model_info.fit.mle <- function(fit, ...) {
 model_type.mcmcsamples <- function(fit, ...) {
   require(diversitree)
   lik <- get.likelihood(fit)
-  if (diversitree:::is.constrained(lik))
+  if (is.constrained(lik))
     toupper(class(get.likelihood(lik))[[1]])
   else
     toupper(class(lik)[[1]])
@@ -44,7 +44,7 @@ model_type.mcmcsamples <- function(fit, ...) {
 
 model_data.mcmcsamples <- function(fit, ...) {
   require(diversitree)
-  cache <- diversitree:::get.cache(get.likelihood(fit))
+  cache <- get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
@@ -110,7 +110,7 @@ diversitree.to.arbutus.recast <- function(pars, model) {
 diversitree.to.arbutus.se <- function(pars, lik) {
   require(diversitree)
   ## Pull the standard error out.  Also ugly.
-  cache <- diversitree:::get.cache(lik)
+  cache <- get.cache(lik)
   sd <- cache$states.sd
   if (is.null(sd)) # pgls
     sd <- 0
@@ -119,4 +119,16 @@ diversitree.to.arbutus.se <- function(pars, lik) {
   else
     stop("Variable length states.sd -- cannot deal with this (yet)")
   pars
+}
+
+## Two internal diversitree functions copied here
+is.constrained <- function(x) {
+  inherits(x, "constrained")
+}
+get.cache <- function(x) {
+  if (inherits(x, "big.brother") || is.constrained(x)) {
+    get.cache(attr(x, "func"))
+  } else {
+    environment(x)$cache
+  }
 }

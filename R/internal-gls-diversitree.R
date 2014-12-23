@@ -9,14 +9,14 @@ model_type.mcmcsamples.pgls <- function(fit, ...) {
 
 model_data.fit.mle.pgls <- function(fit, ...) {
   require(diversitree)
-  cache <- diversitree:::get.cache(get.likelihood(fit))
+  cache <- get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=drop(residuals(fit)))
 }
 
 ## NOTE: this passes the coef.mcmcsamples parameters (burnin, thin,
 ## sample) along to residuals.mcmcsamples().
 model_data.mcmcsamples.pgls <- function(fit, ...) {
-  cache <- diversitree:::get.cache(get.likelihood(fit))
+  cache <- get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=residuals(fit, ...))
 }
 
