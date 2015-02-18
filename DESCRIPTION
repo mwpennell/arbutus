@@ -13,5 +13,10 @@ License: GPL-2 | GPL-3
 Imports:
     ape
 Suggests:
+    caper,
     diversitree,
+    geiger,
+    nlme,
+    parallel,
+    phylolm,
     testthat
