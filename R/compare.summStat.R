@@ -98,7 +98,9 @@ compare_pic_stat <- function(obs, sim){
         ## check to make sure number of rows is the same
         if(nrow(obs) != nrow(sim))
             stop("If inputting multiple observed test stats, the data.frame must be the same size as that of the simulated test stats")
-        
+
+        ## TODO: this needs to deal with the NA in obs case, still.
+        ## but it might actually be OK.
         for (i in seq_len(ncol(obs))){
             ## pairwise comparison
             pr <- vector(length=nrow(obs))
