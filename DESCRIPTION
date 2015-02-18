@@ -14,5 +14,4 @@ Imports:
     ape
 Suggests:
     diversitree,
-    testthat,
-    roxygen2
+    testthat
