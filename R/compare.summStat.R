@@ -48,7 +48,7 @@
 #' @seealso \code{\link{calculate_pic_stat}}, \code{\link{plot.arbutus}}, \code{\link{pvalue_arbutus}},
 #' \code{\link{arbutus}}
 #'
-#' @export compare_pic_stat
+#' @export
 #'
 #' @examples
 #' data(finch)
@@ -82,16 +82,17 @@ compare_pic_stat <- function(obs, sim){
     if (ncol(obs) > 1)
         obs <- obs[,names(sim)]
     ## determine if single/multiple obs test stat supplied
-    tmp <- nrow(obs) == 1
-    p.values <- vector(length=ncol(obs))
-    if (tmp){
+    p_values <- rep_len(NA_real_, ncol(obs))
+    if (nrow(obs) == 1){
         for (i in seq_len(ncol(obs))){
             o <- obs[,i]
-            s <- sim[,i]
-            pr <- length(s[s > o])/(length(s) + 1)
-            pl <- length(s[s <= o])/(length(s) + 1)
-            p <- min(pr, pl)
-            p.values[i] <- p*2
+            if (!is.na(o)) {
+              s <- sim[,i]
+              pr <- length(s[s > o])/(length(s) + 1)
+              pl <- length(s[s <= o])/(length(s) + 1)
+              p <- min(pr, pl)
+              p_values[i] <- p*2
+            }
         }
     } else {
         ## check to make sure number of rows is the same
@@ -106,11 +107,11 @@ compare_pic_stat <- function(obs, sim){
                 pr[j] <- sim[j,i] > obs[j,i]
                 pl[j] <- sim[j,i] <= obs[j,i]
             }
-            p.values[i] <- min(length(which(pr)), length(which(pl)))/nrow(obs)*2
+            p_values[i] <- min(length(which(pr)), length(which(pl)))/nrow(obs)*2
         }
     }
-    names(p.values) <- colnames(obs)
-    res <- list(p.values=p.values, obs=obs, sim=sim)
+    names(p_values) <- colnames(obs)
+    res <- list(p.values=p_values, obs=obs, sim=sim)
     class(res) <- c("arbutus", "list")
     res
 }
@@ -171,7 +172,7 @@ print.arbutus <- function(x, ...){
 #'
 #' @return a named vector of two-tailed p-values
 #'
-#' @export pvalue_arbutus
+#' @export
 #'
 #' @seealso \code{\link{compare_pic_stat}}
 #'
@@ -245,7 +246,7 @@ pvalue_arbutus <- function(x){
 #'
 #' @return the Mahalanobis distance between the observed and simulated test statistic. 
 #'
-#' @export mahalanobis_arbutus
+#' @export
 #'
 #' @seealso \code{\link{compare_pic_stat}}, \code{\link[stats]{mahalanobis}}
 #'

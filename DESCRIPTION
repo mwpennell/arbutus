@@ -10,7 +10,7 @@ Description: Using summary statistics and simulations to evaluate whether a
     the variation in the comparative data. Can be used for both univariate and
     multivariate models (e.g. phylogenetic regression) of trait evolution.
 License: GPL-2 | GPL-3
-Depends:
+Imports:
     ape
 Suggests:
     diversitree,
