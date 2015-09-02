@@ -8,7 +8,6 @@ model_type.mcmcsamples.pgls <- function(fit, ...) {
 }
 
 model_data.fit.mle.pgls <- function(fit, ...) {
-  require(diversitree)
   cache <- get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=drop(residuals(fit)))
 }

@@ -8,13 +8,12 @@ model_type.fit.mle <- function(fit, ...) {
 }
 
 model_data.fit.mle <- function(fit, ...) {
-  require(diversitree)
   cache <- get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
 model_pars.fit.mle <- function(fit, ...) {
-  require(diversitree)
+  loadNamespace("diversitree")
   model <- model_type(fit)
   pars <- as.list(coef(fit, full=TRUE))
   pars <- diversitree.to.arbutus.recast(pars, model)
@@ -34,22 +33,20 @@ model_info.fit.mle <- function(fit, ...) {
 
 ## Similar, but for mcmcsamples:
 model_type.mcmcsamples <- function(fit, ...) {
-  require(diversitree)
   lik <- get.likelihood(fit)
-  if (is.constrained(lik))
+  if (is.constrained(lik)) {
     toupper(class(get.likelihood(lik))[[1]])
-  else
+  } else {
     toupper(class(lik)[[1]])
+  }
 }
 
 model_data.mcmcsamples <- function(fit, ...) {
-  require(diversitree)
   cache <- get.cache(get.likelihood(fit))
   list(phy=cache$info$phy, data=cache$states)
 }
 
 model_pars.mcmcsamples <- function(fit, burnin=NA, thin=NA, sample=NA, ...) {
-  require(diversitree)
   model <- model_type(fit)
   lik <- get.likelihood(fit)
   pars <- as.data.frame(coef(fit, burnin=burnin, thin=thin,
@@ -108,16 +105,17 @@ diversitree.to.arbutus.recast <- function(pars, model) {
 }
 
 diversitree.to.arbutus.se <- function(pars, lik) {
-  require(diversitree)
   ## Pull the standard error out.  Also ugly.
   cache <- get.cache(lik)
   sd <- cache$states.sd
-  if (is.null(sd)) # pgls
+  if (is.null(sd)) {# pgls
     sd <- 0
-  if (length(unique(sd)) == 1)
+  }
+  if (length(unique(sd)) == 1) {
     pars$SE <- sd[[1]]
-  else
+  } else {
     stop("Variable length states.sd -- cannot deal with this (yet)")
+  }
   pars
 }
 
@@ -131,4 +129,8 @@ get.cache <- function(x) {
   } else {
     environment(x)$cache
   }
+}
+get.likelihood <- function(...) {
+  loadNamespace("diversitree")
+  diversitree::get.likelihood(...)
 }
