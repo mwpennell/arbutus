@@ -3,7 +3,7 @@
 
 ![arbutus logo](https://github.com/mwpennell/arbutus/raw/master/extra/arbutus_logo.png)
 
-This package was developed to assess the adequacy of continuous trait models. The package includes functions to parse the output of various model-fitting functions in R, rescale phylogenies according to fitted parameters, simulate datasets, calculate summary statistics and plot results. The methods is described in a forthcoming paper: "Model adequacy and the macroevolution of angiosperm functional traits" [(preprint here)](http://biorxiv.org/content/early/2014/04/07/004002).
+This package was developed to assess the adequacy of continuous trait models. The package includes functions to parse the output of various model-fitting functions in R, rescale phylogenies according to fitted parameters, simulate datasets, calculate summary statistics and plot results. The methods is described in a our paper: "Model adequacy and the macroevolution of angiosperm functional traits" published in The American Naturalist (see [link](http://www.jstor.org/stable/full/10.1086/682022); [pdf](http://mwpennell.github.io/pdfs/pennell-amnat-2015.pdf); and [manuscript repo](https://github.com/https://github.com/richfitz/modeladequacy)).
 
 ## Installation
 
@@ -32,4 +32,3 @@ The idea behind `arbutus` is that models are fit to comparative data using other
 * `multiPhylo` objects in `ape` format (does not rescale phylogeny)
 
 We plan to add more package interfaces as this project progresses.
-
