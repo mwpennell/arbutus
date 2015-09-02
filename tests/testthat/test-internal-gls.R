@@ -1,16 +1,4 @@
-source("helper-arbutus.R")
-
 context("GLS (internals)")
-
-model_type <- arbutus:::model_type
-model_data <- arbutus:::model_data
-model_pars <- arbutus:::model_pars
-model_info <- arbutus:::model_info
-
-model_type.gls <- arbutus:::model_type.gls
-model_data.gls <- arbutus:::model_data.gls
-model_pars.gls <- arbutus:::model_pars.gls
-model_info.gls <- arbutus:::model_info.gls
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa=100)
@@ -87,8 +75,8 @@ get.sigma2.gls <- function(fit) {
 
   sigsq
 }
-environment(get.sigma2.gls) <- environment(arbutus:::pic_stat_msig)
-estimate.sigma2.gls <- arbutus:::estimate.sigma2.gls
+environment(get.sigma2.gls) <- environment(pic_stat_msig)
+estimate.sigma2.gls <- estimate.sigma2.gls
 
 test_that("Diffusion parameter is correct (REML)", {
   expect_that(estimate.sigma2.gls(fit.gls.bm),

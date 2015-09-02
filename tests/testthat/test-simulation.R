@@ -1,6 +1,4 @@
 # Test the BM simulation code
-source("helper-arbutus.R")
-
 context("Simulation")
 
 test_that("Character simulation gives correct distribution", {
@@ -16,7 +14,7 @@ test_that("Character simulation gives correct distribution", {
   dat.d <- replicate(100, diversitree::sim.character(phy, 1, x0=1))
 
   ## And the new arbutus functions
-  dat.a <- arbutus:::sim.char.std.bm(phy, 100, x0=1)
+  dat.a <- sim.char.std.bm(phy, 100, x0=1)
 
   ## Then, do some fits:
   do.fit <- function(x) {
@@ -47,7 +45,7 @@ test_that("Multifurcations are not handled", {
   expect_that(is.binary.tree(phy.m), is_false())
 
   dat.g <- geiger::sim.char(phy.m, par=1, nsim=100, model="BM")[,,]
-  dat.a <- arbutus:::sim.char.std.bm(phy.m, 100, x0=1)
+  dat.a <- sim.char.std.bm(phy.m, 100, x0=1)
 
   ## Note that this fits on the binary tree, not the multifurcating
   ## tree.

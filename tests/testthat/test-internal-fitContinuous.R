@@ -1,18 +1,6 @@
 ## Testing internal functions and testing functions in other packages
 ## are both considered to be poor form.  So this is something that we
 ## might re-address before release, but it will be good for now.
-source("helper-arbutus.R")
-
-## Testing internal code; need some extra imports:
-model_type <- arbutus:::model_type
-model_data <- arbutus:::model_data
-model_pars <- arbutus:::model_pars
-model_info <- arbutus:::model_info
-model_type.gfit <- arbutus:::model_type.gfit
-model_data.gfit <- arbutus:::model_data.gfit
-model_pars.gfit <- arbutus:::model_pars.gfit
-model_info.gfit <- arbutus:::model_info.gfit
-
 context("fitContinuous (internals)")
 
 data(geospiza)
@@ -128,19 +116,19 @@ test_that("Coefficient names are as expected", {
 
 test_that("Processed coefficient names are as expected", {
   expect_that(names(model_pars(fit.bm)),
-              is_identical_to(arbutus:::parnames.bm()))
+              is_identical_to(parnames.bm()))
   expect_that(names(model_pars(fit.ou)),
-              is_identical_to(arbutus:::parnames.ou()))
+              is_identical_to(parnames.ou()))
   expect_that(names(model_pars(fit.eb)),
-              is_identical_to(arbutus:::parnames.eb()))
+              is_identical_to(parnames.eb()))
   expect_that(names(model_pars(fit.lam)),
-              is_identical_to(arbutus:::parnames.lambda()))
+              is_identical_to(parnames.lambda()))
   expect_that(names(model_pars(fit.del)),
-              is_identical_to(arbutus:::parnames.delta()))
+              is_identical_to(parnames.delta()))
   expect_that(names(model_pars(fit.kap)),
-              is_identical_to(arbutus:::parnames.kappa()))
+              is_identical_to(parnames.kappa()))
   expect_that(names(model_pars(fit.wh)),
-              is_identical_to(arbutus:::parnames.white()))
+              is_identical_to(parnames.white()))
  
 
   expect_that(model_pars(fit.bm)$SE, is_greater_than(0))
@@ -152,19 +140,19 @@ test_that("Processed coefficient names are as expected", {
   expect_that(model_pars(fit.wh)$SE, is_greater_than(0))
   
   expect_that(names(model_pars(fit.bm.noSE)),
-              is_identical_to(arbutus:::parnames.bm()))
+              is_identical_to(parnames.bm()))
   expect_that(names(model_pars(fit.ou.noSE)),
-              is_identical_to(arbutus:::parnames.ou()))
+              is_identical_to(parnames.ou()))
   expect_that(names(model_pars(fit.eb.noSE)),
-              is_identical_to(arbutus:::parnames.eb()))
+              is_identical_to(parnames.eb()))
   expect_that(names(model_pars(fit.lam.noSE)),
-              is_identical_to(arbutus:::parnames.lambda()))
+              is_identical_to(parnames.lambda()))
   expect_that(names(model_pars(fit.del.noSE)),
-              is_identical_to(arbutus:::parnames.delta()))
+              is_identical_to(parnames.delta()))
   expect_that(names(model_pars(fit.kap.noSE)),
-              is_identical_to(arbutus:::parnames.kappa()))
+              is_identical_to(parnames.kappa()))
   expect_that(names(model_pars(fit.wh.noSE)),
-              is_identical_to(arbutus:::parnames.white()))
+              is_identical_to(parnames.white()))
   
 
   expect_that(model_pars(fit.bm.noSE)$SE, equals(0))

@@ -1,8 +1,6 @@
 ## Testing internal functions and testing functions in other packages
 ## are both considered to be poor form.  So this is something that we
 ## might re-address before release, but it will be good for now.
-source("helper-arbutus.R")
-
 context("diversitree (internals)")
 
 data(geospiza)
@@ -44,20 +42,6 @@ samples.ou.opt <- mcmc(lik.ou.opt, coef(fit.ou.opt), 30,
                    upper=c(Inf, 100, 10),
                    print.every=0)
 
-## Testing internal code; need some extra imports:
-model_type <- arbutus:::model_type
-model_data <- arbutus:::model_data
-model_pars <- arbutus:::model_pars
-model_info <- arbutus:::model_info
-model_type.fit.mle <- arbutus:::model_type.fit.mle
-model_data.fit.mle <- arbutus:::model_data.fit.mle
-model_pars.fit.mle <- arbutus:::model_pars.fit.mle
-model_info.fit.mle <- arbutus:::model_info.fit.mle
-model_type.mcmcsamples <- arbutus:::model_type.mcmcsamples
-model_data.mcmcsamples <- arbutus:::model_data.mcmcsamples
-model_pars.mcmcsamples <- arbutus:::model_pars.mcmcsamples
-model_info.mcmcsamples <- arbutus:::model_info.mcmcsamples
-
 test_that("Model types are correct", {
   expect_that(model_type(fit.bm), is_identical_to("BM"))
   expect_that(model_type(fit.ou), is_identical_to("OU"))
@@ -84,13 +68,13 @@ test_that("Models return their source data", {
 
 test_that("Processed coefficient names are as expected", {
   expect_that(names(model_pars(fit.bm)),
-              is_identical_to(arbutus:::parnames.bm()))
+              is_identical_to(parnames.bm()))
   expect_that(names(model_pars(fit.ou)),
-              is_identical_to(arbutus:::parnames.ou()))
+              is_identical_to(parnames.ou()))
   expect_that(names(model_pars(fit.eb)),
-              is_identical_to(arbutus:::parnames.eb()))
+              is_identical_to(parnames.eb()))
   expect_that(names(model_pars(fit.ou.opt)),
-              is_identical_to(arbutus:::parnames.ou()))
+              is_identical_to(parnames.ou()))
 
   expect_that(model_pars(fit.bm)$SE, equals(0))
   expect_that(model_pars(fit.ou)$SE, equals(0))
@@ -98,13 +82,13 @@ test_that("Processed coefficient names are as expected", {
 
   ## MCMC:
   expect_that(names(model_pars(samples.bm)),
-              is_identical_to(arbutus:::parnames.bm()))
+              is_identical_to(parnames.bm()))
   expect_that(names(model_pars(samples.ou)),
-              is_identical_to(arbutus:::parnames.ou()))
+              is_identical_to(parnames.ou()))
   expect_that(names(model_pars(samples.eb)),
-              is_identical_to(arbutus:::parnames.eb()))
+              is_identical_to(parnames.eb()))
   expect_that(names(model_pars(samples.ou.opt)),
-              is_identical_to(arbutus:::parnames.ou()))
+              is_identical_to(parnames.ou()))
 
   expect_that(model_pars(samples.bm)$SE,
               equals(rep(0, nrow(samples.bm))))
@@ -203,12 +187,12 @@ test_that("Constrained functions work", {
 
   ## Parameters -- these need to include all parameters:
   p <- model_pars(fit.ou.c)
-  expect_that(names(p), is_identical_to(arbutus:::parnames.ou()))
+  expect_that(names(p), is_identical_to(parnames.ou()))
   expect_that(p$SE, equals(0))
   expect_that(p$z0, equals(0)) # z0 is theta, translated
 
   p <- model_pars(samples.ou.c)
-  expect_that(names(p), is_identical_to(arbutus:::parnames.ou()))
+  expect_that(names(p), is_identical_to(parnames.ou()))
   expect_that(p$SE, equals(rep(0, nrow(samples.ou))))
   expect_that(p$z0, equals(rep(0, nrow(samples.ou))))
 })

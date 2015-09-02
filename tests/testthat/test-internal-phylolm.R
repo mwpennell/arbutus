@@ -1,16 +1,4 @@
-source("helper-arbutus.R")
-
 context("phylolm (internals)")
-
-model_type <- arbutus:::model_type
-model_data <- arbutus:::model_data
-model_pars <- arbutus:::model_pars
-model_info <- arbutus:::model_info
-
-model_type.phylolm <- arbutus:::model_type.phylolm
-model_data.phylolm <- arbutus:::model_data.phylolm
-model_pars.phylolm <- arbutus:::model_pars.phylolm
-model_info.phylolm <- arbutus:::model_info.phylolm
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa=100)

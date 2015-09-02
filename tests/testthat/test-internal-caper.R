@@ -1,19 +1,5 @@
-source("helper-arbutus.R")
-
-
 ## TODO: NEED A PROPER CHECK OF SIGSQ ESTIMATION!!
-
 context("caper (internals)")
-
-model_type <- arbutus:::model_type
-model_data <- arbutus:::model_data
-model_pars <- arbutus:::model_pars
-model_info <- arbutus:::model_info
-
-model_type.pgls <- arbutus:::model_type.pgls
-model_data.pgls <- arbutus:::model_data.pgls
-model_pars.pgls <- arbutus:::model_pars.pgls
-model_info.pgls <- arbutus:::model_info.pgls
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa = 100)
@@ -23,13 +9,13 @@ data <- data.frame(x=tx, y=ty, phy$tip.label, row.names=names(tx))
 colnames(data)[3] <- "species"
 
 ## make comparative data for caper
-cdat <- comparative.data(phy, data, species)
+cdat <- caper::comparative.data(phy, data, species)
 
 ## fit models
-fit.pgls.bm <- pgls(y~x, cdat)
-fit.pgls.la <- pgls(y~x, cdat, lambda="ML")
-fit.pgls.de <- pgls(y~x, cdat, delta="ML")
-fit.pgls.ka <- pgls(y~x, cdat, kappa="ML")
+fit.pgls.bm <- caper::pgls(y~x, cdat)
+fit.pgls.la <- caper::pgls(y~x, cdat, lambda="ML")
+fit.pgls.de <- caper::pgls(y~x, cdat, delta="ML")
+fit.pgls.ka <- caper::pgls(y~x, cdat, kappa="ML")
 
 test_that("Model types are correct", {
     expect_that(model_type(fit.pgls.bm), is_identical_to("BM"))
@@ -39,7 +25,7 @@ test_that("Model types are correct", {
 })
 
 test_that("Multiple models throws error", {
-    fit.pgls.multi <- pgls(y~x, cdat, lambda="ML", kappa="ML")
+    fit.pgls.multi <- caper::pgls(y~x, cdat, lambda="ML", kappa="ML")
     expect_that(model_type(fit.pgls.multi), throws_error())
 })
 

@@ -1,5 +1,3 @@
-source("helper-arbutus.R")
-
 context("wrapper (arbutus)")
 
 data(finch)
@@ -31,9 +29,9 @@ gls.res <- gls(wingL~tarsusL, data=data, correlation = corBrownian(phy=phy))
 ## fit correlation with caper
 dd <- cbind(data, phy$tip.label)
 colnames(dd)[ncol(dd)] <- "species"
-cd <- comparative.data(phy, dd, names.col = species)
+cd <- caper::comparative.data(phy, dd, names.col = species)
 
-caper.res <- pgls(wingL~tarsusL, data=cd)
+caper.res <- caper::pgls(wingL~tarsusL, data=cd)
 
 ## fit correlation with phylolm
 phylolm.res <- phylolm(wingL~tarsusL, data=data, phy=phy, model="BM")

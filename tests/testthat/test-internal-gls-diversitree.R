@@ -1,30 +1,4 @@
-library(diversitree)
-library(nlme)
-library(testthat)
-
 context("GLS (diversitree) (internals)")
-
-model_type <- arbutus:::model_type
-model_data <- arbutus:::model_data
-model_pars <- arbutus:::model_pars
-model_info <- arbutus:::model_info
-
-model_type.fit.mle <- arbutus:::model_type.fit.mle
-model_data.fit.mle <- arbutus:::model_data.fit.mle
-model_pars.fit.mle <- arbutus:::model_pars.fit.mle
-model_info.fit.mle <- arbutus:::model_info.fit.mle
-
-model_type.fit.mle.pgls <- arbutus:::model_type.fit.mle.pgls
-model_data.fit.mle.pgls <- arbutus:::model_data.fit.mle.pgls
-model_pars.fit.mle.pgls <- arbutus:::model_pars.fit.mle.pgls
-
-model_type.mcmcsamples <- arbutus:::model_type.mcmcsamples
-model_data.mcmcsamples <- arbutus:::model_data.mcmcsamples
-model_pars.mcmcsamples <- arbutus:::model_pars.mcmcsamples
-
-model_type.mcmcsamples.pgls <- arbutus:::model_type.mcmcsamples.pgls
-model_data.mcmcsamples.pgls <- arbutus:::model_data.mcmcsamples.pgls
-model_pars.mcmcsamples.pgls <- arbutus:::model_pars.mcmcsamples.pgls
 
 set.seed(1)
 phy <- tree.bd(pars=c(1,0), max.taxa=100)
@@ -40,7 +14,7 @@ lik.pgls.bm.vcv <- make.pgls(phy, y ~ x, data,
 lik.pgls.bm.con <- make.pgls(phy, y ~ x, data,
                              control=list(method="contrasts"))
 
-s2.ml <- arbutus:::estimate.sigma2.gls(fit.gls.bm.ml)
+s2.ml <- estimate.sigma2.gls(fit.gls.bm.ml)
 p.ml <- c(coef(fit.gls.bm.ml), s2=s2.ml)
 
 fit.pgls.bm.vcv <- find.mle(lik.pgls.bm.vcv, c(0, 0, 1))

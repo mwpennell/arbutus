@@ -1,10 +1,8 @@
-source("helper-arbutus.R")
-library(caper)
-
 context("Unit tree")
 
-pic.var <- function(...)
-  pic(..., var.contrasts=TRUE)
+pic.var <- function(...) {
+  ape::pic(..., var.contrasts=TRUE)
+}
 
 ## First, work with a unit tree built directly from a tree and state
 ## data; this is generally not what is done.  In fact, the name here
@@ -309,8 +307,8 @@ fit.gls.bm.ml   <- gls(y ~ x, data, corBrownian(1, phy), method="ML")
 fit.gls.bm.reml <- gls(y ~ x, data, corBrownian(1, phy), method="REML")
 
 ## caper::pgls:
-cdata <- comparative.data(phy, cbind(data, sp=rownames(data)), 'sp')
-fit.caper <- pgls(y ~ x, cdata)
+cdata <- caper::comparative.data(phy, cbind(data, sp=rownames(data)), 'sp')
+fit.caper <- caper::pgls(y ~ x, cdata)
 
 ## Diversitree, ML
 lik.pgls.bm.vcv <- make.pgls(phy, y ~ x, data,
@@ -318,8 +316,8 @@ lik.pgls.bm.vcv <- make.pgls(phy, y ~ x, data,
 lik.pgls.bm.con <- make.pgls(phy, y ~ x, data,
                              control=list(method="contrasts"))
 
-s2.ml   <- arbutus:::estimate.sigma2.gls(fit.gls.bm.ml)
-s2.reml <- arbutus:::estimate.sigma2.gls(fit.gls.bm.reml)
+s2.ml   <- estimate.sigma2.gls(fit.gls.bm.ml)
+s2.reml <- estimate.sigma2.gls(fit.gls.bm.reml)
 p.ml <- c(coef(fit.gls.bm.ml), s2=s2.ml)
 
 fit.pgls.bm.vcv <- find.mle(lik.pgls.bm.vcv, c(0, 0, 1))

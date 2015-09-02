@@ -1,5 +1,3 @@
-source("helper-arbutus.R")
-
 context("Summary statistics")
 
 data(geospiza)
