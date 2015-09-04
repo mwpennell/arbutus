@@ -24,7 +24,7 @@ is_less_than <- function(value) {
 }
 
 fitContinuousQuiet <- function(...) {
-  suppressWarnings(geiger::fitContinuous(ncores=1,...))
+  suppressWarnings(geiger::fitContinuous(...))
 }
 
 ## Work around - I don't see how to do this with geiger.
