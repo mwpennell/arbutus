@@ -264,7 +264,7 @@ test_that("kappa tree rescaling worked (fitContinuous)", {
 
 test_that("delta tree rescaling worked (fitContinuous)", {
     fit.d <- fitContinuousQuiet(phy=phy, dat=states, model="delta",
-                                control = list(niter=10))
+                                control = list(niter=10), ncores=1)
 
     phy.unit <- make_unit_tree(fit.d)
 
