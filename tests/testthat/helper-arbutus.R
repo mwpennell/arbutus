@@ -8,7 +8,7 @@ suppressMessages(library(geiger))
 suppressMessages(library(diversitree))
 library(nlme) # for gls
 library(phylolm)
-library(caper) 
+library(caper)
 
 ## Additional tests
 is_greater_than <- function(value) {
@@ -24,7 +24,7 @@ is_less_than <- function(value) {
 }
 
 fitContinuousQuiet <- function(...) {
-  suppressWarnings(geiger::fitContinuous(...))
+  suppressWarnings(geiger::fitContinuous(ncores=1,...))
 }
 
 ## Work around - I don't see how to do this with geiger.
