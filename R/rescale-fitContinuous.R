@@ -222,7 +222,7 @@ model_phylo_rescale <- function(type) {
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
-#'                                  control=list(niter=10))
+#'                                  control=list(niter=10), ncores=1)
 #'
 #' ## get model info using internal arbutus function
 #' info.bm <- model_info(fit.bm)
@@ -230,7 +230,7 @@ model_phylo_rescale <- function(type) {
 #' ## rescale phylogeny based on model info
 #' make_model_phylo(info.bm)
 #' }
-#' 
+#'
 make_model_phylo <- function(x, ...)
     UseMethod("make_model_phylo")
 

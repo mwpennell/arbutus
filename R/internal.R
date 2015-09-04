@@ -51,7 +51,7 @@ model_pars <- function(fit, ...)
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
-#'                                  control=list(niter=10))
+#'                                  control=list(niter=10), ncores=1)
 #'
 #' ## get model info using internal arbutus function
 #' info.bm <- model_info(fit.bm)
@@ -63,7 +63,7 @@ model_pars <- function(fit, ...)
 #'
 #' info.bm.dt <- model_info(fit.bm.dt, lik=bmlik)
 #' }
-#' 
+#'
 model_info <- function(fit, ...)
   UseMethod("model_info")
 

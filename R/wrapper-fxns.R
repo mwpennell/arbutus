@@ -52,10 +52,10 @@
 #' \itemize{
 #'  \item a \code{gfit} object returned from fitting a model of continuous character evolution using
 #'   \code{fitContinuous} in the \code{geiger} package.
-#' 
+#'
 #'  \item a \code{fit.mle} object returned from fitting a model of continuous character evolution
-#'   using \code{find.mle} in the \code{diversitree} package. 
-#' 
+#'   using \code{find.mle} in the \code{diversitree} package.
+#'
 #'  \item a \code{mcmcsamples} object returned from fitting a model of continuous character evolution
 #'   using MCMC methods in the \code{diversitree} package.
 #' \code{\link{make_unit_tree}} will apply the same
@@ -65,30 +65,30 @@
 #'   \code{thin} specifies the thinning interval (e.g. if \code{thin=5}, the function will create a unit
 #'   tree from every fifth parameter set sampled.
 #'   \code{sample} specifies how many samples to draw from the MCMC run.
-#'   
+#'
 #'  \item a \code{gls} object returned from fitting a phylogenetic generalized least squares model
 #'   of character correlation using \code{gls} in the \code{nlme} package.
-#' 
+#'
 #'  \item a \code{pgls} object returned from fitting a phylogenetic generalized least squares model
 #'   of character correlation using \code{pgls} in the \code{caper} package.
-#' 
+#'
 #'  \item a \code{phylolm} object returned from fitting a phylogenetic generalized linear model of
 #'   character correlation using \code{phylolm} in the \code{phylolm} package. As the phylogeny is not
 #'   returned with the \code{phylolm} object, a \code{phy} argument must also be specified.
-#' 
+#'
 #'  \item a \code{phylo} object. If a \code{phylo} object is supplied, the tree is assumed to have been
 #'   rescaled previously. A second argument \code{data} must also be provided included the trait
 #'   data as a named vector with names equal to the tip.labels of the phylogeny.
-#' 
+#'
 #'  \item a \code{multiPhylo object}. If a \code{multiPhylo} object is supplied, the tree is assumed to have been
 #'   rescaled previously. A second argument \code{data} must also be provided included the trait
 #'   data as a named vector with names equal to the tip.labels of the phylogenies. Note that this
 #'   function will append the same data set to every tree in the \code{multiPhylo} object.
 #' }
-#' 
+#'
 #'
 #' @export arbutus
-#' 
+#'
 #' @seealso \code{\link{make_unit_tree}}, \code{\link{calculate_pic_stat}}, \code{\link{simulate_char_unit}}, \code{\link{compare_pic_stat}}
 #'
 #'
@@ -103,7 +103,7 @@
 #' ## fit Brownian motion model
 #' ## using geiger's fitContinuous function
 #' fit.bm <- fitContinuous(phy=phy, dat=data, model="BM",
-#'                                  control=list(niter=10))
+#'                                  control=list(niter=10), ncores=1)
 #'
 #' ## check adequacy of BM model
 #' ## get p-values for default summary statistics
@@ -113,8 +113,8 @@
 #'
 #' ## fit Ornstein-Uhlenbeck model
 #' ## again, using geiger's fitContinuous function
-#' fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=data, model="OU",
-#'                                                   control=list(niter=10)))
+#' fit.ou <- suppressWarnings(fitContinuous(phy=phy, dat=data,
+#'                model="OU", control=list(niter=10), ncores=1))
 #'
 #' ## check adequacy of OU model
 #' modelad.ou <- arbutus(fit.ou, nsim=10)
@@ -122,7 +122,7 @@
 #' require(diversitree)
 #' ## fit Brownian motion model using ML
 #' ## using diversitree's find.mle function
-#' 
+#'
 #' bmlik <- make.bm(phy, data)
 #' fit.bm.dt <- find.mle(bmlik, 0.1)
 #'
@@ -138,7 +138,7 @@
 #' ## and sampling 10 parameter sets
 #' modelad.bm.dt.mcmc <- arbutus(mcmc.bm.dt,
 #'                        burnin=100, samples=10)
-#' 
+#'
 #'
 #' require(nlme)
 #' ## Use pgls to look for a correlation between two traits
@@ -155,7 +155,7 @@
 #' modelad.gls <- arbutus(fit.gls)
 #'
 #' }
-#' 
+#'
 arbutus <- function(x, nsim=1000, stats=NULL, ...){
 
     ## create unit tree
