@@ -11,35 +11,35 @@ states <- dat$dat[,"wingL"]
 control <- list(niter=10)
 
 set.seed(1)
-fit.bm <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,ncores=1,ncores=1,
+fit.bm <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,
                              model="BM")
-fit.ou <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,ncores=1,ncores=1,
+fit.ou <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,
                              model="OU")
-fit.eb <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,ncores=1,ncores=1,
+fit.eb <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,
                              model="EB")
-fit.lam <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,ncores=1,ncores=1,
+fit.lam <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,
                               model="lambda")
-fit.del <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,ncores=1,ncores=1,
+fit.del <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,
                               model="delta")
-fit.kap <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,ncores=1,ncores=1,
+fit.kap <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,
                               model="kappa")
-fit.wh <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,ncores=1,ncores=1,
+fit.wh <- fitContinuousQuiet(phy, states, SE=NA, control=control,ncores=1,
                              model="white")
 
 ## And without SE:
-fit.bm.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,ncores=1,
+fit.bm.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,
                                   model="BM")
-fit.ou.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,ncores=1,
+fit.ou.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,
                                   model="OU")
-fit.eb.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,ncores=1,
+fit.eb.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,
                                   model="EB")
-fit.lam.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,ncores=1,
+fit.lam.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,
                                    model="lambda")
-fit.del.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,ncores=1,
+fit.del.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,
                                    model="delta")
-fit.kap.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,ncores=1,
+fit.kap.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,
                                    model="kappa")
-fit.wh.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,ncores=1,
+fit.wh.noSE <- fitContinuousQuiet(phy, states, control=control,ncores=1,
                                   model="white")
 
 test_that("Model types are correct", {
@@ -209,12 +209,12 @@ test_that("Variable length SE throws error", {
   set.seed(1)
   se <- runif(length(states))
   names(se) <- names(states)
-  fit.bm <- fitContinuous(phy, states, SE=se, control=control,ncores=1,ncores=1,
+  fit.bm <- fitContinuous(phy, states, SE=se, control=control,ncores=1,
                           model="BM")
   expect_that(model_pars(fit.bm), throws_error())
 
   se[1] <- NA
-  fit.bm <- fitContinuousQuiet(phy, states, SE=se, control=control,ncores=1,ncores=1,
+  fit.bm <- fitContinuousQuiet(phy, states, SE=se, control=control,ncores=1,
                                model="BM")
   expect_that(model_pars(fit.bm), throws_error())
 })
