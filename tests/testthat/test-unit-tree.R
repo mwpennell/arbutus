@@ -53,7 +53,7 @@ test_that("Invalid inputs fail appropriately", {
 ## Most other options should have been done by lower level tests.
 test_that("Unit tree construction from BM/fitContinuous works", {
   fit.bm <- fitContinuousQuiet(phy=phy, dat=states, model="BM",
-                               control=list(niter=5))
+                               control=list(niter=5), ncores=1)
   phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
 
@@ -67,7 +67,7 @@ test_that("Unit tree construction from BM/fitContinuous works", {
 test_that("Unit tree construction from BM/fitContinuous with SE works", {
   se <- 0.01
   fit.bm <- fitContinuousQuiet(phy=phy, dat=states, model="BM", SE=se,
-                               control=list(niter=5))
+                               control=list(niter=5), ncores=1)
   phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
 
@@ -83,7 +83,7 @@ test_that("Unit tree construction from BM/diversitree/ML works", {
   fit.bm <- find.mle(lik.bm, .1)
   phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
-  
+
   ## Manual rescaling using Geiger function
   cmp <- rescale(phy, "BM", coef(fit.bm)[[1]])
   expect_that(phy.unit$phy, equals(cmp))
@@ -97,7 +97,7 @@ test_that("Unit tree construction from BM/diversitree/ML with SE works", {
   fit.bm <- find.mle(lik.bm, .1)
   phy.unit <- make_unit_tree(fit.bm)
   expect_that(phy.unit, is_a("unit.tree"))
-  
+
   ## Manual rescaling using Geiger function
   cmp <- rescale.se(phy, "BM", coef(fit.bm)[[1]], SE=se)
   expect_that(phy.unit$phy, equals(cmp))
@@ -180,7 +180,7 @@ test_that("Unit tree construction from BM/diversitree/MCMC with SE works", {
 ## anything, and that is separately tested in test-rescale.R
 test_that("OU tree rescaling worked (fitContinuous)", {
     fit.ou <- fitContinuousQuiet(phy=phy, dat=states, model="OU",
-                                 control=list(niter=10))
+                                 control=list(niter=10), ncores=1)
     phy.unit <- make_unit_tree(fit.ou)
 
     ## Manual rescaling using Geiger function
@@ -227,7 +227,7 @@ test_that("OU tree rescaling worked (diversitree, mcmc)", {
 
 test_that("EB tree rescaling worked (fitContinuous)", {
     fit.eb <- fitContinuousQuiet(phy=phy, dat=states, model="EB",
-                                 control=list(niter=10))
+                                 control=list(niter=10), ncores=1)
     phy.unit <- make_unit_tree(fit.eb)
 
     ## Manual rescaling using Geiger functions
@@ -239,7 +239,7 @@ test_that("EB tree rescaling worked (fitContinuous)", {
 
 test_that("lambda tree rescaling worked (fitContinuous)", {
     fit.lamb <- fitContinuousQuiet(phy=phy, dat=states, model="lambda",
-                                   control=list(niter=10))
+                                   control=list(niter=10), ncores=1)
     phy.unit <- make_unit_tree(fit.lamb)
 
     ## Manual rescaling using Geiger functions
@@ -251,7 +251,7 @@ test_that("lambda tree rescaling worked (fitContinuous)", {
 
 test_that("kappa tree rescaling worked (fitContinuous)", {
     fit.k <- fitContinuousQuiet(phy=phy, dat = states, model="kappa",
-                                control = list(niter=10))
+                                control = list(niter=10), ncores=1)
 
     phy.unit <- make_unit_tree(fit.k)
 
@@ -280,7 +280,7 @@ test_that("delta tree rescaling worked (fitContinuous)", {
 
 test_that("white noise rescaling worked (fitContinuous)", {
     fit.w <- fitContinuousQuiet(phy=phy, dat=states, model="white",
-                                control = list(niter=10))
+                                control = list(niter=10), ncores=1)
 
     phy.unit <- make_unit_tree(fit.w)
 
@@ -340,7 +340,7 @@ test_that("Unit tree construction from gls works (ML)", {
 
   cmp <- rescale(phy, "BM", s2.ml)
   dat <- drop.attributes(resid(fit.gls.bm.ml))
-  
+
   expect_that(phy.unit$phy,  equals(cmp))
   expect_that(phy.unit$data, equals(dat))
   expect_that(phy.unit$pics, equals(pic.var(dat, cmp)))
@@ -352,7 +352,7 @@ test_that("Unit tree construction from gls works (REML)", {
 
   cmp <- rescale(phy, "BM", s2.reml)
   dat <- drop.attributes(resid(fit.gls.bm.reml))
-  
+
   expect_that(phy.unit$phy,  equals(cmp))
   expect_that(phy.unit$data, equals(dat))
   expect_that(phy.unit$pics, equals(pic.var(dat, cmp)))
@@ -364,7 +364,7 @@ test_that("Unit tree construction from caper pgls works", {
 
   cmp <- rescale(phy, "BM", s2.ml)
   dat <- drop(resid(fit.caper))
-  
+
   expect_that(phy.unit$phy,  equals(cmp))
   expect_that(phy.unit$data, equals(dat))
   expect_that(phy.unit$pics, equals(pic.var(dat, cmp)))

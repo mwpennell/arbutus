@@ -9,7 +9,7 @@ class(multiphy) <- "multiPhylo"
 
 
 ## fit bm using fitContinuous
-fitc.res <- fitContinuous(phy, dat=dat1, SE=0, control=list(niter=10))
+fitc.res <- fitContinuous(phy, dat=dat1, SE=0, control=list(niter=10), ncores=1)
 
 
 ## fit bm using diversitree
@@ -57,7 +57,7 @@ test_that("arbutus() runs properly", {
     mc.pgls.mcmc <- arbutus(pgls.mcmc.res, nsim=10)
     mc.phy <- arbutus(phy, data=dat1, nsim=10)
     mc.multiphy <- arbutus(multiphy, data=dat1, nsim=10)
-    
+
     expect_that(mc.fitc, is_a("arbutus"))
     expect_that(mc.bm.mle, is_a("arbutus"))
     expect_that(mc.bm.mcmc, is_a("arbutus"))
@@ -119,7 +119,7 @@ test_that("arbutus() runs properly", {
 
 
 test_that("if incomplete data is supplied, method fails",{
-    
+
     ## phylolm without phylogeny
     expect_that(arbutus(phylolm.res), throws_error())
 
@@ -133,11 +133,11 @@ test_that("stats are passed from wrapper to internals", {
     ## define some function
     foo <- function(x)
         mean(x$pics[,"contrasts"])
- 
+
 
     ## create a named list with function
     new.stat <- list(mean=foo)
-    
+
     mc.fitc <- arbutus(fitc.res, nsim=10, stats=new.stat)
     mc.bm.mle <- arbutus(bm.mle.res, nsim=10, stats=new.stat)
     mc.bm.mcmc <- arbutus(bm.mcmc.res, nsim=10, stats=new.stat)
@@ -161,7 +161,7 @@ test_that("stats are passed from wrapper to internals", {
     st.multiphy <- names(pvalue_arbutus(mc.multiphy))
 
     stats <- "mean"
-    
+
     expect_that(st.fitc, equals(stats))
     expect_that(st.bm.mle, equals(stats))
     expect_that(st.bm.mcmc, equals(stats))
@@ -173,10 +173,3 @@ test_that("stats are passed from wrapper to internals", {
     expect_that(st.phy, equals(stats))
     expect_that(st.multiphy, equals(stats))
 })
-
-
-    
-
-
-    
-    
