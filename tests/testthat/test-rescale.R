@@ -84,11 +84,11 @@ test_that("Rescaling delta agrees with geiger", {
 
   expect_that(model_phylo_delta(phy, f(p0.delta)),
               equals(phy)) # does transform
-  ## expect_that(model_phylo_delta(phy, f(p.delta)),
-  ##             equals(rescale(phy, "delta", p.delta[[1]], p.delta[[2]])))
-  ## expect_that(model_phylo_delta(phy, g(p.delta)),
-  ##             equals(rescale.se(phy, "delta", p.delta[[1]], p.delta[[2]],
-  ##                            SE=se)))
+  expect_that(model_phylo_delta(phy, f(p.delta)),
+               equals(rescale(phy, "delta", p.delta[[1]], p.delta[[2]])))
+  expect_that(model_phylo_delta(phy, g(p.delta)),
+               equals(rescale.se(phy, "delta", p.delta[[1]], p.delta[[2]],
+                              SE=se)))
 })
 
 test_that("Rescaling white noise agrees with geiger", {

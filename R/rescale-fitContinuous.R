@@ -115,6 +115,10 @@ model_phylo_delta <- function(phy, pars){
     bl <- (t + l)^delta - t^delta
     phy$edge.length <- bl[phy$edge[,2]]
 
+    ## Rescaling using geiger's method
+    scl <- Tmax^delta
+    phy$edge.length <- phy$edge.length/scl * Tmax
+
     ## rescale branch lengths according to sigsq
     sigsq <- pars$sigsq
 

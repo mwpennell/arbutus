@@ -272,7 +272,7 @@ test_that("delta tree rescaling worked (fitContinuous)", {
     ## Using internal fxn as rescale.phy does a post-hoc adjustment
     ## We are not using adjustment here
     foo <- geiger:::.delta.phylo(phy)
-    cmp <- foo(delta=coef(fit.d)[[1]], sigsq=coef(fit.d)[[2]], rescale=FALSE)
+    cmp <- foo(delta=coef(fit.d)[[1]], sigsq=coef(fit.d)[[2]], rescale=TRUE)
 
     expect_that(phy.unit$phy, equals(cmp))
     expect_that(is.unit.tree(phy.unit), is_true())
