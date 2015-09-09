@@ -25,7 +25,9 @@ edge.height <- function(phy){
 
 
 check.tree.data <- function(phy, data, sort=FALSE, warnings=TRUE) {
-  if (!is.null(dim(data)))
+  if (missing(data))
+		stop("If a 'phylo' or 'multiPhylo' object is supplied, 'data' must be included as well")
+	if (!is.null(dim(data)))
     stop("Multidimensional data")
   if (!identical(names(data), phy$tip.label))
     stop("Trait data and species do not align")
@@ -33,12 +35,12 @@ check.tree.data <- function(phy, data, sort=FALSE, warnings=TRUE) {
 
 ## geiger and diversitree's drop.tip function
 prune.phylo <- function(phy, tip, trim.internal = TRUE, subtree = FALSE, root.edge = 0, rooted = is.rooted(phy)){
-  
-  
+
+
   if(missing(tip)) return(phy)
   if (is.character(tip)) tip <- which(phy$tip.label %in% tip)
   if(!length(tip)) return(phy)
-    
+
   phy=as.phylo(phy)
   Ntip <- length(phy$tip.label)
   tip=tip[tip%in%c(1:Ntip)]
@@ -53,19 +55,19 @@ prune.phylo <- function(phy, tip, trim.internal = TRUE, subtree = FALSE, root.ed
   wbl <- !is.null(phy$edge.length)
   edge1 <- phy$edge[, 1]
   edge2 <- phy$edge[, 2]
-  keep <- !(edge2 %in% tip)  
+  keep <- !(edge2 %in% tip)
 
   ints <- edge2 > Ntip
   repeat {
     sel <- !(edge2 %in% edge1[keep]) & ints & keep
-    if (!sum(sel)) 
+    if (!sum(sel))
       break
     keep[sel] <- FALSE
   }
 
   phy2 <- phy
   phy2$edge <- phy2$edge[keep, ]
-  if (wbl) 
+  if (wbl)
     phy2$edge.length <- phy2$edge.length[keep]
   TERMS <- !(phy2$edge[, 2] %in% phy2$edge[, 1])
   oldNo.ofNewTips <- phy2$edge[TERMS, 2]
@@ -87,7 +89,7 @@ prune.phylo <- function(phy, tip, trim.internal = TRUE, subtree = FALSE, root.ed
 
 
 check.names.phylo <- function(phy, data, data.names = NULL) {
-	
+
 	if (is.null(data.names)) {
 		if (is.vector(data)) {
 			data.names <- names(data);
@@ -98,9 +100,9 @@ check.names.phylo <- function(phy, data, data.names = NULL) {
 	t <- phy$tip.label;
 	r1 <- t[is.na(match(t, data.names))];
 	r2 <- data.names[is.na(match(data.names, t))];
-	
+
 	r <- list(sort(r1), sort(r2));
-	
+
 	names(r) <- cbind("tree_not_data", "data_not_tree")
 	if (length(r1) == 0 && length(r2) == 0) {
 		return("OK");
@@ -108,4 +110,3 @@ check.names.phylo <- function(phy, data, data.names = NULL) {
 		return(r);
 	}
 }
-
