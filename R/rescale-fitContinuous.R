@@ -272,3 +272,48 @@ tree.depth <- function(phy) {
   ## works for non-ultrametric trees
   heights$start[N+1]
 }
+
+make_model_phylo.fitOU <- function(x, ...){
+  ## get model
+  model <- x$type
+  
+  ## get tree
+  phy <- x$data$phy
+  
+  ## get parameters
+  pars <- x$pars
+  
+  ## Translation function; all have argument list (phy, pars)
+  tr <- switch(model,
+               BMS=model_phylo_bms)
+  
+  if (is.data.frame(pars)) {
+    rphy <- lapply(seq_len(nrow(pars)), function(i)
+      tr(phy, pars[i,]))
+    class(rphy) <- "multiPhylo"
+  } else {
+    rphy <- tr(phy, pars)
+  }
+  
+  ## return rescaled phylogeny
+  rphy
+}
+
+model_phylo_bms <- function(phy, pars){
+  if (pars$sigsq1 < 0 || pars$sigsq2 < 0)
+    stop("Parameters need to be non-negative")
+  #The first 2n edges are sigsq1 (n = number of regime 1), rest are sigsq2
+  n = sum(phy$node.label == 1)
+  phy$edge.length[1:(2*n)] <- phy$edge.length[1:(2*n)] * pars$sigsq1
+  phy$edge.length[(2*n+1):length(phy$edge.length)] <- phy$edge.length[(2*n+1):length(phy$edge.length)] * pars$sigsq2
+  #ifelse(!is.null(pars$SE), phy = model_phylo_ouse(phy, pars), phy = phy)
+  phy    
+}
+
+model_phylo_ouse <- function(phy, pars) {
+  if (pars$SE < 0)
+    stop("SE must be non-negative")
+  tips <- phy$edge[,2] <= Ntip(phy)
+  phy$edge.length[tips] <- phy$edge.length[tips] + pars$SE^2
+  phy
+}
