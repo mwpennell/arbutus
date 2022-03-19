@@ -9,11 +9,14 @@ model_type.OUwie <- function(fit, ...){
 }
 
 model_data.OUwie <- function(fit, ...) {
-  list(phy=fit$phy, data=fit$data)
+  temp <- fit$data[[2]]
+  names(temp) <- rownames(fit$data)
+  ret <- list(phy=fit$phy, data=temp)
+  ret
 }
 
 model_pars.OUwie <- function(fit, ...) {
-  list(sigsq1 = fit$solution[2], sigsq2 = fit$solution[4], SE = fit$solution.se)
+  list(sigsq = fit$solution["sigma.sq",], SE = fit$solution.se)
 }
 
 #' @method model_info OUwie

@@ -128,7 +128,9 @@ model_phylo_bms <- function(phy, pars){
 ```
 
 ``` {r}
+class(sim_fit) <- "OUwie"
 arbutus::arbutus(sim_fit)
+#make_unit_tree(sim_fit)
 ```
 
 

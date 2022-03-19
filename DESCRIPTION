@@ -20,3 +20,4 @@ Suggests:
     parallel,
     phylolm,
     testthat
+RoxygenNote: 7.1.2

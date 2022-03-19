@@ -36,12 +36,13 @@ model_phylo_bms <- function(phy, pars){
   for(reg in 1:n){
     for(node in 1:phy$Nnode){
       if(phy$node.label[node] == reg){
-        phy$edge.length[which(phy$edge[,1] == node + length(phy$tip.label))] <-    phy$edge.length[which(phy$edge[,1] == node + length(phy$tip.label))] * pars$sigsq[reg]^2
+        index <- which(phy$edge[,1] == node + length(phy$tip.label))
+        phy$edge.length[index] <- phy$edge.length[index]# * pars$sigsq[reg]^2
       }
     }
   }
   
-  ifelse(!is.null(pars$SE), phy = model_phylo_ouse(phy, pars), phy = phy)
+  #phy <- ifelse(!is.null(pars$SE), model_phylo_ouse(phy, pars), phy)
   phy    
 }
 
