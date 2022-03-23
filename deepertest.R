@@ -20,10 +20,19 @@ sim_dat <- OUwie.sim(phy = tree, data = df, alpha = c(1e-10,1e-10,1e-10), sigma.
 sim_fit <- OUwie(phy = tree, data = sim_dat, model = "BMS")
 
 sim_and_fit <- function(){
-  datasim <- OUwie.sim(phy = tree, data = df, alpha = c(1e-10,1e-10,1e-10), sigma.sq = c(0.45,0.90,0.23), theta0 = 1.0, theta = c(0,0,0))
-  datafit <- OUwie(phy = tree, data = datasim, model = "BMS")
-  res <- arbutus(datafit) %>% arbutus::pvalue_arbutus()
+  tr <- sim.bdtree(n = 128)
+  tr$node.label <- c(rep.int(1, 64), rep.int(2, (90-65)), rep.int(3, 38))
+  datasim <- OUwie.sim(phy = tr, data = df, alpha = c(1e-10,1e-10,1e-10), sigma.sq = c(0.45,0.90,0.23), theta0 = 1.0, theta = c(0,0,0))
+  datafit <- OUwie(phy = tr, data = datasim, model = "BMS")
+  res <- arbutus(datafit)
+  res
 }
 
-run <- replicate(1000, sim_and_fit)
+run <- replicate(1000, sim_and_fit())
 saveRDS(run, file = "deepertest_result")
+
+run_df <- run[,1] %>% map_df(function(x)x) 
+
+run_df %>% pivot_longer(cols = everything(), names_to = "tstat") %>%
+  ggplot(aes(value)) + geom_histogram(aes(y = ..density..)) + facet_wrap(~tstat, nrow = 1) + theme_bw()
+ggsave("arbutus_plot.png")
