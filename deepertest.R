@@ -24,6 +24,7 @@ sim_and_fit <- function(){
   tr$node.label <- c(rep.int(1, 64), rep.int(2, (90-65)), rep.int(3, 38))
   datasim <- OUwie.sim(phy = tr, data = df, alpha = c(1e-10,1e-10,1e-10), sigma.sq = c(0.45,0.90,0.23), theta0 = 1.0, theta = c(0,0,0))
   datafit <- OUwie(phy = tr, data = datasim, model = "BMS")
+  datafit$solution["sigma.sq",] <- c(0.45, 0.90,0.23)
   res <- arbutus(datafit)
   res
 }
