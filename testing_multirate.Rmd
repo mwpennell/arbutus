@@ -36,7 +36,7 @@ df_regime <- c(rep.int(1, 64), rep.int(2, (90-65)), rep.int(3, 39))
 df <- data.frame(df_species, df_regime) %>% rename(Genus_species = df_species, Reg = df_regime)
 
 #Now sim
-sim_dat <- OUwie.sim(phy = tree, data = df, alpha = c(1e-10,1e-10,1e-10), sigma.sq = c(0.45,0.90,0.23), theta0 = 1.0, theta = c(0,0,0))
+sim_dat <- OUwie.sim(phy = tree, data = df, alpha = c(1e-10,1e-10,1e-10), sigma.sq = c(0.45,0.90,0.23), theta0 = 10.0, theta = c(0,0,0))
 
 #Fit the data
 sim_fit <- OUwie(phy = tree, data = sim_dat, model = "BMS")
@@ -47,7 +47,7 @@ Next, we create the following functions:
   2. parnames
   3. make_model_phylo
   
-``` {r model_info}
+``` { model_info}
 
 model_type.OUwie <- function(fit, ...){
   ret <- fit$model
@@ -75,13 +75,13 @@ model_info.OUwie <- function(fit, ...) {
 }
 ```
 
-``` {r parnames}
+``` { parnames}
 #To add to internal.R script
 parnames.bms <- function()
   c("sigsq", "SE")
 ```
 
-``` {r model_phylo}
+``` { model_phylo}
 make_model_phylo.fitOU <- function(x, ...){
   ## get model
     model <- x$type
@@ -144,7 +144,7 @@ a$sigsq <- c(0.5, 1, 2)
 for(reg in 1:n){
   for(node in 1:tree3$Nnode){
     if(tree3$node.label[node] == reg){
-      tree3$edge.length[which(tree3$edge[,1] == node + length(tree3$tip.label))] <-    tree3$edge.length[which(tree3$edge[,1] == node + length(tree3$tip.label))] * a$sigsq[reg]^2
+      tree3$edge.length[which(tree3$edge[,1] == node + length(tree3$tip.label))] <-    tree3$edge.length[which(tree3$edge[,1] == node + length(tree3$tip.label))] * a$sigsq[reg]
     }
   }
 }
