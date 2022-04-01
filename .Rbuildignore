@@ -3,3 +3,5 @@ Makefile
 extra
 inst/web
 inst/update-gh-pages.sh
+^.*\.Rproj$
+^\.Rproj\.user$
