@@ -37,7 +37,7 @@ model_phylo_bms <- function(phy, pars){
     for(node in 1:phy$Nnode){
       if(phy$node.label[node] == reg){
         index <- which(phy$edge[,1] == node + length(phy$tip.label))
-        phy$edge.length[index] <- phy$edge.length[index] * pars$sigsq[reg]^2
+        phy$edge.length[index] <- phy$edge.length[index] * pars$sigsq[reg]
       }
     }
   }
