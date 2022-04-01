@@ -28,6 +28,8 @@ sim_and_fit <- function(){
   res
 }
 
+test1 <- sim_and_fit()
+
 run <- replicate(1000, sim_and_fit())
 saveRDS(run, file = "deepertest_result")
 
