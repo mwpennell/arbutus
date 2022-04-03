@@ -10,7 +10,7 @@ This package was developed to assess the adequacy of continuous trait models. Th
 To install the package from github, the easiest way is to install using [devtools](https://github.com/hadley/devtools). Install `devtools`, then type
 
 ```
-devtools::install_github("mwpennell/arbutus")
+devtools::install_github("pennell-lab-ubc/arbutus")
 ```
 
 The package depends on the `ape` library
