@@ -29,5 +29,6 @@ The idea behind `arbutus` is that models are fit to comparative data using other
 * `phylolm` objects from `phylolm` in `phylolm`
 * `phylo` objects in `ape` format (does not rescale phylogeny)
 * `multiPhylo` objects in `ape` format (does not rescale phylogeny)
+* `OUwie` objects from `OUwie` in [OUwie](https://github.com/thej022214/OUwie/) (>= 2.6)
 
 We plan to add more package interfaces as this project progresses.

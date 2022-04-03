@@ -1,0 +1,153 @@
+---
+title: "Testing Multirate BM"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ape)
+library(geiger)
+library(OUwie)
+library(tidyverse)
+```
+
+## First, simulate tree
+
+``` {r treesim}
+#tree <- stree(128, type = "balanced", tip.label = as.character(c(1:128))) %>% compute.brlen()
+tree <- sim.bdtree(n = 128, seed = 69)
+plot(tree)
+```
+
+## Second, simulate BM character data with 2 different rates
+
+``` {r datasim}
+#Make nodes correspond to selective regimes
+tree2 <- sim.bdtree(n = 10)
+tree2$node.label <- c(rep.int(1, 5), rep.int(2, (10-6)))
+plot.phylo(tree2, show.node.label = TRUE)
+
+tree$node.label <- c(rep.int(1, 64), rep.int(2, (90-65)), rep.int(3, 38))
+plot.phylo(tree, show.node.label = TRUE)
+
+#Make dataframe
+df_species <- tree$tip.label
+df_regime <- c(rep.int(1, 64), rep.int(2, (90-65)), rep.int(3, 39))
+df <- data.frame(df_species, df_regime) %>% rename(Genus_species = df_species, Reg = df_regime)
+
+#Now sim
+sim_dat <- OUwie.sim(phy = tree, data = df, alpha = c(1e-10,1e-10,1e-10), sigma.sq = c(0.45,0.90,0.23), theta0 = 10.0, theta = c(0,0,0))
+
+#Fit the data
+sim_fit <- OUwie(phy = tree, data = sim_dat, model = "BMS")
+```
+
+Next, we create the following functions:
+  1. model_info
+  2. parnames
+  3. make_model_phylo
+  
+``` { model_info}
+
+model_type.OUwie <- function(fit, ...){
+  ret <- fit$model
+  if (is.null(ret) || !is.character(ret) || length(ret) != 1)
+    stop("Failed to extract model type from OUwie fit")
+  ret
+}
+
+model_data.OUwie <- function(fit, ...) {
+ list(phy=fit$phy, data=fit$data)
+}
+
+model_pars.OUwie <- function(fit, ...) {
+  list(sigsq = fit$solution["sigma.sq",], SE = fit$solution.se)
+}
+
+#' @method model_info gfit
+#' @export
+model_info.OUwie <- function(fit, ...) {
+  m <- list(data=model_data(fit),
+            pars=model_pars(fit),
+            type=model_type(fit))
+  class(m) <- "fitOU"
+  m
+}
+```
+
+``` { parnames}
+#To add to internal.R script
+parnames.bms <- function()
+  c("sigsq", "SE")
+```
+
+``` { model_phylo}
+make_model_phylo.fitOU <- function(x, ...){
+  ## get model
+    model <- x$type
+
+    ## get tree
+    phy <- x$data$phy
+
+    ## get parameters
+    pars <- x$pars
+
+    ## Translation function; all have argument list (phy, pars)
+    tr <- switch(model,
+                 BMS=model_phylo_bms)
+
+    if (is.data.frame(pars)) {
+      rphy <- lapply(seq_len(nrow(pars)), function(i)
+                     tr(phy, pars[i,]))
+      class(rphy) <- "multiPhylo"
+    } else {
+      rphy <- tr(phy, pars)
+    }
+
+    ## return rescaled phylogeny
+    rphy
+}
+
+model_phylo_bms <- function(phy, pars){
+    if (any(pars$sigsq < 0))
+        stop("Parameters need to be non-negative")
+    n = length(pars$sigsq)
+    
+    for(reg in 1:n){
+      for(node in 1:phy$Nnode){
+        if(phy$node.label[node] == reg){
+          phy$edge.length[which(phy$edge[,1] == node + length(phy$tip.label))] <-    phy$edge.length[which(phy$edge[,1] == node + length(phy$tip.label))] * pars$sigsq[reg]^2
+        }
+      }
+    }
+    
+    ifelse(!is.null(pars$SE), phy = model_phylo_ouse(phy, pars), phy = phy)
+    phy    
+}
+
+```
+
+``` {r}
+class(sim_fit) <- "OUwie"
+a <- arbutus::arbutus(sim_fit) %>% pvalue_arbutus()
+#make_unit_tree(sim_fit)
+```
+
+
+``` {r test-rescaling}
+tree3 <- sim.bdtree(n = 10)
+tree3$node.label <- c(1,1,1,1,2,2,2,3,3)
+plot.phylo(tree3, show.node.label = TRUE)
+
+n = length(unique(tree3$node.label))
+a$sigsq <- c(0.5, 1, 2)    
+for(reg in 1:n){
+  for(node in 1:tree3$Nnode){
+    if(tree3$node.label[node] == reg){
+      tree3$edge.length[which(tree3$edge[,1] == node + length(tree3$tip.label))] <-    tree3$edge.length[which(tree3$edge[,1] == node + length(tree3$tip.label))] * a$sigsq[reg]
+    }
+  }
+}
+
+plot.phylo(tree3, show.node.label = TRUE)
+```
