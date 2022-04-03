@@ -14,7 +14,8 @@ make_model_phylo.fitOU <- function(x, ...){
   
   ## Translation function; all have argument list (phy, pars)
   tr <- switch(model,
-               BMS=model_phylo_bms)
+               BMS=model_phylo_bms,
+               stop("Not yet implemented"))
   
   if (is.data.frame(pars)) {
     rphy <- lapply(seq_len(nrow(pars)), function(i)

@@ -71,6 +71,9 @@ the following object types have been implemented:
   rescaled previously. A second argument \code{data} must also be provided included the trait
   data as a named vector with names equal to the tip.labels of the phylogenies. Note that this
   function will append the same data set to every tree in the \code{multiPhylo} object.
+  
+  \item a \code{OUwie} object returned from fitting a model of continuous character evolution using
+  \code{OUwie} in the \code{OUwie} package.
 }
 }
 \examples{
