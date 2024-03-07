@@ -17,7 +17,7 @@ model_type.phylolm <- function(fit, ...){
 model_data.phylolm <- function(fit, phy, ...){
     if (missing(phy))
       stop("phylolm fitted objects do not include the phylogeny. This needs to be entered separately with the argument 'phy'.")
-    res <- fit$residuals[,1]
+    res <- fit$residuals
     list(phy=phy, data=res)
 }
 
